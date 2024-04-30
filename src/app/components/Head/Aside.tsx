@@ -10,6 +10,7 @@ import Image from "next/image";
 
 import "./assets/aside.css";
 import { useSession } from "next-auth/react";
+import Link from "next/link";
 
 export default function Aside() {
   const { data: session } = useSession();
@@ -43,31 +44,31 @@ export default function Aside() {
           </span>
         </div>
         <ul className="text-lg text-white flex flex-col gap-3">
-          <a href="#" className="bg-transparent">
+          <Link href="/app/resume" className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ActivityIcon />
               <span>Resumen</span>
             </li>
-          </a>
-          <a href="#" className="bg-transparent">
-            <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
-              <CreditCardRefundIcon />
-              <span>Deudas</span>
-            </li>
-          </a>
-          <a href="#" className="bg-transparent">
+          </Link>
+          <Link href="/app/accounts" className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CoinIcon />
               <span>Cuentas</span>
             </li>
-          </a>
-          <a href="#" className="bg-transparent">
+          </Link>
+          <Link href="/app/debts" className="bg-transparent">
+            <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
+              <CreditCardRefundIcon />
+              <span>Deudas</span>
+            </li>
+          </Link>
+          <Link href="#" className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <RecepitIcon />
               <span>Configurar pagos habituales</span>
             </li>
-          </a>
-          <a href="#" className="bg-transparent">
+          </Link>
+          <Link href="#" className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ExchangeIcon />
               <span>
@@ -75,7 +76,7 @@ export default function Aside() {
                 <span className="text-palette text-sm">Conversor</span>
               </span>
             </li>
-          </a>
+          </Link>
           <li className="absolute bottom-0 w-full justify-center opacity-50 text-sm">
             {FormatDate(session?.expires ?? "")}
           </li>
