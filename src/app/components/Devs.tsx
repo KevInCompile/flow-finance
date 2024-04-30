@@ -1,3 +1,4 @@
+import Image from "next/image";
 import GithubIcon from "../icons/GithubIcon";
 
 export default function Devs() {
@@ -10,12 +11,14 @@ export default function Devs() {
         <button className="bg-[#1e1d1d]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">
           <div className="flex gap-5 items-center justify-between">
             <div className="w-14 h-14 rounded-full bg-[#3a3838]">
-              <img
+              <Image
                 src="https://avatars.githubusercontent.com/u/41650859?v=4"
+                width={30}
+                height={30}
                 className="w-full h-full p-2 rounded-full"
                 decoding="async"
                 loading="lazy"
-                alt="Avatar Uber830"
+                alt="KevBT"
               />
             </div>
             <span className="opacity-70 font-medium text-white">KevBT</span>
