@@ -1,0 +1,80 @@
+.snow {
+    z-index: -1;
+    top: 0;
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-palette);
+    border-radius: 50%;
+    filter: drop-shadow(0 0 10px white);
+}
+#uno {
+    opacity: 0.8;
+    transform: translate(50vw, -10px);
+    animation: fall-1 25s linear infinite;
+}
+
+@keyframes fall-1 {
+    50% {
+        transform: translate(60vw, 35vh);
+    }
+    to {
+        transform: translate(40vw, 100vh);
+    }
+}
+#dos {
+    opacity: 0.5;
+    transform: translate(20vw, -10px) scale(0.5);
+    animation: fall-2 22s linear infinite;
+}
+
+@keyframes fall-2 {
+    50% {
+        transform: translate(35vw, 45vh) scale(0.5);
+    }
+    to {
+        transform: translate(30vw, 100vh) scale(0.5);
+    }
+}
+#tres {
+    opacity: 0.3;
+    transform: translate(70vw, 35vh) scale(0.2);
+    animation: fall-3 23s linear infinite;
+}
+
+@keyframes fall-3 {
+    50% {
+        transform: translate(60vw, 65vh) scale(0.2);
+    }
+    to {
+        transform: translate(65vw, 100vh) scale(0.2);
+    }
+}
+#cuatro {
+    opacity: 1;
+    transform: translate(90vw, 10vh) scale(0.7);
+    animation: fall-4 21s linear infinite;
+}
+
+@keyframes fall-4 {
+    50% {
+        transform: translate(80vw, 65vh) scale(0.7);
+    }
+    to {
+        transform: translate(85vw, 100vh) scale(0.7);
+    }
+}
+#cinco {
+    opacity: 1;
+    transform: translate(10vw, 20vh) scale(0.7);
+    animation: fall-5 15s linear infinite;
+}
+
+@keyframes fall-5 {
+    50% {
+        transform: translate(30vw, 65vh) scale(0.7);
+    }
+    to {
+        transform: translate(5vw, 100vh) scale(0.7);
+    }
+}
