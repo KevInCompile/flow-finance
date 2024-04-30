@@ -17,7 +17,7 @@ export default function Home() {
           <h1 className="text-center mb-16 [font-size:5.5rem] [line-height:1] font-bold">
             <span className="text-gradient">Flow Finance</span>
           </h1>
-          <p className="text-start text-secondary font-medium text-xl">
+          <p className="text-start text-secondary font-medium text-xl px-10 md:p-0">
             <b>Necesitas esto!</b> Para administrar tus finanzas de manera
             efectiva, es importante llevar un seguimiento detallado de tus{" "}
             <b className="text-purple-300">

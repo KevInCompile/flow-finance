@@ -2,8 +2,8 @@ import "./grid-bento.css";
 
 export default function GridBento() {
   return (
-    <div className="md:grid grid-cols-10 [grid-template-rows:repeat(11,_minmax(30px,_1fr))] gap-3 my-10 w-full animate-fade-in-down lg:max-w-[1200px] lg:m-auto lg:py-10 text-white">
-      <div className="md:[grid-column:1/5] md:[grid-row:1/6] bg-gray-700 rounded-md zoom-in [animation-delay:600ms] relative card-bento">
+    <div className="md:grid md:grid-cols-10 px-5 md:[grid-template-rows:repeat(11,_minmax(30px,_1fr))] gap-3 my-10 w-full animate-fade-in-down lg:max-w-[1200px] lg:m-auto lg:py-10 text-white">
+      <div className="flex flex-col md:[grid-column:1/5] md:[grid-row:1/6] bg-gray-700 rounded-md zoom-in [animation-delay:600ms] relative card-bento">
         <div>
           <img src="/graphic.png" className="h-20 m-auto" />
           <h1 className="text-white">Analiticas simples</h1>
@@ -14,7 +14,7 @@ export default function GridBento() {
           </p>
         </div>
       </div>
-      <div className="md:[grid-column:5/7] md:[grid-row:1/6] bg-gray-700 rounded-md zoom-in [animation-delay:700ms] card-bento">
+      <div className="block md:[grid-column:5/7] md:[grid-row:1/6] bg-gray-700 rounded-md zoom-in [animation-delay:700ms] card-bento">
         <div>
           <img src="/divisas.webp" className="h-24 m-auto" />
           <h1 className="text-2xl text-center font-semibold text-purple-200">
