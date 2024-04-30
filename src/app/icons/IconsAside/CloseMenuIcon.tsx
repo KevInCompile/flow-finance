@@ -1,4 +1,6 @@
-export default function CloseMenuIcon(props) {
+import { PropsIcons } from "@/app/types/Icons.types";
+
+export default function CloseMenuIcon(props: PropsIcons) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

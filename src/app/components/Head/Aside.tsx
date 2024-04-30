@@ -13,6 +13,7 @@ import { useSession } from "next-auth/react";
 
 export default function Aside() {
   const { data: session } = useSession();
+  const avatar = session?.user?.image as string;
   return (
     <aside className="h-full w-full absolute top-0 z-10 backdrop-blur-sm -left-full aside">
       <div className="bg-[#242424]/100 h-full w-80 -left-80 relative transition-all duration-300 ease-in menu-aside">
@@ -28,11 +29,11 @@ export default function Aside() {
         <div className="flex items-center justify-start px-2 py-5 gap-2">
           <div className="flex items-center justify-center w-14 h-14 border-2 border-[var(--color-palette)] p-1 rounded-full">
             <Image
-              src={session?.user?.image}
+              src={avatar}
               className="rounded-full w-12 h-12 p-1"
               loading="lazy"
               decoding="async"
-              alt={session?.user?.name}
+              alt="Avatar"
               width={30}
               height={30}
             />

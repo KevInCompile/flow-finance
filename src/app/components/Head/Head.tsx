@@ -1,12 +1,13 @@
 "use client";
 
+import { signIn, useSession, signOut } from "next-auth/react";
 import MenuIcon from "@/app/icons/MenuIcon";
 import Aside from "./Aside";
 import GoogleIcon from "@/app/icons/GoogleIcon";
-import { signIn, useSession } from "next-auth/react";
 
 export default function Head() {
   const { data: session } = useSession();
+
   return (
     <nav className="flex justify-between p-5 px-10">
       <div className="flex items-center gap-2">
@@ -36,7 +37,6 @@ export default function Head() {
         {!session ? (
           <button
             className="bg-secondary text-sm font-medium bg-blur rounded-xl p-2 px-5 text-primary hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
-            id="login"
             onClick={() => signIn("google")}
           >
             <GoogleIcon className="w-5 h-5" />
@@ -44,8 +44,8 @@ export default function Head() {
           </button>
         ) : (
           <button
-            id="logout"
             className="bg-[var(--color-usage)] font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-black text-sm"
+            onClick={() => signOut()}
           >
             <span>Cerrar sesión</span>
             <div>

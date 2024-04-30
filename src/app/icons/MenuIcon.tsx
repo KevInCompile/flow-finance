@@ -1,4 +1,6 @@
-export default function MenuIcon(props) {
+import { PropsIcons } from "../types/Icons.types";
+
+export default function MenuIcon(props: PropsIcons) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

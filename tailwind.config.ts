@@ -1,7 +1,6 @@
 import type { Config } from "tailwindcss";
-import animations from "@midudev/tailwind-animations";
 
-const config: Config = {
+export default {
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -17,6 +16,5 @@ const config: Config = {
     },
   },
   darkMode: "class",
-  plugins: [animations],
-};
-export default config;
+  plugins: [require("@midudev/tailwind-animations")],
+} satisfies Config;
