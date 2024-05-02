@@ -1,26 +1,50 @@
+'use client'
+
 import Input from "@/app/components/Input/Input";
 import Modal from "@/app/components/Modal/Modal";
+import createItem from "../actions/createAccount.action";
+import useModal from "@/app/components/Modal/useModal";
+import { toast } from "sonner";
+import { useParams } from "next/navigation";
 import { useState } from "react";
 
-interface NewAccountModel {
-  name: string;
-  value: number;
-  main: boolean;
-}
+export default function ModalNewAccount({refresh} : {refresh: (value: boolean) => void}) {
+  const [value, setValue] = useState('')
+  const {user} = useParams()
+  const {handleCloseModal} = useModal()
 
-export default function ModalNewAccount() {
-  const [newAccount, setNewAccount] = useState<NewAccountModel>();
+  async function createAccount(formData: FormData) {
+    const [error] = await createItem(formData);
+    handleCloseModal()
+    if(error) return toast.warning('Error at creating account...')
+    refresh(true)
+    // reset form and values
+    const $form = document.querySelector('#form') as HTMLFormElement
+    $form.reset()
+    setValue('')
+    // Finally create
+    return toast.success('Account created successfully...')
+  }
+  const formatedValue = (value: string) => {
+    const validateNumber =  /^[0-9,]*$/.test(value)
+    if(value === '') return setValue('0')
+    if(!validateNumber) return
+    let numberWithoutComma = parseFloat(value.replace(/,/g, ''))
+    return setValue(Number(numberWithoutComma).toLocaleString())
+  }
+
   return (
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
           <h1 className="text-3xl font-medium text-yellow-400">Nueva cuenta</h1>
         </div>
-        <form action="" className="my-5 flex flex-col gap-5">
-          <Input type="text" label="Nombre" name='name' />
-          <Input type="number" label="Total" name='value' />
+        <form id='form' action={createAccount} className="my-5 flex flex-col gap-5">
+          <Input type="text" label="Cuenta" value={user as string} name='username' hidden readOnly/>
+          <Input type="text" label="Nombre" name='name' autoComplete="off" />
+          <Input type="text" label="Total" name='value' onChange={(e) => formatedValue(e.target.value)} value={value} />
           <div>
-            <button className="bg-palette text-black rounded-md p-2 w-3/12 float-right">
+            <button type='submit' className="bg-palette text-black rounded-md p-2 w-3/12 float-right">
               Añadir
             </button>
           </div>

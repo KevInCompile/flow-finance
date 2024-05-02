@@ -1,6 +1,5 @@
 export interface AccountModel {
-  owner: string;
+  id: number
   name: string;
   value: string;
-  main: string;
 }

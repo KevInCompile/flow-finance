@@ -8,12 +8,12 @@ import accountsFetch from "../services/AccountsFetch";
 
 export default function useAccounts() {
   const [data, setData] = useState<AccountModel[]>([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [refresh, setRefresh] = useState(false)
   const params = useParams();
 
   useEffect(() => {
     const getData = async (user: string) => {
-      setLoading(true);
       try{
         const [error, result] = await accountsFetch(user);
         if (error) return toast(error);
@@ -25,7 +25,9 @@ export default function useAccounts() {
       }
     };
     getData(params.user as string);
-  }, [params.user]);
 
-  return { data, loading };
+    return () => setRefresh(false)
+  }, [params.user, refresh]);
+
+  return { data, loading, setRefresh };
 }

@@ -1,25 +1,26 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-export async function POST(request: Request) {
-  const body = await request.json();
+export async function POST(request: NextResponse) {
+  const form = await request.formData()
+  const name = form.get('name') as string
+  const value = parseFloat(form.get('value')!.toString().replace(/,/g, ''))
+  const username = decodeURIComponent(form.get('username') as string)
 
   try {
-    if (!body.usernam) throw new Error("User is required");
-    if (!body.value || !body.main || !body.name)
-      throw new Error("Value, main, name is required");
-    await sql`INSERT INTO accounts (Username, Name, Value, Main) VALUES (${body.username}, ${body.name}, ${body.value}, ${body.main});`;
+    if (!username) return NextResponse.json({error: "User is required"}, { status: 500 });
+    if (!value || !name) return new Error("Value, main, name is required");
+    await sql`INSERT INTO accounts (Username, Name, Value) VALUES (${username}, ${name}, ${value})`;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
-  const resultInsert =
-    await sql`SELECT * FROM accounts where Name = ${body.name} and Owner = ${body.owner}`;
-  return NextResponse.json({ resultInsert }, { status: 200 });
+  return NextResponse.json({ 'message': 'ok'}, { status: 200 });
 }
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("username");
+
 
   try {
     if (!username)
@@ -27,6 +28,6 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
-  const result = await sql`SELECT * FROM accounts where username = ${username}`;
+  const result = await sql`SELECT * FROM accounts where Username = ${username}`;
   return NextResponse.json({ ...result }, { status: 200 });
 }

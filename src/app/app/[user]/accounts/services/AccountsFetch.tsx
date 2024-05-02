@@ -1,15 +1,13 @@
 // import { useEffect } from "react";
-
-import axios from "axios";
-
 export default async function AccountsFetch(username: string) {
   try {
-    const fetch = await axios.get(
+    const fetching = await fetch(
       `http://localhost:3000/api/account?username=${username}`,
+      {cache: 'no-store'}
     );
-
-    if(!fetch) return [new Error("User is not found...")];
-    return [undefined, fetch.data.rows];
+    const data = await fetching.json()
+    if(!data) return [new Error("User is not found...")];
+    return [undefined, data.rows];
   } catch (error) {
     if (error) return [error];
   }
