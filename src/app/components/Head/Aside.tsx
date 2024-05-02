@@ -44,19 +44,28 @@ export default function Aside() {
           </span>
         </div>
         <ul className="text-lg text-white flex flex-col gap-3">
-          <Link href="/app/resume" className="bg-transparent">
+          <Link
+            href={`/app/${session?.user?.name}/resume`}
+            className="bg-transparent"
+          >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ActivityIcon />
               <span>Resumen</span>
             </li>
           </Link>
-          <Link href="/app/accounts" className="bg-transparent">
+          <Link
+            href={`/app/${session?.user?.name}/accounts`}
+            className="bg-transparent"
+          >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CoinIcon />
               <span>Cuentas</span>
             </li>
           </Link>
-          <Link href="/app/debts" className="bg-transparent">
+          <Link
+            href={`/app/${session?.user?.name}/debts`}
+            className="bg-transparent"
+          >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CreditCardRefundIcon />
               <span>Deudas</span>
