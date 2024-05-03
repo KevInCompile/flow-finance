@@ -1,7 +1,7 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
 
-export async function POST(request: NextResponse) {
+export async function POST(request: Request) {
   const form = await request.formData()
   const name = form.get('name') as string
   const value = parseFloat(form.get('value')!.toString().replace(/,/g, ''))
@@ -9,7 +9,7 @@ export async function POST(request: NextResponse) {
 
   try {
     if (!username) return NextResponse.json({error: "User is required"}, { status: 500 });
-    if (!value || !name) return new Error("Value, main, name is required");
+    if (!value || !name) return NextResponse.json({error: "Value, main, name is required"}, { status: 500 });
     await sql`INSERT INTO accounts (Username, Name, Value) VALUES (${username}, ${name}, ${value})`;
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
