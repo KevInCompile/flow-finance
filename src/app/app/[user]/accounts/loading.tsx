@@ -3,7 +3,7 @@ import ContentLoader from "react-content-loader";
 const SkeletonAccount = () => (
   <ContentLoader
     speed={2}
-    width={230}
+    width={300}
     height={100}
     viewBox="0 0 400 150"
     backgroundColor="#242424"

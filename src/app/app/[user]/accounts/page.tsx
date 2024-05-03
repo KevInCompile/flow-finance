@@ -9,7 +9,7 @@ import useAccounts from "./hooks/useAccounts";
 import SkeletonTitle from "@/app/components/LoaderTitle/LoaderTitle";
 
 export default function Accounts() {
-  const { data, loading, setRefresh } = useAccounts();
+  const { data, loading, setRefresh, setData } = useAccounts();
 
   return (
     <>
@@ -17,7 +17,7 @@ export default function Accounts() {
       <section>
         <div className="flex gap-3 items-center max-w-[800px] m-auto justify-center">
           {loading ? <div className="w-full"><SkeletonTitle /></div> : data.length >= 1 ? (
-            <h3 className="text-center font-bold text-white text-2xl">
+            <h3 className="text-center font-bold text-white text-xl md:text-2xl">
               Tienes <span className='text-purple-300'>{data.length}</span> cuentas registradas.
             </h3>
           ) : (
@@ -28,8 +28,8 @@ export default function Accounts() {
           )}
           {!loading && <OpenButton />}
         </div>
-        <div className="grid grid-cols-2 px-10 gap-5 py-5 md:grid-cols-6">
-          {loading ? <SkeletonAccount /> : <Card data={data} />}
+        <div className="grid grid-cols-1 px-10 gap-5 py-5 md:grid-cols-4">
+          {loading ? <SkeletonAccount /> : <Card data={data} setData={setData} />}
         </div>
       </section>
       <ModalNewAccount refresh={setRefresh}/>

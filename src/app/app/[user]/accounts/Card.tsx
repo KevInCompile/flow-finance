@@ -1,21 +1,42 @@
+import EditIcon from "@/app/icons/EditIcon";
 import { AccountModel } from "./models/account.model";
+import DeleteIcon from "@/app/icons/DeleteIcon";
+import { toast } from "sonner";
+import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
 
-export default function Card({ data }: { data: AccountModel[] }) {
+export default function Card({ data, setData }: { data: AccountModel[], setData: any }) {
+
+  async function deleteItem(id: number) {
+    try {
+      await fetch(`http://localhost:3000/api/account?id=${id}`, {
+        method: "DELETE",
+      });
+      setData(data.filter((item) => item.id !== id));
+      return toast("Cuenta eliminada correctamente!");
+    } catch (error) {
+      toast("Error al eliminar la cuenta...");
+    }
+  }
+
   return (
     <>
       {data.length >= 1 &&
         data.map((item) => (
           <div
             key={item.id}
-            className="bg-[#242424]/50 rounded-md py-2 text-white"
+            className="rounded-xl border bg-[#242424]/50 text-card-foreground shadow text-white"
           >
-            <div className="py-1 text-center font-medium border-b border-gray-500 flex gap-2 items-center justify-center">
-              <h3>{item.name}</h3>
-              {/* <img src="estrella.png" className="w-5 h-5" loading="lazy" /> */}
+            <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
+              <h3 className="tracking-tight text-md font-medium text-palette">{item.name}</h3>
+              <div className="flex gap-3">
+                <EditIcon />
+                <DeleteConfirmation deleteItem={() => deleteItem(item.id)} />
+              </div>
             </div>
-            <h3 className="text-palette text-center font-bold py-2">
-              $ {parseInt(item.value).toLocaleString()}
-            </h3>
+            <div className="p-6 pt-0">
+              <div className="text-2xl font-bold">$ {parseInt(item.value).toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">Ultimo mes</p>
+            </div>
           </div>
         ))}
     </>

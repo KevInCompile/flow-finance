@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 :root {
+    --muted-foreground: 240 5% 64.9%;
     --color-primary: #333;
     --color-secondary: #ddd;
     --color-palette: #dcac0a;

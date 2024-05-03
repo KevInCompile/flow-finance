@@ -4,16 +4,20 @@ import Head from "@/app/components/Head/Head";
 import DateRangeExpense from "./components/DateRangeExpense";
 import useModal from "@/app/components/Modal/useModal";
 import ModalNewExpense from "./components/ModalNewExpense";
+import useAccounts from "../accounts/hooks/useAccounts";
 
 export default function Resume() {
   const { handleShowModal } = useModal();
+  const {data, loading} = useAccounts()
   return (
     <>
       <Head />
       <div>
         <section className="container mx-auto px-5 w-full text-center border-b-2 border-secondary md:w-[70%]">
           <div className="flex justify-center py-5"></div>
-          <h2 className="text-3xl text-palette font-bold">$ 0</h2>
+          <h2 className="text-3xl text-palette font-bold">
+            $ {data.reduce((acc, item) => acc + parseInt(item.value), 0).toLocaleString()}
+          </h2>
           <DateRangeExpense />
         </section>
         <div className="w-full bg-[#242424] h-[300px] container mx-auto relative z-8 rounded-[0_0_20px_20px] md:w-[70%]">
