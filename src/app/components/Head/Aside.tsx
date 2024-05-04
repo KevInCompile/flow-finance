@@ -8,9 +8,9 @@ import { FormatDate } from "@/app/utils/FormatDate";
 
 import Image from "next/image";
 
-import "./assets/aside.css";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import "./assets/aside.css";
 
 export default function Aside() {
   const { data: session } = useSession();
@@ -63,21 +63,21 @@ export default function Aside() {
             </li>
           </Link>
           <Link
-            href={`/app/${session?.user?.name}/debts`}
-            className="bg-transparent"
+            href='#'
+            className="bg-transparent cursor-not-allowed"
           >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CreditCardRefundIcon />
               <span>Deudas</span>
             </li>
           </Link>
-          <Link href="#" className="bg-transparent">
+          <Link href="#" className="bg-transparent cursor-not-allowed">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <RecepitIcon />
               <span>Configurar pagos habituales</span>
             </li>
           </Link>
-          <Link href="#" className="bg-transparent">
+          <Link href="#" className="bg-transparent cursor-not-allowed">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ExchangeIcon />
               <span>

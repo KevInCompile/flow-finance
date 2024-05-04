@@ -9,7 +9,7 @@ import useAccounts from "../../accounts/hooks/useAccounts";
 import createExpense from "../actions/expense.actions";
 import useCategories from "../hooks/useCategories";
 
-export default function ModalNewExpense({router}: any) {
+export default function ModalNewExpense({refresh}: any) {
   const {categories} = useCategories()
   const {data: accounts} = useAccounts()
   const {handleCloseModal} = useModal()
@@ -20,8 +20,7 @@ export default function ModalNewExpense({router}: any) {
     const [error] = await createExpense(formData);
     handleCloseModal()
     if(error) return toast.warning('Error al registrar el gasto...')
-    // refresh(true)
-    router.refresh()
+    refresh()
     // reset form and values
     const $form = document.querySelector('#form') as HTMLFormElement
     $form.reset()
@@ -44,7 +43,7 @@ export default function ModalNewExpense({router}: any) {
             <span>
               ¿De que cuenta? <span className="text-red-500">*</span>
             </span>
-            <select className="selectField" name='accountid' defaultValue='0'>
+            <select className="selectField" name='accountid' defaultValue='0' required>
               <option value='0' disabled>Seleccione una cuenta</option>
               {
                 accounts.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)
@@ -55,7 +54,7 @@ export default function ModalNewExpense({router}: any) {
             <span>
               ¿En que lo usaste? <span className="text-red-500">*</span>
             </span>
-            <select className="selectField" name='categoryid' defaultValue='0'>
+            <select className="selectField" name='categoryid' defaultValue='0' required>
               <option value='0' disabled>
                 Selecciona una categoria
               </option>

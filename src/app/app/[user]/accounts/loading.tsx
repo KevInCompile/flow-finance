@@ -2,12 +2,12 @@ import ContentLoader from "react-content-loader";
 
 const SkeletonAccount = () => (
   <ContentLoader
-    speed={2}
+    speed={3}
     width={300}
     height={100}
     viewBox="0 0 400 150"
-    backgroundColor="#242424"
-    foregroundColor="#333"
+    backgroundColor="#333"
+    foregroundColor="#dbdbdb"
     className="rounded-md"
   >
     <rect x="63" y="133" rx="0" ry="0" width="1" height="0" />

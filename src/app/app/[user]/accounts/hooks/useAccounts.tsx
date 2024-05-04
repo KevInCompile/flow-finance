@@ -1,6 +1,6 @@
 "use client";
 
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { AccountModel } from "../models/account.model";
@@ -8,6 +8,7 @@ import accountsFetch from "../services/AccountsFetch";
 
 export default function useAccounts() {
   const [data, setData] = useState<AccountModel[]>([]);
+  const router = useRouter()
   const [loading, setLoading] = useState(true);
   const [refresh, setRefresh] = useState(false)
   const params = useParams();
@@ -29,5 +30,5 @@ export default function useAccounts() {
     return () => setRefresh(false)
   }, [params.user, refresh]);
 
-  return { data, loading, setRefresh, setData };
+  return { data, loading, setRefresh, setData, router };
 }

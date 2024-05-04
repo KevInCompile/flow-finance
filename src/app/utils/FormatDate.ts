@@ -37,8 +37,8 @@ export const FormatDate = (date: string) => {
   const horaFormateada = hora + ":" + time + " " + periodo;
 
   // Formatear la fecha y hora como "16 de Febrero de 2024, 11:27:00"
-  const fechaFormateada =
-    dia + " de " + mesNombre + " de " + año + ", " + horaFormateada;
+  const fechaFormateada = dia + " de " + mesNombre;
+    // dia + " de " + mesNombre + " de " + año + ", " + horaFormateada;
 
   // Imprimir la fecha y hora formateada
 

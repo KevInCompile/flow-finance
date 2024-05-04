@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import ExpensesFetch from "../services/expenses.service";
 import { toast } from "sonner";
+import ExpensesFetch from "../services/expenses.service";
 
-interface ExpenseModel {
+export interface ExpenseModel {
   id: number
   value: number
   accountname: string
@@ -14,6 +14,7 @@ interface ExpenseModel {
 export default function useExpenses() {
   const [expenses, setExpenses] = useState<ExpenseModel[]>([])
   const [loading, setLoading] = useState(true)
+  const [refresh, setRefresh] = useState(false)
 
  useEffect(() => {
    const getData = async () => {
@@ -23,7 +24,9 @@ export default function useExpenses() {
      setLoading(false);
    };
    getData();
- }, [])
 
- return {loading, expenses}
+   return () => setRefresh(false)
+ }, [refresh])
+
+ return {loading, expenses, setRefresh}
 }
