@@ -12,6 +12,10 @@ export default {
         primary: "var(--color-primary)",
         secondary: "var(--color-secondary)",
         palette: "var(--color-palette)",
+        muted: {
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
       },
     },
   },

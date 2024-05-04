@@ -8,6 +8,10 @@ import GoogleIcon from "@/app/icons/GoogleIcon";
 export default function Head() {
   const { data: session } = useSession();
 
+  const handleSignIn = (provider: string) => {
+    signIn(provider);
+  };
+
   return (
     <nav className="flex justify-between p-5 px-10">
       <div className="flex items-center gap-2">
@@ -37,7 +41,7 @@ export default function Head() {
         {!session ? (
           <button
             className="bg-secondary text-sm font-medium bg-blur rounded-xl p-2 px-5 text-primary hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
-            onClick={() => signIn("google")}
+            onClick={() => handleSignIn("google")}
           >
             <GoogleIcon className="w-5 h-5" />
             Iniciar sesión

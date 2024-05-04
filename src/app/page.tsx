@@ -6,9 +6,16 @@ import AnimationSnow from "./animations/Snow";
 import Head from "./components/Head/Head";
 import GridBento from "./components/GridBento/GridBento";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import LoaderPage from "./components/LoaderPage/LoaderPage";
 
 export default function Home() {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
+  if (status === "loading") return <LoaderPage />;
+  if (status === "authenticated")
+    return router.push(`/app/${session.user?.name}/resume`);
   return (
     <>
       <Head />

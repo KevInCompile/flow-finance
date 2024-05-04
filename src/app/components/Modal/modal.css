@@ -1,0 +1,47 @@
+#favDialog {
+    animation: show-modal 0.5s 0.7s both;
+}
+#favDialog::backdrop {
+    background-color: rgba(0 0% 0% / 70%);
+    backdrop-filter: blur(0.2rem);
+}
+#favDialog[open]::backdrop {
+    animation: show-backdrop 0.5s forwards;
+}
+#favDialog[close]::backdrop {
+    animation: hide-backdrop 0.5s forwards;
+}
+#favDialog[close] {
+    animation: hide-modal 0.7s forwards;
+}
+
+@keyframes show-modal {
+    0% {
+        transform: translateY(60%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateY(0%);
+        opacity: 1;
+    }
+}
+@keyframes show-backdrop {
+    0% {
+        transform: translateY(100%);
+    }
+    100% {
+        transform: translateY(0%);
+    }
+}
+
+@keyframes hide-backdrop {
+    100% {
+        transform: translateY(100%);
+    }
+}
+@keyframes hide-modal {
+    100% {
+        transform: translateY(60%);
+        opacity: 0;
+    }
+}

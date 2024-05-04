@@ -8,7 +8,7 @@ export default function Devs() {
         Esta app es para ustedes realizada por:
       </h2>
       <div className="flex flex-wrap gap-5 justify-center py-5">
-        <button className="bg-[#1e1d1d]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">
+        <button className="bg-[#333]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">
           <div className="flex gap-5 items-center justify-between">
             <div className="w-14 h-14 rounded-full bg-[#3a3838]">
               <Image

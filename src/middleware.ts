@@ -9,4 +9,4 @@ export async function middleware(req: NextResponse) {
   return response;
 }
 
-export const config = { matcher: ["/app"] };
+export const config = { matcher: ["/app/:path*"] };
