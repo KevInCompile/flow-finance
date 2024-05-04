@@ -1,10 +1,14 @@
-import axios from "axios";
 
 export default async function createItem(formData: FormData) {
-  try{
-    const res = await axios.post('http://localhost:3000/api/account', formData);
-    if(res.status !== 200) return [new Error("Error at creating account...")];
-    return [undefined, res.data]
+
+   try{
+    const res = await fetch('/api/account', {
+      method: 'POST',
+      body: formData
+    })
+    const data = await res.json()
+    if(data !== 200) return [new Error("Error al crear la cuenta")];
+    return [undefined, data]
   } catch( error) {
    if(error) return [error]
   }

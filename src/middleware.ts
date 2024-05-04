@@ -6,7 +6,7 @@ export async function middleware(req: NextResponse) {
   let cookieProd = cookies().get("__Secure-next-auth.session-token");
   const response = NextResponse.next();
 
-  if (!cookieProd) return NextResponse.redirect(new URL("/forbbiden", req.url));
+  if (!cookie) return NextResponse.redirect(new URL("/forbbiden", req.url));
   return response;
 }
 

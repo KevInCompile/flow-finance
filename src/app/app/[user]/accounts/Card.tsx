@@ -1,14 +1,13 @@
-import EditIcon from "@/app/icons/EditIcon";
-import { AccountModel } from "./models/account.model";
-import DeleteIcon from "@/app/icons/DeleteIcon";
-import { toast } from "sonner";
 import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
+import EditIcon from "@/app/icons/EditIcon";
+import { toast } from "sonner";
+import { AccountModel } from "./models/account.model";
 
 export default function Card({ data, setData }: { data: AccountModel[], setData: any }) {
 
   async function deleteItem(id: number) {
     try {
-      await fetch(`http://localhost:3000/api/account?id=${id}`, {
+      await fetch(`/api/account?id=${id}`, {
         method: "DELETE",
       });
       setData(data.filter((item) => item.id !== id));

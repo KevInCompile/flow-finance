@@ -2,7 +2,7 @@
 export default async function AccountsFetch(username: string) {
   try {
     const fetching = await fetch(
-      `http://localhost:3000/api/account?username=${username}`,
+      `/api/account?username=${username}`,
       {cache: 'no-store'}
     );
     const data = await fetching.json()
