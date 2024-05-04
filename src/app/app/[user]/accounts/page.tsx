@@ -1,12 +1,12 @@
 "use client";
 
 import Head from "@/app/components/Head/Head";
-import ModalNewAccount from "./Modal/ModalNewAccount";
+import SkeletonTitle from "@/app/components/LoaderTitle/LoaderTitle";
 import Card from "./Card";
-import SkeletonAccount from "./loading";
+import ModalNewAccount from "./Modal/ModalNewAccount";
 import OpenButton from "./OpenButton/OpenButton";
 import useAccounts from "./hooks/useAccounts";
-import SkeletonTitle from "@/app/components/LoaderTitle/LoaderTitle";
+import SkeletonAccount from "./loading";
 
 export default function Accounts() {
   const { data, loading, setRefresh, setData } = useAccounts();

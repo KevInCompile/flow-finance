@@ -1,13 +1,11 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
+import { getParams } from '../utils/params';
 
 export async function POST(request: Request) {
   const form = await request.formData()
-  const name = form.get('name') as string
-  const value = parseFloat(form.get('value')!.toString().replace(/,/g, ''))
-  const username = decodeURIComponent(form.get('username') as string)
-  const type = form.get('type') as string
-
+  const {name, value, username, type} =  getParams(form)
+  
   try {
     if (!username) return NextResponse.json({error: "User is required"}, { status: 500 });
     if (!value || !name) return NextResponse.json({error: "Value, main, name is required"}, { status: 500 });

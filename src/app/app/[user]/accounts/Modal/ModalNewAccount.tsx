@@ -16,7 +16,7 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
   async function createAccount(formData: FormData) {
     const [error] = await createItem(formData);
     handleCloseModal()
-    if(error) return toast.warning('Error at creating account...')
+    if(error) return toast.warning('Error al crear la cuenta...')
     refresh(true)
     // reset form and values
     const $form = document.querySelector('#form') as HTMLFormElement
