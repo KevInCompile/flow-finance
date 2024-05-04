@@ -1,7 +1,10 @@
 import Input from "@/app/components/Input/Input";
 import Modal from "@/app/components/Modal/Modal";
+import useCategories from "../hooks/useCategories";
 
 export default function ModalNewExpense() {
+  const {categories} = useCategories()
+
   return (
     <Modal>
       <div className="p-5">
@@ -10,25 +13,29 @@ export default function ModalNewExpense() {
         </div>
         <section className="py-5 text-white">
           <div className="flex flex-col gap-1 pb-2">
-            <Input type="text" label="Value" />
+            <Input type="text" label="Valor" />
           </div>
           <div className="flex flex-col gap-1 pb-2">
             <span>
               ¿De que cuenta? <span className="text-red-500">*</span>
             </span>
-            <select className="rounded-sm p-2">
-              <option value={1}>Principal</option>
-              <option value={2}>Ahorro</option>
+            <select className="selectField" defaultValue='0' value='0'>
+              <option value='0' disabled>Seleccione una cuenta</option>
+              <option value='1'>Principal</option>
+              <option value='2'>Ahorro</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 pb-2">
             <span>
               ¿En que lo usaste? <span className="text-red-500">*</span>
             </span>
-            <select className="rounded-sm p-2">
-              <option disabled selected>
-                Escoge una categoria
+            <select className="selectField" defaultValue='0' value='0'>
+              <option value='0' disabled>
+                Selecciona una categoria
               </option>
+              {
+                categories.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)
+              }
             </select>
           </div>
           <div className="flex flex-col gap-1 pb-2">

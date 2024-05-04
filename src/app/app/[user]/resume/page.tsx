@@ -1,20 +1,59 @@
 "use client";
 
 import Head from "@/app/components/Head/Head";
-import DateRangeExpense from "./components/DateRangeExpense";
 import useModal from "@/app/components/Modal/useModal";
 import ModalNewExpense from "./components/ModalNewExpense";
-import useAccounts from "../accounts/hooks/useAccounts";
+import BentoInformation from "./components/BentoInformation/BentoInformation";
+import OpenButton from "../accounts/OpenButton/OpenButton";
 
 export default function Resume() {
   const { handleShowModal } = useModal();
-  const {data, loading} = useAccounts()
   return (
     <>
       <Head />
       <div>
-        <section className="container mx-auto px-5 w-full text-center border-b-2 border-secondary md:w-[70%]">
-          <div className="flex justify-center py-5"></div>
+        <section className="w-full md:w-[100%] px-10 mt-5">
+          <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2'>Resume</h1>
+          <div className='grid grid-cols-2 mt-3 gap-5'>
+            <BentoInformation />
+          </div>
+          <div className="mt-10">
+            <div className="flex gap-3 items-center">
+              <h3 className="text-2xl text-[var(--color-usage)] font-medium">Registro de gastos</h3>
+              <OpenButton />
+            </div>
+            <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-4">
+              <span>Categoria</span>
+              <span>Descripción</span>
+              <span>Fecha</span>
+              <span>Valor</span>
+            </header>
+            <div className="py-5 grid grid-cols-4 border-b">
+            <div className="flex gap-2 items-center text-white">
+              <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-chef-hat"
+                  width="25"
+                  height="25"
+                  viewBox="0 0 24 24"
+                  strokeWidth="1.5"
+                  stroke="var(--color-palette)"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 3c1.918 0 3.52 1.35 3.91 3.151a4 4 0 0 1 2.09 7.723l0 7.126h-12v-7.126a4 4 0 1 1 2.092 -7.723a4 4 0 0 1 3.908 -3.151z" />
+                  <path d="M6.161 17.009l11.839 -.009" />
+                </svg>
+                <span>Comida</span>
+              </div>
+              <p className="text-white opacity-70">Hamburguesa</p>
+              <span className='text-white opacity-70'>17 de Febrero</span>
+              <span className='text-palette font-medium'>$35,000</span>
+            </div>
+          </div>
+          {/* <div className="flex justify-center py-5"></div>
           <h2 className="text-3xl text-palette font-bold">
             $ {data.reduce((acc, item) => acc + parseInt(item.value), 0).toLocaleString()}
           </h2>
@@ -56,7 +95,8 @@ export default function Resume() {
               <i className="opacity-50 text-sm">Hamburguesa</i>
             </div>
           </div>
-        </div>
+        </div> */}
+        </section>
         <ModalNewExpense />
       </div>
     </>

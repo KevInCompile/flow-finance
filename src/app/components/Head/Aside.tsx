@@ -17,10 +17,10 @@ export default function Aside() {
   const avatar = session?.user?.image as string;
   return (
     <aside className="h-full w-full absolute top-0 z-10 backdrop-blur-sm -left-full aside">
-      <div className="bg-[#242424]/100 h-full w-80 -left-80 relative transition-all duration-300 ease-in menu-aside">
+      <div className="bg-[#242424]/100 h-full w-80 -left-80 relative transition-all duration-300 ease-in menu-aside border-r">
         <button
           id="close"
-          className="absolute top-0 mt-2 right-0 z-10 hover:scale-110 trasition"
+          className="absolute top-0 mt-2 right-2 z-10 hover:scale-110 trasition"
         >
           <label htmlFor="check" className="cursor-pointer">
             <input type="checkbox" id="check" />

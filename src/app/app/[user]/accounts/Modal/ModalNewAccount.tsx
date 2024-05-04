@@ -23,7 +23,7 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
     $form.reset()
     setValue('')
     // Finally create
-    return toast.success('Account created successfully...')
+    return toast.success('Cuenta creada!')
   }
   const formatedValue = (value: string) => {
     const validateNumber =  /^[0-9,]*$/.test(value)
@@ -43,6 +43,15 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
           <Input type="text" label="Cuenta" value={user as string} name='username' hidden readOnly/>
           <Input type="text" label="Nombre" name='name' autoComplete="off" />
           <Input type="text" label="Total" name='value' onChange={(e) => formatedValue(e.target.value)} value={value} />
+          <select className="selectField" name='type'>
+            <option disabled selected>
+              Escoge un tipo
+            </option>
+            <option value='principal'>Principal (De aca sacas para tus gastos diaros)</option>
+            <option value='ahorros'>Ahorros</option>
+            <option value='inversion'>Inversiones</option>
+            <option value='otra'>Otra</option>
+          </select>
           <div>
             <button type='submit' className="bg-palette text-black rounded-md p-2 w-3/12 float-right">
               Añadir
