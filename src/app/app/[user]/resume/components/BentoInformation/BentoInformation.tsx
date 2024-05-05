@@ -14,7 +14,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
           loading ? <SkeletonResume /> 
           : (
             <>
-            <span className="text-purple-500 font-medium">{accountMain?.name}</span>
+            <span className="text-purple-500 font-medium">{accountMain ? accountMain?.name : 'Sin cuenta principal'}</span>
               <h2 className="text-xl">
                 { accountMain ? '$ ' + accountMain.value.toLocaleString() : <small>Sin registros</small>}
               </h2>
@@ -53,7 +53,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
           loading ? <SkeletonResume /> : 
           (
             <>
-              <span>Próxima deuda</span>
+              <span>Próximo pago</span>
               <h2 className="text-xl font-medium">
                 { proxDebt ? proxDebt.value.toLocaleString() : <small>Sin deudas</small>}
               </h2>

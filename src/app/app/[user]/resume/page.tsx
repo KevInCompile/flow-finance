@@ -33,7 +33,7 @@ export default function Resume() {
               <OpenButton />
             </div>
             {
-              loadingExpenses ? <SkeletonTable /> : <TableExpenses data={expenses} />
+              loadingExpenses ? <SkeletonTable /> : <TableExpenses data={expenses} refresh={refreshData} />
             }
             
           </div>

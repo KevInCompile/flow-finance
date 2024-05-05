@@ -6,7 +6,7 @@ export default async function createExpense(formData: FormData) {
       body: formData
     })
     const data = await res.json()
-    if(data !== 200) return [new Error("Error al crear el gasto...")];
+    if(!data) return [new Error("Error al crear el gasto...")];
     return [undefined, data]
   } catch( error) {
    if(error) return [error]

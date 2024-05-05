@@ -7,7 +7,7 @@ export default async function createItem(formData: FormData) {
       body: formData
     })
     const data = await res.json()
-    if(data !== 200) return [new Error("Error al crear la cuenta")];
+    if(!data) return [new Error("Error al crear la cuenta")];
     return [undefined, data]
   } catch( error) {
    if(error) return [error]
