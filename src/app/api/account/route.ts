@@ -33,11 +33,15 @@ export async function GET(request: Request) {
 export async function PUT(request: Request) {
   const { searchParams } = new URL(request.url);
   const id = searchParams.get("id");
-  
+
+  // se valida si existe el id de la cuenta
   if(!id) return NextResponse.json({ error: "Id is missing" }, { status: 500 });
+
+  // se obtienen los valores del formDAta
   const form = await request.formData()
   const name = form.get('name') as string
-  const value = parseFloat(form.get('value')!.toString().replace(/,/g, ''))
+
+  const {value} = getParams(form)
   try {
     await sql`UPDATE accounts SET Name = ${name}, Value = ${value} WHERE Id = ${id}`;
   } catch (error) {
