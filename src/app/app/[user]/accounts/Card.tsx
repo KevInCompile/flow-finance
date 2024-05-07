@@ -29,7 +29,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
               <h3 className="tracking-tight text-md font-medium text-palette">{item.name}</h3>
               <div className="flex gap-3">
                 <EditIcon />
-                <DeleteConfirmation deleteItem={() => deleteItem(item.id)} />
+                <DeleteConfirmation deleteItem={() => deleteItem(item.id)} message="¿Deseas eliminar esta cuenta?" />
               </div>
             </div>
             <div className="p-6 pt-0">
