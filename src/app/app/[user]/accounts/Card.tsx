@@ -76,7 +76,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
               {
                 itemSelected?.id === item.id
                 ? <input onChange={handleChange} name='value' type='text' value={itemSelected.value} className="bg-transparent border-b-2 text-2xl outline-none" autoFocus/>
-                : <div className="text-2xl font-bold">$ {parseInt(item.value).toLocaleString()}</div>
+                : <div className="text-2xl font-bold">$ {parseInt(item?.value).toLocaleString()}</div>
               }
               <p className="text-xs text-muted-foreground">Ultimo mes</p>
             </div>

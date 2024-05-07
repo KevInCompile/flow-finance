@@ -39,7 +39,7 @@ export default function TableExpenses ({data, refresh}: {data: ExpenseModel[], r
           </div>
           <p className="text-white opacity-70 hidden md:block">{item?.description !== '' ? item.description : 'Sin descripción'}</p>
           <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
-          <span className='text-palette font-medium'>$ {item?.value?.toLocaleString('')}</span>
+          <span className='text-palette font-medium'>$ {item?.value?.toLocaleString()}</span>
         </div>
         )) : <></>
       }
