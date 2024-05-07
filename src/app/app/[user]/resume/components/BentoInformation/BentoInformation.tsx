@@ -2,10 +2,10 @@ import SkeletonResume from "@/app/loaders/SkeletonResume"
 import { AccountModel } from "../../../accounts/models/account.model"
 
 export default function BentoInformation ({data, loading}: {data: AccountModel[], loading: boolean}) {
-  const accountMain = data.filter((item) => item.type === "principal")[0]
-  const accountInversion = data.filter((item) => item.type === "inversion")[0]
-  const accountSaving = data.filter((item) => item.type === "ahorros")[0]
-  const proxDebt = data.filter((item) => item.type === "deuda")[0]
+  const accountMain = data?.filter((item) => item.type === "principal")[0]
+  const accountInversion = data?.filter((item) => item.type === "inversion")[0]
+  const accountSaving = data?.filter((item) => item.type === "ahorros")[0]
+  const proxDebt = data?.filter((item) => item.type === "deuda")[0]
 
   return (
     <div className='grid grid-cols-2 min-h-[290px] max-h-[290px]'>
@@ -16,7 +16,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
             <>
             <span className="text-purple-500 font-medium">{accountMain ? accountMain?.name : 'Sin cuenta principal'}</span>
               <h2 className="text-md md:text-xl">
-                { accountMain ? '$ ' + accountMain.value.toLocaleString() : <small>Sin registros</small>}
+                { accountMain ? '$ ' + accountMain?.value?.toLocaleString() : <small>Sin registros</small>}
               </h2>
               <small className="bg-palette px-3 py-1 rounded-full">+0 %</small>
             </>
@@ -28,7 +28,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
           loading ? <SkeletonResume /> : (
             <>
              <span>Ahorros</span>
-              { accountSaving ? <h2 className="text-md md:text-xl">$ {accountSaving?.value.toLocaleString()}</h2> : <small>Sin registros</small>}
+              { accountSaving ? <h2 className="text-md md:text-xl">$ {accountSaving?.value?.toLocaleString()}</h2> : <small>Sin registros</small>}
               <small className="bg-[var(--color-usage)] text-black px-3 py-1 rounded-full">+0 %</small>
             </>
           )
@@ -41,7 +41,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
             <>
               <span>Inversiones</span>
               <h2 className="text-md md:text-xl">
-                { accountInversion ? accountInversion.value.toLocaleString() : <small>Sin registros</small>}
+                { accountInversion ? accountInversion?.value?.toLocaleString() : <small>Sin registros</small>}
               </h2>
               <small className="bg-[var(--color-usage)] text-black px-3 py-1 rounded-full">+0 R.A%</small>
             </>
@@ -55,7 +55,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
             <>
               <span>Próximo pago</span>
               <h2 className="text-xl font-medium">
-                { proxDebt ? proxDebt.value.toLocaleString() : <small>Sin deudas</small>}
+                { proxDebt ? proxDebt?.value?.toLocaleString() : <small>Sin deudas</small>}
               </h2>
               <small className='text-palette'>No aplica</small>
             </>

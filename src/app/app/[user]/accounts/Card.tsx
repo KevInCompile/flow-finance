@@ -7,12 +7,27 @@ import SaveIcon from "@/app/icons/SaveIcon";
 
 export default function Card({ data, setData }: { data: AccountModel[], setData: any }) {
 
-  const [itemSelected, setItemSelected] = useState<AccountModel>()
+  const [itemSelected, setItemSelected] = useState<AccountModel | null>()
 
   const selectItem = (data: AccountModel) => {
     setItemSelected(data)
   }
 
+  async function updateItem(data: AccountModel) {
+    try {
+      const res =await fetch(`/api/account?id=${itemSelected?.id}`, {
+        method: 'PUT',
+        body: JSON.stringify(data)
+      })
+      const json = await res.json()
+      if(json.message){
+        setItemSelected(null)
+        toast(json.message)
+      }
+    } catch (error) {
+      toast.error(error as string)
+    }
+  }
 
   async function deleteItem(id: number) {
     try {
@@ -37,9 +52,10 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
             <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
               <h3 className="tracking-tight text-md font-medium text-palette">{item.name}</h3>
               <div className="flex gap-3">
-              <button onClick={() => selectItem(item)}>
-                { itemSelected?.id === item.id ? <SaveIcon /> : <EditIcon /> }
-              </button>
+                { itemSelected?.id === item.id
+                  ? <button onClick={() => updateItem(item)}><SaveIcon /></button>
+                  : <button onClick={() => selectItem(item)}><EditIcon /></button>
+                }
                 <DeleteConfirmation deleteItem={() => deleteItem(item.id)} message="¿Deseas eliminar esta cuenta?" />
               </div>
             </div>

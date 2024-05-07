@@ -27,6 +27,7 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
     setLoading(false)
     return toast.success('Cuenta creada!')
   }
+
   const formatedValue = (value: string) => {
     const validateNumber =  /^[0-9,]*$/.test(value)
     if(value === '') return setValue('0')
