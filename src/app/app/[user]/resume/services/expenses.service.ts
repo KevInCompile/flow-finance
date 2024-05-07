@@ -1,6 +1,6 @@
-export default async function ExpensesFetch() {
+export default async function ExpensesFetch(username: string) {
   try {
-    const fetching = await fetch(`/api/expenses`,
+    const fetching = await fetch(`/api/expenses?username=${username}`,
       {cache: 'no-store'}
     );
     const data = await fetching.json()

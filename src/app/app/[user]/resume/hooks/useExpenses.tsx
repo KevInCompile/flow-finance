@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import ExpensesFetch from "../services/expenses.service";
+import { useParams } from "next/navigation";
 
 export interface ExpenseModel {
   id: number
@@ -15,10 +16,11 @@ export default function useExpenses() {
   const [expenses, setExpenses] = useState<ExpenseModel[]>([])
   const [loading, setLoading] = useState(true)
   const [refresh, setRefresh] = useState(false)
+  const {user} = useParams()
 
  useEffect(() => {
    const getData = async () => {
-     const [error, result] = await ExpensesFetch();
+     const [error, result] = await ExpensesFetch(user as string);
      if (error) return toast(error);
      setExpenses(result);
      setLoading(false);
