@@ -5,12 +5,25 @@ import { AccountModel } from "./models/account.model";
 import { useState } from "react";
 import SaveIcon from "@/app/icons/SaveIcon";
 
+const INITIAL_STATE = {
+  id: 0,
+  name: '',
+  value: '',
+  type: ''
+
+}
+
 export default function Card({ data, setData }: { data: AccountModel[], setData: any }) {
 
-  const [itemSelected, setItemSelected] = useState<AccountModel | null>()
+  const [itemSelected, setItemSelected] = useState<AccountModel>(INITIAL_STATE)
 
   const selectItem = (data: AccountModel) => {
     setItemSelected(data)
+  }
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const {name, value} = e.target
+    setItemSelected({ ...itemSelected, [name]: value })
   }
 
   async function updateItem(data: AccountModel) {
@@ -21,8 +34,8 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
       })
       const json = await res.json()
       if(json.message){
-        setItemSelected(null)
-        toast(json.message)
+        setItemSelected(INITIAL_STATE)
+        toast.success(json.message)
       }
     } catch (error) {
       toast.error(error as string)
@@ -62,7 +75,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
             <div className="p-6 pt-0">
               {
                 itemSelected?.id === item.id
-                ? <input type='text' value={itemSelected.value} className="bg-transparent border-b-2 text-2xl outline-none" autoFocus/>
+                ? <input onChange={handleChange} name='value' type='text' value={itemSelected.value} className="bg-transparent border-b-2 text-2xl outline-none" autoFocus/>
                 : <div className="text-2xl font-bold">$ {parseInt(item.value).toLocaleString()}</div>
               }
               <p className="text-xs text-muted-foreground">Ultimo mes</p>

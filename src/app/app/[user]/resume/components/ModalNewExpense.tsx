@@ -49,7 +49,7 @@ export default function ModalNewExpense({refresh}: any) {
             <select className="selectField" name='accountid' defaultValue='0' required>
               <option value='0' disabled>Seleccione una cuenta</option>
               {
-                accounts.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)
+                accounts?.map((item) => <option key={item?.id} value={item?.id}>{item?.name}</option>)
               }
             </select>
           </div>
@@ -62,7 +62,7 @@ export default function ModalNewExpense({refresh}: any) {
                 Selecciona una categoria
               </option>
               {
-                categories.map((item) => <option key={item.id} value={item.id}>{item.name}</option>)
+                categories?.map((item) => <option key={item?.id} value={item?.id}>{item?.name}</option>)
               }
             </select>
           </div>

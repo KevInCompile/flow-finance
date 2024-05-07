@@ -13,6 +13,7 @@ export default function TableExpenses ({data, refresh}: {data: ExpenseModel[], r
     refresh()
     if(data) toast.info('Gasto eliminado, dinero devuelto a la cuenta...')
   }
+
   return (
     <>
     <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4">

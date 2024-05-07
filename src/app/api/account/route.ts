@@ -44,7 +44,7 @@ export async function PUT(request: Request) {
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
-  return NextResponse.json({ 'message': 'Account updated'}, { status: 200 });
+  return NextResponse.json({ 'message': 'Cuenta actualizada'}, { status: 200 });
 }
 
 export async function DELETE(request: Request) {
