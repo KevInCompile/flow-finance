@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
 
 export async function middleware(req: NextResponse) {
-  let cookie = cookies().get("next-auth.session-token");
-  let cookieProd = cookies().get("__Secure-next-auth.session-token");
+  let cookie = cookies().get(process.env.NEXT_COOKIE as string);
+  // let cookieProd = cookies().get();
   const response = NextResponse.next();
 
   if (!cookie) return NextResponse.redirect(new URL("/forbbiden", req.url));

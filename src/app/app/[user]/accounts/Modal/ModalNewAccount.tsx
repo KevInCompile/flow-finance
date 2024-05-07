@@ -1,4 +1,3 @@
-'use client'
 
 import Input from "@/app/components/Input/Input";
 import Modal from "@/app/components/Modal/Modal";
@@ -10,10 +9,12 @@ import { useState } from "react";
 
 export default function ModalNewAccount({refresh} : {refresh: (value: boolean) => void}) {
   const [value, setValue] = useState('')
+  const [loading, setLoading] = useState(false)
   const {user} = useParams()
   const {handleCloseModal} = useModal()
 
   async function createAccount(formData: FormData) {
+    setLoading(true)
     const [error] = await createItem(formData);
     handleCloseModal()
     if(error) return toast.warning('Error al crear la cuenta...')
@@ -23,6 +24,7 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
     $form.reset()
     setValue('')
     // Finally create
+    setLoading(false)
     return toast.success('Cuenta creada!')
   }
   const formatedValue = (value: string) => {
@@ -53,7 +55,7 @@ export default function ModalNewAccount({refresh} : {refresh: (value: boolean) =
             <option value='otra'>Otra</option>
           </select>
           <div>
-            <button type='submit' className="bg-palette text-black rounded-md p-2 w-3/12 float-right">
+            <button disabled={loading} type='submit' className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:bg-opacity-70 disabled:cursor-not-allowed">
               Añadir
             </button>
           </div>

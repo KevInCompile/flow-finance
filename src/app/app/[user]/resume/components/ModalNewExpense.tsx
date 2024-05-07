@@ -10,6 +10,7 @@ import createExpense from "../actions/expense.actions";
 import useCategories from "../hooks/useCategories";
 
 export default function ModalNewExpense({refresh}: any) {
+  const [loading, setLoading] = useState(false)
   const {categories} = useCategories()
   const {data: accounts} = useAccounts()
   const {handleCloseModal} = useModal()
@@ -17,6 +18,7 @@ export default function ModalNewExpense({refresh}: any) {
   const {user} = useParams()
 
   async function postExpense (formData: FormData) {
+    setLoading(true)
     const [error] = await createExpense(formData);
     handleCloseModal()
     if(error) return toast.warning('Error al registrar el gasto...')
@@ -26,6 +28,7 @@ export default function ModalNewExpense({refresh}: any) {
     $form.reset()
     setValue('')
     // Finally create
+    setLoading(false)
     return toast.success('Gasto registrado!')
   }
   return (
@@ -68,7 +71,7 @@ export default function ModalNewExpense({refresh}: any) {
             <textarea className="rounded-md p-2 border-2 bg-transparent" name='description' rows={2} placeholder="Tacos" />
           </div>
           <div className="pb-2">
-            <button className="bg-palette text-black rounded-md p-2 w-3/12 float-right">
+            <button disabled={loading} className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:bg-opacity-70 disabled:cursor-not-allowed">
               Añadir
             </button>
           </div>

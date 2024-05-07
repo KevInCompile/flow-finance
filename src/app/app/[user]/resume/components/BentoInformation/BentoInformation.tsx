@@ -11,11 +11,11 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
     <div className='grid grid-cols-2 min-h-[290px] max-h-[290px]'>
       <div className="py-4 px-5 flex flex-col gap-3 bg-gradient-to-r from-purple-200 to-purple-300 items-start rounded-tl-md">
         {
-          loading ? <SkeletonResume /> 
+          loading ? <SkeletonResume />
           : (
             <>
             <span className="text-purple-500 font-medium">{accountMain ? accountMain?.name : 'Sin cuenta principal'}</span>
-              <h2 className="text-xl">
+              <h2 className="text-md md:text-xl">
                 { accountMain ? '$ ' + accountMain.value.toLocaleString() : <small>Sin registros</small>}
               </h2>
               <small className="bg-palette px-3 py-1 rounded-full">+0 %</small>
@@ -28,7 +28,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
           loading ? <SkeletonResume /> : (
             <>
              <span>Ahorros</span>
-              { accountSaving ? <h2 className="text-xl">$ {accountSaving?.value.toLocaleString()}</h2> : <small>Sin registros</small>}
+              { accountSaving ? <h2 className="text-md md:text-xl">$ {accountSaving?.value.toLocaleString()}</h2> : <small>Sin registros</small>}
               <small className="bg-[var(--color-usage)] text-black px-3 py-1 rounded-full">+0 %</small>
             </>
           )
@@ -40,7 +40,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
           (
             <>
               <span>Inversiones</span>
-              <h2 className="text-xl">
+              <h2 className="text-md md:text-xl">
                 { accountInversion ? accountInversion.value.toLocaleString() : <small>Sin registros</small>}
               </h2>
               <small className="bg-[var(--color-usage)] text-black px-3 py-1 rounded-full">+0 R.A%</small>
@@ -50,7 +50,7 @@ export default function BentoInformation ({data, loading}: {data: AccountModel[]
       </div>
       <div className="py-4 px-5 flex flex-col gap-3 items-start  text-white bg-[#1F1D1D] rounded-br-md border-b border-r ">
         {
-          loading ? <SkeletonResume /> : 
+          loading ? <SkeletonResume /> :
           (
             <>
               <span>Próximo pago</span>
