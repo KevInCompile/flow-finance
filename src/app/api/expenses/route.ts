@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 export async function GET(request: Request){
   const { searchParams } = new URL(request.url)
   const username = searchParams.get('username')
-  console.log(username)
+
   try {
     const result = await sql`SELECT e.Id, a.Name AS AccountName, c.Name AS CategoryName, e.Username, e.Date, e.Description, e.Value
     FROM expenses AS e
