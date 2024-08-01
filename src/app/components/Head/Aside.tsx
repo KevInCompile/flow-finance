@@ -13,8 +13,9 @@ import Link from "next/link";
 import "./assets/aside.css";
 
 export default function Aside() {
-  const { data: session } = useSession();
-  const avatar = session?.user?.image as string;
+  const { data: session } = useSession()
+  const avatar = session?.user?.image as string
+
   return (
     <aside className="h-full w-full absolute top-0 z-10 backdrop-blur-sm -left-full aside">
       <div className="bg-[#242424]/100 h-full w-80 -left-80 relative transition-all duration-300 ease-in menu-aside border-r">
@@ -63,8 +64,8 @@ export default function Aside() {
             </li>
           </Link>
           <Link
-            href='#'
-            className="bg-transparent cursor-not-allowed"
+            href={`/app/${session?.user?.name}/debts`}
+            className="bg-transparent"
           >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CreditCardRefundIcon />

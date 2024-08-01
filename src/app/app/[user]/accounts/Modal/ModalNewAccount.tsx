@@ -8,6 +8,7 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 
 export default function ModalNewAccount({refresh} : {refresh: (value: boolean) => void}) {
+
   const [value, setValue] = useState('')
   const [loading, setLoading] = useState(false)
   const {user} = useParams()

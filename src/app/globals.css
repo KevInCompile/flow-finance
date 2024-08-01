@@ -19,7 +19,9 @@
     --color-selected: 239, 238, 79;
     --color-selected-light: 247, 246, 167;
 }
-
+h1{
+    font-size: 1.2rem;
+}
 .text-gradient {
     background-image: var(--accent-gradient);
     -webkit-background-clip: text;

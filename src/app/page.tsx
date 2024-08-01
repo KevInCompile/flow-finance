@@ -13,9 +13,8 @@ export default function Home() {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  if (status === "loading") return <LoaderPage />;
-  if (status === "authenticated")
-    return router.push(`/app/${session.user?.name}/resume`);
+  if (status === "loading") return <div className="grid place-items-center h-[80vh] mr-24"><LoaderPage /></div>;
+  if (status === "authenticated") return router.push(`/app/${session.user?.name}/resume`);
   return (
     <>
       <Head />

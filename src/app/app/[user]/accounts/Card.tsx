@@ -28,7 +28,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
 
   async function updateItem(data: AccountModel) {
     try {
-      const res =await fetch(`/api/account?id=${itemSelected?.id}`, {
+      const res = await fetch(`/api/account?id=${itemSelected?.id}`, {
         method: 'PUT',
         body: JSON.stringify(data)
       })
