@@ -17,12 +17,12 @@ export default function CardDebt({ data: data}: {data: CardData}) {
     <div className="bg-[#242424/50] rounded-md py-2 border border-gray-500 relative">
 
       <div className="flex justify-between items-center border-b border-palette px-3 pb-2 flex-wrap">
-        <div>
+        <div className="hidden md:block">
           <h2 className="text-[var(--color-usage)] font-medium text-sm">Dia de pago: {payday}</h2>
         </div>
         <div className="text-center">
-          <span className="text-[var(--color-usage)] text-sm">{description} <small className="bg-opacity-20 text-gray-300 text-sm font-bold">({fee})</small></span>
           <h1 className="text-[var(--color-palette)] font-bold">${totalDue.toLocaleString()} </h1>
+          <span className="text-[var(--color-usage)] text-sm">{description} <small className="bg-opacity-20 text-gray-300 text-sm font-bold">({fee})</small></span>
         </div>
         {/* <div className="">
           <CircleProgress progress='0'/>
@@ -36,7 +36,7 @@ export default function CardDebt({ data: data}: {data: CardData}) {
             <form>
               <label className="block text-[var(--color-usage)] text-md font-medium pb-2 text-center">Cuanto quiere abonar a la deuda?</label>
               <input type='text' className="bg-[#242424] border border-gray-200 w-full p-2 rounded-md text-white" required/>
-              <button className="block w-1/4 md:w-3/6 m-auto bg-[var(--color-usage)] p-2 rounded-full mt-3 font-medium text-sm">Registrar abono</button>
+              <button className="block w-1/2 md:w-3/6 m-auto bg-[var(--color-usage)] p-2 rounded-full mt-3 font-medium text-sm">Registrar abono</button>
             </form>
           </div>
         )
