@@ -1,15 +1,18 @@
-import CircleProgress from "@/app/components/CircleProgress/CircleProgress";
+import { FormatDate } from "@/app/utils/FormatDate";
 import { useState } from "react";
+import FormAbono from "./FormPayment/FormPayment";
 
 interface CardData {
+  id: number
   description: string
   payday: number
   totalDue: number
-  fee: number
+  fee: number,
+  payments: []
 }
 
 export default function CardDebt({ data: data}: {data: CardData}) {
-  const {description, payday, totalDue, fee} = data
+  const {description, payday, totalDue, fee, id, payments} = data
 
   const [isPay, setIsPay] = useState(false)
 
@@ -33,27 +36,28 @@ export default function CardDebt({ data: data}: {data: CardData}) {
       {
         isPay ? (
           <div className="p-4">
-            <form>
-              <label className="block text-[var(--color-usage)] text-md font-medium pb-2 text-center">Cuanto quiere abonar a la deuda?</label>
-              <input type='text' className="bg-[#242424] border border-gray-200 w-full p-2 rounded-md text-white" required/>
-              <button className="block w-1/2 md:w-3/6 m-auto bg-[var(--color-usage)] p-2 rounded-full mt-3 font-medium text-sm">Registrar abono</button>
-            </form>
+            <FormAbono debtID={id} />
           </div>
         )
         :(
-          <article className="text-white p-4 text-center">
-            <h1>Sin pagos registrados</h1>
+          <article className="text-white p-4 ">
+            <h1 className="text-center">{ payments.length > 0 ? 'Pagos' : 'Sin pagos registrados'}</h1>
+              {
+              payments.map((pay: any, i) => (
+                <article className="text-white grid grid-cols-2" key={pay.id}>
+                  <span><b className="text-palette">{i + 1}.</b> $ {pay.payvalue.toLocaleString()}</span>
+                  <span className="text-end text-green-500 font-medium">+ {pay.paymenttype}</span>
+                </article>
+              ))
+            }
           </article>
         )
       }
       {/* <article className="text-white p-4 grid grid-cols-2">
         <span><b className="text-palette">1.</b> $320.000</span>
         <span className="text-end">Pago</span>
-      </article>
-      <article className="text-white p-4 grid grid-cols-2">
-        <span><b className="text-palette">2.</b> $580.000</span>
-        <span className="text-end text-green-500 font-medium">+ Abono</span>
-      </article> */}
+      </article>*/}
+
     </div>
   )
 }

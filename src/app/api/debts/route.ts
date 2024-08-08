@@ -24,7 +24,11 @@ export async function GET(request: Request){
 
   try{
     const result = await sql`SELECT * FROM debts where Username = ${username}`
-    return NextResponse.json({...result}, {status: 200})
+    const updatedRows = await Promise.all(result.rows.map(async (item) => {
+      const payments = await sql`SELECT * FROM payments WHERE DebtsId = ${item.id}`;
+      return { ...item, payments: payments.rows };
+    }));
+    return NextResponse.json(updatedRows, {status: 200})
   }
   catch(error){
     return NextResponse.json(error, { status: 500 });

@@ -12,7 +12,8 @@ interface Debt {
   description: string,
   paid: number,
   payday: number
-  totaldue: number
+  totaldue: number,
+  payments: []
 }
 
 export default function useDebts () {

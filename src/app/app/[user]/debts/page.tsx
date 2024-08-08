@@ -11,6 +11,7 @@ import LoaderPage from "@/app/components/LoaderPage/LoaderPage";
 
 export default function Debts () {
   const {data, loading, setRefresh, setData} = useDebts()
+
   return(
     <>
       <Head />
@@ -39,7 +40,7 @@ export default function Debts () {
             data.map((item) => {
               return (
                 <div key={item.id}>
-                  <CardDebt data={{description: item.description, payday: item.payday, totalDue: item.totaldue, fee: item.fee }} />
+                  <CardDebt data={{id: item.id, description: item.description, payday: item.payday, totalDue: item.totaldue, fee: item.fee, payments: item.payments }} />
                 </div>
               )
             })

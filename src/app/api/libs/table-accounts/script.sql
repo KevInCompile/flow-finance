@@ -11,4 +11,4 @@ CREATE TABLE expenses (Id SERIAL PRIMARY KEY, AccountId INT REFERENCES accounts(
 CREATE TABLE debts (Id SERIAL PRIMARY KEY, Username varchar(100), Fee INT, Description VARCHAR(50), Paid INT DEFAULT 0, TotalDue INT, Payday INT, FeeValue INT);
 
 // TABLA DE PAGOS
-CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), PaymentType VARCHAR(50), Payday DATE)
+CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), PaymentType VARCHAR(50), PayValue INT,  Payday DATE DEFAULT CURRENT_DATE)

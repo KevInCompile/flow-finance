@@ -7,7 +7,7 @@ export default async function debtsFetch(username: string) {
     );
     const data = await fetching.json()
     if(!data) return [new Error("User is not found...")];
-    return [undefined, data.rows];
+    return [undefined, data];
   } catch (error) {
     if (error) return [error];
   }

@@ -21,19 +21,22 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
     setItemSelected(data)
   }
 
+  console.log(data)
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target
     setItemSelected({ ...itemSelected, [name]: value })
   }
 
-  async function updateItem(data: AccountModel) {
+  async function updateItem() {
     try {
       const res = await fetch(`/api/account?id=${itemSelected?.id}`, {
         method: 'PUT',
-        body: JSON.stringify(data)
+        body: JSON.stringify(itemSelected)
       })
       const json = await res.json()
-      if(json.message){
+      if (json.message) {
+        setData([...data.filter(item => item.id !== itemSelected.id), itemSelected]);
         setItemSelected(INITIAL_STATE)
         toast.success(json.message)
       }
@@ -66,7 +69,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
               <h3 className="tracking-tight text-md font-medium text-palette">{item.name}</h3>
               <div className="flex gap-3">
                 { itemSelected?.id === item.id
-                  ? <button onClick={() => updateItem(item)}><SaveIcon /></button>
+                  ? <button onClick={updateItem}><SaveIcon /></button>
                   : <button onClick={() => selectItem(item)}><EditIcon /></button>
                 }
                 <DeleteConfirmation deleteItem={() => deleteItem(item.id)} message="¿Deseas eliminar esta cuenta?" />
@@ -75,7 +78,7 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
             <div className="p-6 pt-0">
               {
                 itemSelected?.id === item.id
-                ? <input onChange={handleChange} name='value' type='text' value={itemSelected.value} className="bg-transparent border-b-2 text-2xl outline-none" autoFocus/>
+                ? <input onChange={handleChange} name='value' type='text' value={itemSelected.value} className="bg-transparent border-b-2 text-2xl outline-none w-full" autoFocus/>
                 : <div className="text-2xl font-bold">$ {parseInt(item?.value).toLocaleString()}</div>
               }
               <p className="text-xs text-muted-foreground">Ultimo mes</p>
