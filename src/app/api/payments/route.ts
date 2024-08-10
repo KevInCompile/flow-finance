@@ -20,3 +20,23 @@ export async function POST (req: Request) {
   }
   return NextResponse.json({ 'message': 'ok'}, {status: 200})
 }
+
+export async function DELETE (req: Request) {
+  const {searchParams} = new URL (req.url)
+  const id = searchParams.get('id')
+
+  try {
+    if (!id) return NextResponse.json({error: 'id is required'}, {status: 500})
+
+    const result = await sql`SELECT DebtsId, PayValue FROM payments WHERE Id = ${id}`
+    const {debtsid, payvalue} = result.rows[0]
+    if(payvalue){
+      await sql`UPDATE debts SET TotalDue = TotalDue + ${payvalue} where Id = ${debtsid}`
+      await sql`DELETE FROM payments where Id = ${id}`
+    }
+  }
+  catch(e){
+    return NextResponse.json({error: e}, {status: 500})
+  }
+  return NextResponse.json({message: 'payment deleted!'}, {status: 200})
+}

@@ -4,17 +4,10 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import debtsFetch from "../services/DebtsFetch";
+import { Debt } from "../models/debts.models";
 
 
-interface Debt {
-  id: number,
-  fee: number,
-  description: string,
-  paid: number,
-  payday: number
-  totaldue: number,
-  payments: []
-}
+
 
 export default function useDebts () {
   const [data, setData] = useState<Debt[]>([])

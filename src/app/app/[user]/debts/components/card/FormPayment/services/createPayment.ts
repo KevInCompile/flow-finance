@@ -1,7 +1,6 @@
 
 export default async function createPayment(params: any) {
-
-   try{
+  try{
     const res = await fetch('/api/payments', {
       method: 'POST',
       body: JSON.stringify(params)
@@ -10,7 +9,7 @@ export default async function createPayment(params: any) {
     if(!data || data.error) return [new Error("Error al registrar abono")];
     return [undefined, data]
   } catch( error) {
-   if(error) return [error]
+      if(error) return [error]
   }
   return [new Error("Unknown error")]
 }

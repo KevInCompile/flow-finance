@@ -21,8 +21,6 @@ export default function Card({ data, setData }: { data: AccountModel[], setData:
     setItemSelected(data)
   }
 
-  console.log(data)
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const {name, value} = e.target
     setItemSelected({ ...itemSelected, [name]: value })
