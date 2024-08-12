@@ -4,7 +4,6 @@ import Devs from "./components/Devs";
 import GoogleText from "./components/GoogleText";
 import AnimationSnow from "./animations/Snow";
 import Head from "./components/Head/Head";
-import GridBento from "./components/GridBento/GridBento";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import LoaderPage from "./components/LoaderPage/LoaderPage";
@@ -18,13 +17,14 @@ export default function Home() {
   return (
     <>
     <Head />
-    <div className="relative h-full w-full bg-transparent"><div className="absolute bottom-0 left-[-20%] right-0 top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(220,172,10,.25),rgba(255,255,255,0))]"></div><div className="absolute bottom-0 right-[-20%] top-[-10%] h-[500px] w-[500px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(218,186,255,.45),rgba(255,255,255,0))]"></div></div>
+    <div className="relative h-full bg-transparent">
+      <div className="absolute bottom-0 left-[0%] right-0 top-[-10%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(220,172,10,.25),rgba(255,255,255,0))]"></div><div className="absolute bottom-0 right-[0%] top-[-10%] h-[400px] w-[400px] rounded-full bg-[radial-gradient(circle_farthest-side,rgba(218,186,255,.45),rgba(255,255,255,0))]"></div></div>
       <main className="!w-full animate-fade-in ">
-        <div className="animate-fade-in-down container max-w-[800px] m-auto">
+        <div className="animate-fade-in-down container m-auto px-10">
           <h1 className="text-center mb-16 [font-size:5.5rem] [line-height:1] font-bold">
             <span className="text-gradient">Flow Finance</span>
           </h1>
-          <p className="text-start text-secondary font-medium text-xl px-10 md:p-0">
+          <p className="text-start text-secondary font-medium text-xl md:p-0">
             <b>Necesitas esto!</b> Para administrar tus finanzas de manera
             efectiva, es importante llevar un seguimiento detallado de tus{" "}
             <b className="text-purple-300">
@@ -52,6 +52,10 @@ export default function Home() {
         <Devs />
         <div className="max-w-[800px] m-auto text-center mt-10 md:mt-40 ">
           <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
+            Pronto habrá más detalles de la app...
+          </div>
+        </div>
+          { /*  <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
             ¿Cómo funciona?
           </div>
           <div>
@@ -61,8 +65,9 @@ export default function Home() {
           </div>
         </div>
         <GridBento />
+        */ }
+        <AnimationSnow />
       </main>
-      <AnimationSnow />
     </>
   );
 }

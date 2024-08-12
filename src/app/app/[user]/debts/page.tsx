@@ -32,10 +32,10 @@ export default function Debts () {
             )
         : <></>
       }
-      <section className="px-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <section className="px-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 relative">
         {
           loading
-            ? <LoaderPage />
+            ? <div className="absolute grid place-items-center w-[80vw] h-[50vh] m-auto text-center"><LoaderPage /></div>
             :
             data.map((item) => {
               return (

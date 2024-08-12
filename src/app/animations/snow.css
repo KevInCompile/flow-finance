@@ -1,7 +1,7 @@
 .snow {
+    position: absolute;
     z-index: -1;
     top: 0;
-    position: absolute;
     width: 10px;
     height: 10px;
     background-color: var(--color-palette);
@@ -19,7 +19,7 @@
         transform: translate(60vw, 35vh);
     }
     to {
-        transform: translate(40vw, 100vh);
+        transform: translate(40vw, 90vh);
     }
 }
 #dos {
@@ -33,7 +33,7 @@
         transform: translate(35vw, 45vh) scale(0.5);
     }
     to {
-        transform: translate(30vw, 100vh) scale(0.5);
+        transform: translate(30vw, 90vh) scale(0.5);
     }
 }
 #tres {
@@ -47,7 +47,7 @@
         transform: translate(60vw, 65vh) scale(0.2);
     }
     to {
-        transform: translate(65vw, 100vh) scale(0.2);
+        transform: translate(65vw, 90vh) scale(0.2);
     }
 }
 #cuatro {
@@ -61,7 +61,7 @@
         transform: translate(80vw, 65vh) scale(0.7);
     }
     to {
-        transform: translate(85vw, 100vh) scale(0.7);
+        transform: translate(85vw, 90vh) scale(0.7);
     }
 }
 #cinco {
@@ -75,6 +75,6 @@
         transform: translate(30vw, 65vh) scale(0.7);
     }
     to {
-        transform: translate(5vw, 100vh) scale(0.7);
+        transform: translate(5vw, 90vh) scale(0.7);
     }
 }
