@@ -6,7 +6,7 @@ import { toast } from "sonner";
 import { Debt } from "../../models/debts.models";
 
 
-export default function CardDebt({ data: data, setData: setData, fullData: fullData }: { data: Debt, setData: React.Dispatch<SetStateAction<Debt[]>>, fullData: Debt[] }) {
+export default function CardDebt({ data, setData, fullData, setRefresh }: { data: Debt, setData: React.Dispatch<SetStateAction<Debt[]>>, fullData: Debt[], setRefresh: React.Dispatch<boolean> }) {
   const {description, payday, totaldue, fee, id, payments} = data
 
   const [isPay, setIsPay] = useState(false)
@@ -42,16 +42,12 @@ export default function CardDebt({ data: data, setData: setData, fullData: fullD
           <h1 className="text-[var(--color-palette)] font-bold">${totaldue?.toLocaleString()} </h1>
           <span className="text-[var(--color-usage)] text-sm">{description} <small className="bg-opacity-20 text-gray-300 text-sm font-bold">({fee})</small></span>
         </div>
-        {/* <div className="">
-          <CircleProgress progress='0'/>
-        </div> */}
         <button className={`rounded-md text-sm hover:scale-105 transition font-bold" ${isPay ? 'text-red-400' : 'text-green-400'}`} onClick={() => setIsPay(!isPay)}>{isPay ? 'Cancelar' : 'Abonar'}</button>
       </div>
-
       {
         isPay ? (
           <div className="p-4">
-            <FormAbono debtID={id} />
+          <FormAbono debtID={id} setIsPay={setIsPay} setRefresh={setRefresh} />
           </div>
         )
         :(

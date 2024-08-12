@@ -40,7 +40,7 @@ export default function Debts () {
             data.map((item) => {
               return (
                 <div key={item.id}>
-                  <CardDebt fullData={data} data={item} setData={setData} />
+                  <CardDebt fullData={data} data={item} setData={setData} setRefresh={setRefresh} />
                 </div>
               )
             })
