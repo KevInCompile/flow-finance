@@ -2,7 +2,6 @@ import React, { SetStateAction, useState } from "react"
 import { toast } from "sonner"
 import createPayment from "./services/createPayment"
 import Button from "@/app/components/Button/Button"
-import { Debt } from "../../../models/debts.models"
 
 interface Props {
   debtID: number

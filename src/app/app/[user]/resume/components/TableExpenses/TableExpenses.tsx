@@ -2,8 +2,10 @@ import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfir
 import { FormatDate } from "@/app/utils/FormatDate"
 import { toast } from "sonner"
 import { ExpenseModel } from "../../hooks/useExpenses"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { ExpenseAgrupedModel } from "../../models/ExpenseAgruped"
 
-export default function TableExpenses ({data, refresh, monthCurrent}: {data: ExpenseModel[], refresh: any, monthCurrent: number}) {
+export default function TableExpenses ({data, refresh, monthCurrent}: {data: ExpenseAgrupedModel[], refresh: any, monthCurrent: number}) {
 
   const handleDelete = async (id: number) => {
     const res = await fetch(`/api/expenses?id=${id}`, {
@@ -30,20 +32,45 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
               const monthExpense = dateExpense.getMonth()
               if (monthCurrent === monthExpense) {
                 return (
-                  <div key={item.id} className="py-5 grid grid-cols-3 md:grid-cols-4 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer">
-                    <div className="flex gap-2 items-center text-white">
-                      <div className="hidden md:block">
-                        {/* <FoodIcon /> */}
-                        <DeleteConfirmation deleteItem={() => handleDelete(item?.id)} message="¿Deseas eliminar este gasto?" />
+                  <div className="flex flex-col" key={item.id}>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <div className="py-5 grid grid-cols-3 md:grid-cols-4 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer">
+                        <div className="flex gap-2 items-center text-white">
+                          <div className="hidden md:block">
+                            {/* <FoodIcon /> */}
+                            <DeleteConfirmation deleteItem={() => handleDelete(item?.id)} message="¿Deseas eliminar este gasto?" />
+                          </div>
+                          <div>
+                            <span>{item?.categoryname}</span>
+                            <p className="block md:hidden opacity-70 text-sm">{item?.description}</p>
+                          </div>
+                        </div>
+                        <p className="text-white opacity-70 hidden md:block">{item?.description !== '' ? item.description : 'Sin descripción'}</p>
+                        <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
+                        <span className='text-palette font-medium'>$ {item?.value?.toLocaleString()}</span>
                       </div>
-                      <div>
-                        <span>{item?.categoryname}</span>
-                        <p className="block md:hidden opacity-70 text-sm">{item?.description}</p>
-                      </div>
-                    </div>
-                    <p className="text-white opacity-70 hidden md:block">{item?.description !== '' ? item.description : 'Sin descripción'}</p>
-                    <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
-                    <span className='text-palette font-medium'>$ {item?.value?.toLocaleString()}</span>
+                    </DialogTrigger>
+                      <DialogContent>
+                        <DialogHeader>
+                          <DialogTitle className='text-[var(--color-usage)]'>Detalles de {item.categoryname}</DialogTitle>
+                          <DialogDescription>
+                            Total: ${item?.value?.toLocaleString()}
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="space-y-2">
+                          {item?.details?.map((detalle) => (
+                            <div key={detalle.id} className="flex justify-between items-center">
+                              <div>
+                                <div className="font-medium text-white">{detalle.description}</div>
+                                <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
+                              </div>
+                              <div className="font-medium text-palette">${detalle?.value?.toLocaleString()}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </DialogContent>
+                  </Dialog>
                   </div>
                 )
               }

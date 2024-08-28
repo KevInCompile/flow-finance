@@ -22,7 +22,7 @@ export default function Home() {
       <main className="!w-full animate-fade-in ">
         <div className="animate-fade-in-down container m-auto px-10">
           <h1 className="text-center mb-16 [font-size:5.5rem] [line-height:1] font-bold">
-            <span className="text-gradient">Flow Finance</span>
+            <span className="bg-gradient">Flow Finance</span>
           </h1>
           <p className="text-start text-secondary font-medium text-xl md:p-0">
             <b>Necesitas esto!</b> Para administrar tus finanzas de manera

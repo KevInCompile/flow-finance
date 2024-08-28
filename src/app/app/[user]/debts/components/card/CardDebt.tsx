@@ -47,7 +47,7 @@ export default function CardDebt({ data, setData, fullData, setRefresh }: { data
       {
         isPay ? (
           <div className="p-4">
-          <FormAbono debtID={id} setIsPay={setIsPay} setRefresh={setRefresh} />
+            <FormAbono debtID={id} setIsPay={setIsPay} setRefresh={setRefresh} />
           </div>
         )
         :(

@@ -22,7 +22,7 @@ export default function Forbbiden() {
           <Link href='/' className="bg-secondary text-sm font-medium bg-blur rounded-xl p-2 px-5 text-primary hover:opacity-80 transition-all">Ir al inicio</Link>
         ) :
         <button
-          className="bg-secondary text-sm font-medium bg-blur rounded-xl p-2 px-5 text-primary hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
+          className="bg-white text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
           onClick={() => signIn("google")}
         >
           <GoogleIcon className="w-5 h-5" />
