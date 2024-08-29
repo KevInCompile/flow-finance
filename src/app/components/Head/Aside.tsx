@@ -29,7 +29,7 @@ export default function Aside() {
           </label>
         </button>
         <div className="flex items-center justify-start px-2 py-5 gap-2">
-          <div className="flex items-center justify-center w-14 h-14 border-2 border-[var(--color-palette)] p-1 rounded-full">
+          <div className="flex items-center justify-center w-14 h-14 border-2 border-[var(--palette)] p-1 rounded-full">
             <Image
               src={avatar}
               className="rounded-full w-12 h-12 p-1"

@@ -71,7 +71,18 @@
     -webkit-background-clip: text;
     background-position: 0;
     background-size: 200px,100%;
+}
 
+.selectField{
+    width: 100%;
+    height: 50px;
+    border-radius: 6px;
+    font-size: 15px;
+    padding: 0px 15px;
+    border: 2px solid #fff;
+    color: #fff;
+    outline: none;
+    background: transparent;
 }
 
 @layer base {

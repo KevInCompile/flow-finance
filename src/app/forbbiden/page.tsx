@@ -19,7 +19,7 @@ export default function Forbbiden() {
       </small>
       {
         status === "authenticated" ? (
-          <Link href='/' className="bg-secondary text-sm font-medium bg-blur rounded-xl p-2 px-5 text-primary hover:opacity-80 transition-all">Ir al inicio</Link>
+          <Link href='/' className="bg-[#DDDDDD] text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all">Ir al inicio</Link>
         ) :
         <button
           className="bg-white text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"

@@ -4,7 +4,7 @@
     top: 0;
     width: 10px;
     height: 10px;
-    background-color: var(--color-palette);
+    background-color: var(--palette);
     border-radius: 50%;
     filter: drop-shadow(0 0 10px white);
 }

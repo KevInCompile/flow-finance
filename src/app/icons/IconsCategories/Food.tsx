@@ -7,7 +7,7 @@ export default function FoodIcon () {
     height="25"
     viewBox="0 0 24 24"
     strokeWidth="1.5"
-    stroke="var(--color-palette)"
+    stroke="var(--palette)"
     fill="none"
     strokeLinecap="round"
     strokeLinejoin="round"

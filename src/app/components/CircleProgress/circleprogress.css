@@ -2,7 +2,7 @@
     position: relative;
     width:40px;
     height:40px;
-    border:2px solid var(--color-palette);
+    border:2px solid var(--palette);
     border-radius: 50%;
     color:#fff;
     background:var(--color-palette) linear-gradient(to right, transparent 0%, var(--color-usage) 0);

@@ -39,7 +39,7 @@ export default function CardDebt({ data, setData, fullData, setRefresh }: { data
           <h2 className="text-[var(--color-usage)] font-medium text-sm">Dia de pago: {payday}</h2>
         </div>
         <div className="text-center">
-          <h1 className="text-[var(--color-palette)] font-bold">${totaldue?.toLocaleString()} </h1>
+          <h1 className="text-[var(--palette)] font-bold">${totaldue?.toLocaleString()} </h1>
           <span className="text-[var(--color-usage)] text-sm">{description} <small className="bg-opacity-20 text-gray-300 text-sm font-bold">({fee})</small></span>
         </div>
         <button className={`rounded-md text-sm hover:scale-105 transition font-bold" ${isPay ? 'text-red-400' : 'text-green-400'}`} onClick={() => setIsPay(!isPay)}>{isPay ? 'Cancelar' : 'Abonar'}</button>
