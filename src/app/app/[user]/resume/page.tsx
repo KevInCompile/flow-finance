@@ -75,9 +75,9 @@ export default function Resume() {
     <>
       <Head />
       <div>
-        <section className="w-full md:w-[100%] px-10 mt-5">
+        <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
           <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in'>Resumen</h1>
-          <div className='grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
+          <div className='grid grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
             <BentoInformation expensesAgruped={gastosAgrupados} />
             <Card className="col-span-2 lg:col-span-1 bg-[#1F1D1D]">
               <CardHeader>
@@ -92,7 +92,7 @@ export default function Resume() {
           <div className="mt-12">
             <div className="grid grid-cols-2 items-center">
               <div className="flex gap-3 items-center">
-                <h3 className="text-2xl text-[var(--color-usage)] font-medium">Registro de {monthName} - {anioActual }</h3>
+                <h3 className="text-md md:text-2xl text-[var(--color-usage)] font-medium">{monthName} - {anioActual }</h3>
                 <OpenButton />
               </div>
               <div className="text-end">
@@ -116,7 +116,7 @@ export default function Resume() {
                       <TableExpenses data={gastosAgrupados} refresh={refreshData} monthCurrent={mesActual} />
                     </TabsContent>
                     <TabsContent value='ingresos'>
-                      <TableIncomes monthCurrent={mesActual} />
+                      <TableIncomes monthCurrent={mesActual} yearCurrent={anioActual} />
                     </TabsContent>
                   </Tabs>
                 )

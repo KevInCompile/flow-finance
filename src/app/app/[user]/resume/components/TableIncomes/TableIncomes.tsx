@@ -2,9 +2,17 @@ import { FormatDate } from "@/app/utils/FormatDate"
 import useIncomes from "./hooks/useIncomes"
 import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation"
 
-export default function TableExpenses({ monthCurrent }: { monthCurrent: number}) {
+export default function TableExpenses({ monthCurrent, yearCurrent }: { monthCurrent: number, yearCurrent: number}) {
 
   const {data} = useIncomes()
+
+  const gastosFiltrados = data.filter(gasto => {
+    let [año, mesA, día] = gasto.date.split('T')[0].split('-');
+    mesA = mesA.startsWith('0') ? mesA.slice(1) : mesA;
+    const fechaConvertida = `${año}-${mesA}-${día}`;
+    const [anio, mes] = fechaConvertida.split("-")
+    return parseInt(anio) === yearCurrent && parseInt(mes) - 1 === monthCurrent
+  })
 
   return (
     <>
@@ -16,8 +24,8 @@ export default function TableExpenses({ monthCurrent }: { monthCurrent: number})
     </header>
     <div className='max-h-[400px] overflow-y-auto'>
       {
-        data.length >= 1 ?
-            data.map((item) => {
+        gastosFiltrados.length >= 1 ?
+          gastosFiltrados.map((item) => {
               const dateExpense = new Date(item.date)
               const monthExpense = dateExpense.getMonth()
               if (monthCurrent === monthExpense) {
