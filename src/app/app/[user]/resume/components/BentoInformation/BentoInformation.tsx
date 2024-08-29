@@ -45,7 +45,7 @@ export default function BentoInformation ({expensesAgruped}: {expensesAgruped: E
             </select>
               <h2 className="text-md md:text-xl text-black">
                 {
-                  accounts.length >= 1 && debtSelected === ''
+                  accounts.length >= 1 && accountSelected === ''
                   ? '$ ' + accounts[0]?.value.toLocaleString()
                   : !accounts.length ? <Link href={newUrl('accounts')} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
                 }
