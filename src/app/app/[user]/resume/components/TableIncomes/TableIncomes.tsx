@@ -5,7 +5,6 @@ import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfir
 export default function TableExpenses({ monthCurrent }: { monthCurrent: number}) {
 
   const {data} = useIncomes()
-  console.log(data)
 
   return (
     <>

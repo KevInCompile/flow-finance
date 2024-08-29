@@ -8,6 +8,7 @@ import useAccounts from "./hooks/useAccounts";
 import SkeletonAccount from "./loading";
 import Image from "next/image";
 import Gift from '@/../public/empty.gif'
+import OpenButton from "./OpenButton/OpenButton";
 
 
 export default function Accounts() {
@@ -19,9 +20,12 @@ export default function Accounts() {
       <section>
         <div className="flex gap-3 items-center max-w-[800px] m-auto justify-center">
           {loading ? <div className="w-full"><SkeletonTitle /></div> : data.length >= 1 ? (
-            <h3 className="text-center font-bold text-white text-xl md:text-2xl">
-              Tienes <span className='text-purple-300'>{data.length}</span> cuentas registradas.
-            </h3>
+            <div className="flex items-center justify-center pb-3">
+              <h3 className="text-center font-bold text-white text-xl md:text-2xl">
+                Tienes <span className='text-purple-300'>{data.length}</span> cuentas registradas.
+              </h3>
+              <OpenButton />
+            </div>
           ) : (
             <h3 className="text-center font-bold text-white text-2xl">
               Ingresa tus cuentas de{" "}
