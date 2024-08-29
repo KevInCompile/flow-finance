@@ -12,7 +12,7 @@ export default function FormNewIncome() {
   const { data: accounts } = useAccounts()
   const { data: session } = useSession();
 
-  const handleIncome = async (e) => {
+  const handleIncome = async (e: any) => {
     e.preventDefault()
     const monto = parseFloat(e.target.monto.value)
     const cuenta = e.target.accountid.value

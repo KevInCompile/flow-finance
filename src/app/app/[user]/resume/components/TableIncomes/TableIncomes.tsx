@@ -26,7 +26,7 @@ export default function TableExpenses({ monthCurrent }: { monthCurrent: number})
                   <div className="py-5 grid grid-cols-3 md:grid-cols-4 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer" key={item.id}>
                     <div className="flex gap-2 items-center text-white">
                       <div className="hidden md:block">
-                        <DeleteConfirmation  message="¿Deseas eliminar este ingreso?" />
+                        <DeleteConfirmation deleteItem={() => {}}  message="¿Deseas eliminar este ingreso?" />
                       </div>
                         <div>
                           <span>{item?.account}</span>
