@@ -14,6 +14,7 @@ export default function Home() {
 
   if (status === "loading") return <div className="grid place-items-center h-[80vh] mr-24"><LoaderPage /></div>;
   if (status === "authenticated") return router.push(`/app/${session.user?.name}/resume`);
+
   return (
     <>
     <Head />

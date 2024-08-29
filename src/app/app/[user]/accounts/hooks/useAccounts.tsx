@@ -17,7 +17,7 @@ export default function useAccounts() {
     const getData = async (user: string) => {
       try{
         const [error, result] = await accountsFetch(user);
-        if (error) return toast(error);
+        if (error) return toast.error(error);
         setData(result);
         setLoading(false);
       }catch(e){

@@ -1,7 +1,6 @@
 import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation"
 import { FormatDate } from "@/app/utils/FormatDate"
 import { toast } from "sonner"
-import { ExpenseModel } from "../../hooks/useExpenses"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ExpenseAgrupedModel } from "../../models/ExpenseAgruped"
 
@@ -48,7 +47,7 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
                         </div>
                         <p className="text-white opacity-70 hidden md:block">{item?.description !== '' ? item.description : 'Sin descripción'}</p>
                         <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
-                        <span className='text-palette font-medium'>$ {item?.value?.toLocaleString()}</span>
+                        <span className='text-red-400 font-medium'> - $ {item?.value?.toLocaleString()}</span>
                       </div>
                     </DialogTrigger>
                       <DialogContent>
@@ -70,7 +69,7 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
                           ))}
                         </div>
                       </DialogContent>
-                  </Dialog>
+                    </Dialog>
                   </div>
                 )
               }

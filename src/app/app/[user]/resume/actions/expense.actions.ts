@@ -1,4 +1,3 @@
-
 export default async function createExpense(formData: FormData) {
   try{
     const res = await fetch('/api/expenses', {

@@ -4,9 +4,11 @@ import Head from "@/app/components/Head/Head";
 import SkeletonTitle from "@/app/components/LoaderTitle/LoaderTitle";
 import Card from "./Card";
 import ModalNewAccount from "./Modal/ModalNewAccount";
-import OpenButton from "./OpenButton/OpenButton";
 import useAccounts from "./hooks/useAccounts";
 import SkeletonAccount from "./loading";
+import Image from "next/image";
+import Gift from '@/../public/empty.gif'
+
 
 export default function Accounts() {
   const { data, loading, setRefresh, setData } = useAccounts();
@@ -26,8 +28,20 @@ export default function Accounts() {
               <span className="text-purple-300">activos.</span>
             </h3>
           )}
-          {!loading && <OpenButton />}
         </div>
+          {
+            loading ? <></> :
+            data.length === 0
+              ? (
+                <div className="flex flex-col gap-3 items-center m-auto w-full py-5">
+                  <Image src={Gift} alt='Sin items' className="rounded-md px-5 md:px-0" priority />
+                  <small className="opacity-50 italic font-medium text-white">
+                    No tienes nada registrado aún!
+                  </small>
+                </div>
+                )
+            : <></>
+          }
         <div className="grid grid-cols-1 px-10 gap-5 py-5 md:grid-cols-4">
           {loading ? <SkeletonAccount /> : <Card data={data} setData={setData} />}
         </div>

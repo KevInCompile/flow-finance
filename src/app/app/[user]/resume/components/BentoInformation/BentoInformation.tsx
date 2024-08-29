@@ -3,34 +3,52 @@ import { AccountModel } from "../../../accounts/models/account.model"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
 import { useState } from "react"
 import { ExpenseModel } from "../../hooks/useExpenses"
+import useAccounts from "../../../accounts/hooks/useAccounts"
+import useDebts from "../../../debts/hooks/useDebts"
+import Link from "next/link"
 
 
-export default function BentoInformation ({data, loading, expensesAgruped}: {data: AccountModel[], loading: boolean, expensesAgruped: ExpenseModel[]}) {
+export default function BentoInformation ({expensesAgruped}: {expensesAgruped: ExpenseModel[]}) {
 
-  const accountMain = data?.filter((item) => item.type === "principal")[0]
-  const accountInversion = data?.filter((item) => item.type === "inversion")[0]
-  const accountSaving = data?.filter((item) => item.type === "ahorros")[0]
-  const proxDebt = data?.filter((item) => item.type === "deuda")[0]
+  const [accountSelected, setAccountSelected] = useState('')
+  const [debtSelected, setDebtSelected] = useState('')
 
+  const {data:accounts, loading: loadingAccounts} = useAccounts()
+  const {data:debts, loading: loadingDebts} = useDebts()
 
   const datosTorta = expensesAgruped.map(gasto => ({
     name: gasto.categoryname,
     value: gasto.value
   }))
 
-  const COLORS = ['#66BFFF', '#66D6C2', '#FFD68A', '#FFB38A', '#B3AFE6', '#B3DEC0']
+  const baseUrl = window.location.pathname
+  const newUrl = (route: string) => baseUrl.replace('resume', route)
 
+  const COLORS = ['#66BFFF', '#66D6C2', '#FFD68A', '#FFB38A', '#B3AFE6', '#B3DEC0']
 
   return (
     <div className='grid grid-cols-2 min-h-[290px]'>
       <div className="py-4 px-5 flex flex-col gap-3 bg-gradient-to-r from-purple-200 to-purple-300 items-start rounded-tl-md">
         {
-          loading ? <SkeletonResume />
+          loadingAccounts ? <SkeletonResume />
           : (
             <>
-            <span className="text-purple-500 font-medium">{accountMain ? accountMain?.name : 'Sin cuenta principal'}</span>
+            <select className="text-purple-500 font-medium bg-transparent outline-none" value={accountSelected} onChange={(e) => setAccountSelected(e.target.value)}>
+              {!accounts.length ? <option>No tienes cuentas 🥴</option> : <></>}
+              {
+                accounts?.map((account) => {
+                  return (
+                    <option key={account.id} value={account.name} className='text-black'>{account.name}</option>
+                  )
+                })
+              }
+            </select>
               <h2 className="text-md md:text-xl text-black">
-                { accountMain ? '$ ' + accountMain?.value?.toLocaleString() : <small>Sin registros</small>}
+                {
+                  accounts.length >= 1 && debtSelected === ''
+                  ? '$ ' + accounts[0]?.value.toLocaleString()
+                  : !accounts.length ? <Link href={newUrl('accounts')} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
+                }
               </h2>
               <small className="bg-palette px-3 py-1 rounded-full text-black">+0 %</small>
             </>
@@ -39,18 +57,31 @@ export default function BentoInformation ({data, loading, expensesAgruped}: {dat
       </div>
       <div className="py-4 px-5 flex flex-col gap-3 items-start text-white bg-[#1F1D1D] rounded-tr-md border-b border-r border-t">
         {
-          loading ? <SkeletonResume /> : (
+          loadingDebts ? <SkeletonResume /> :
             <>
-             <span>Ahorros</span>
-              { accountSaving ? <h2 className="text-md md:text-xl">$ {accountSaving?.value?.toLocaleString()}</h2> : <small>Sin registros</small>}
-              <small className="bg-[var(--color-usage)] text-black px-3 py-1 rounded-full">+0 %</small>
+              <select className="font-medium bg-transparent outline-none" value={debtSelected} onChange={(e) => setDebtSelected(e.target.value)}>
+                {!debts.length ? <option>No tienes deudas 😌</option> : <></>}
+                {
+                  debts?.map((debt) => {
+                    return (
+                      <option key={debt.id} value={debt.description} className='text-black'>{debt.description}</option>
+                    )
+                  })
+                }
+                {debtSelected ?? 'Sin deudas'}
+              </select>
+                <h2 className="text-md md:text-xl">
+                  {
+                    debts.length >= 1 && debtSelected === ''
+                    ? '$ ' + debts[0]?.totaldue.toLocaleString()
+                    : !debts.length ? <Link href={newUrl('debts')} className="text-palette text-sm underline animate-pulse">Agregar deudas</Link> : '$ ' + debts?.filter((item) => item.description === debtSelected)[0]?.totaldue?.toLocaleString()
+                  }
+                </h2>
             </>
-          )
         }
       </div>
       <div className="py-4 px-5 flex flex-col gap-3 items-start  text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 ">
         {
-          loading ? <SkeletonResume /> :
           (
             <>
               <ResponsiveContainer width="100%" height={200}>

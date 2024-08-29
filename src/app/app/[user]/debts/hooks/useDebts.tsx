@@ -20,7 +20,7 @@ export default function useDebts () {
     const getData = async (user: string) => {
       try{
         const [error, result] = await debtsFetch(user);
-        if (error) return toast(error);
+        if (error) return toast.error(error);
         setData(result);
         setLoading(false);
       }catch(e){

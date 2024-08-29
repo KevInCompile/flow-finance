@@ -12,3 +12,6 @@ CREATE TABLE debts (Id SERIAL PRIMARY KEY, Username varchar(100), Fee INT, Descr
 
 // TABLA DE PAGOS
 CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), PaymentType VARCHAR(50), PayValue INT,  Payday DATE DEFAULT CURRENT_DATE)
+
+// TABLA DE INGRESOS
+CREATE TABLE incomes (Id SERIAL PRIMARY KEY, Username varchar(100), TypeIncome varchar(50), AccountId INT REFERENCES accounts(Id), Value int, date varchar(20));

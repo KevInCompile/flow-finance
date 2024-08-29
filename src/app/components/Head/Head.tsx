@@ -29,8 +29,8 @@ export default function Head() {
             </span>
           </div>
         ) : (
-          <div className="bg-white font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v 0.5.1
+          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
+            v 0.6.3
           </div>
         )}
       </div>
@@ -40,7 +40,7 @@ export default function Head() {
       <div className="flex items-center gap-2">
         {!session ? (
           <button
-            className="bg-white text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
+            className="bg-[#DDDDDD] text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
             onClick={() => handleSignIn("google")}
           >
             <GoogleIcon className="w-5 h-5" />
