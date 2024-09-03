@@ -12,12 +12,11 @@ import useExpenses from "./hooks/useExpenses";
 import { monthNames } from "@/app/utils/months";
 import BackIcon from "./assets/back";
 import NextIcon from "./assets/nextIcon";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ExpenseAgrupedModel } from "./models/ExpenseAgruped";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FormNewIncome from "./components/FormNewIncome/FormNewIncome";
 import TableIncomes from "./components/TableIncomes/TableIncomes";
 import useIncomes from "./components/TableIncomes/hooks/useIncomes";
+import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export default function Resume() {
   const { data: accounts, loading: loadingAccounts, setRefresh } = useAccounts()
@@ -96,16 +95,7 @@ export default function Resume() {
         <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
           <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in'>Resumen</h1>
           <div className='grid grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
-          <BentoInformation expenses={gastosFiltrados} crecimiento={calcularCrecimiento} accounts={accounts} loadingAccounts={loadingAccounts} />
-            <Card className="col-span-2 lg:col-span-1 bg-[#1F1D1D]">
-              <CardHeader>
-                <CardTitle className="text-secondary">Realizar Ingreso</CardTitle>
-                <CardDescription>Ingresa dinero a tus cuentas</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <FormNewIncome />
-              </CardContent>
-            </Card>
+            <BentoInformation expenses={gastosFiltrados} crecimiento={calcularCrecimiento} accounts={accounts} loadingAccounts={loadingAccounts} />
           </div>
           <div className="mt-12">
             <div className="grid grid-cols-2 items-center">

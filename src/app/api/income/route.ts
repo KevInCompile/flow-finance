@@ -3,7 +3,9 @@ import { NextResponse } from "next/server"
 
 export async function POST(req: Request) {
   const form = await req.json()
-  const {username, typeIncome, value, accountId, date} = form
+  const {username: userEncode, typeIncome, value:valueString, accountId, date} = form
+  const value = parseFloat(valueString!.toString().replace(/,/g, ''))
+  const username = decodeURIComponent(userEncode as string)
 
   try{
     if(!username)  return NextResponse.json({error: 'Username is required'}, {status: 500})

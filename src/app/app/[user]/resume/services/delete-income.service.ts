@@ -2,7 +2,7 @@
 export default async function deleteIncomeService(id: number) {
   try {
     const fetching = await fetch(
-      `/api/incomes?id=${id}`,
+      `/api/income?id=${id}`,
       {
         method: 'DELETE'
       }

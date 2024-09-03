@@ -1,8 +1,8 @@
-export default async function createExpense(formData: FormData) {
+export default async function createExpense(object: any) {
   try{
     const res = await fetch('/api/expenses', {
       method: 'POST',
-      body: formData
+      body: JSON.stringify(object)
     })
     const data = await res.json()
     if(!data) return [new Error("Error al crear el gasto...")];

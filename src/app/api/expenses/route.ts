@@ -1,13 +1,14 @@
 import { sql } from "@vercel/postgres";
 import { NextResponse } from "next/server";
-import { getParams } from "../utils/params";
 
 export async function POST(request: Request) {
-  const form = await request.formData()
-  const {username, value, accountId, categoryId, description} = getParams(form)
+  const form = await request.json()
+  const {username: userEncode, value: valueString, accountId, categoryId, description} = form
+  const value = parseFloat(valueString!.toString().replace(/,/g, ''))
+  const username = decodeURIComponent(userEncode as string)
 
   try {
-    await sql`INSERT INTO expenses (AccountId, CategoryId, Username, Description, Value) VALUES (${accountId}, ${categoryId}, ${username}, ${description}, ${value});`
+    await sql`INSERT INTO expenses (AccountId, CategoryId, Username, Description, Value) VALUES (${+accountId}, ${+categoryId}, ${username}, ${description}, ${value});`
     await sql`UPDATE accounts
     SET Value = Value - ${value}
     WHERE Id = ${accountId} AND Username = ${username}`;
