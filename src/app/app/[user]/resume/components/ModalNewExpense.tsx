@@ -86,7 +86,7 @@ export default function ModalNewExpense(props: Props) {
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
-          <h1 className="text-3xl font-medium text-yellow-400">Nuevo movimiento</h1>
+          <h1 className="text-2xl md:text-3xl font-medium text-yellow-400">Nuevo movimiento</h1>
         </div>
         <form id='form' className="py-5 text-white" onSubmit={sendMove}>
           <RadioGroup defaultValue="expense" onValueChange={setMoveType} className="flex space-x-4 pb-6">
