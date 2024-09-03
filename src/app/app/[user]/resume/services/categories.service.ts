@@ -2,7 +2,7 @@
 export default async function CategoriesFetch() {
   try {
     const fetching = await fetch(
-      `/api/categories`,
+      `/api/categories`
     );
     const data = await fetching.json()
     if(!data) return [new Error("Error en el servidor...")];

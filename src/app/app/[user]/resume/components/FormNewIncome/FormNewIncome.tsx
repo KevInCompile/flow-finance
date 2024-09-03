@@ -23,7 +23,7 @@ export default function FormNewIncome() {
     if (error) {
      toast.error(error)
     } else {
-      toast.success(data)
+      toast.success(data.message)
       e.target.reset()
     }
   }

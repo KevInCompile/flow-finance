@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { serviceIncomes } from "../service/income.service";
 import { useSession } from "next-auth/react";
+import deleteIncomeService from "../../../services/delete-income.service";
+import { toast } from "sonner";
 
 interface IncomeModel {
   id: number
@@ -22,12 +24,23 @@ export default function useIncomes () {
     return setData([])
   }
 
+  const deleteIncome = async (id: number) => {
+    const [error, message] = await deleteIncomeService(id)
+    if(error){
+      toast.error(error)
+    }else{
+      toast.success(message)
+      setData(data.filter(item => item.id !== id))
+    }
+  }
+
   useEffect(() => {
     getData()
-  }, [])
+  }, [session?.user?.name])
 
 
   return {
-    data
+    data,
+    deleteIncome
   }
 }

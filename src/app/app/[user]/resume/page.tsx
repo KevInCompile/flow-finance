@@ -17,10 +17,12 @@ import { ExpenseAgrupedModel } from "./models/ExpenseAgruped";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FormNewIncome from "./components/FormNewIncome/FormNewIncome";
 import TableIncomes from "./components/TableIncomes/TableIncomes";
+import useIncomes from "./components/TableIncomes/hooks/useIncomes";
 
 export default function Resume() {
-  const { setRefresh } = useAccounts()
+  const { data: accounts, setRefresh } = useAccounts()
   const { expenses, loading: loadingExpenses, setRefresh: setRefreshExpenses } = useExpenses()
+  const {data: incomes} = useIncomes()
   const [mesActual, setMesActual] = useState(7)
   const [anioActual, setAnioActual] = useState(2024)
 
@@ -45,7 +47,7 @@ export default function Resume() {
   })
 
   const gastosAgrupados = gastosFiltrados.reduce((acc: ExpenseAgrupedModel[], gasto) => {
-    const gastoExistente = acc.find(g => g.categoryname === gasto.categoryname)
+    const gastoExistente = acc.find(g => g.description === gasto.description)
     if (gastoExistente) {
       gastoExistente.value += gasto.value
       gastoExistente.details?.push(gasto)
@@ -55,6 +57,22 @@ export default function Resume() {
     return acc
   }, [])
 
+  const ingresosFiltrados = incomes.filter(ingreso => {
+      const [anio, mes] = ingreso.date.split("-")
+      return parseInt(anio) === anioActual && parseInt(mes) - 1 === mesActual
+    })
+
+  const calcularCrecimiento = (cuenta: string) => {
+    const ingresosDelMes = ingresosFiltrados.filter(ingreso => ingreso.account === cuenta)
+      .reduce((total, ingreso) => total + ingreso.value, 0)
+    const gastosDelMes = gastosFiltrados.filter(gasto => gasto.accountname === cuenta)
+      .reduce((total, gasto) => total + gasto.value, 0)
+    const crecimiento = ingresosDelMes - gastosDelMes
+    const value = accounts.filter(acc => acc.name === cuenta)[0]
+    const porcentajeCrecimiento = (crecimiento / +value?.value) * 100
+    if (!porcentajeCrecimiento) return '0'
+    return porcentajeCrecimiento.toFixed(2)
+  }
 
   const cambiarMes = (direccion: string) => {
     setMesActual(prevMes => {
@@ -78,7 +96,7 @@ export default function Resume() {
         <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
           <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in'>Resumen</h1>
           <div className='grid grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
-            <BentoInformation expensesAgruped={gastosAgrupados} />
+          <BentoInformation expensesAgruped={gastosAgrupados} crecimiento={calcularCrecimiento} accounts={accounts} />
             <Card className="col-span-2 lg:col-span-1 bg-[#1F1D1D]">
               <CardHeader>
                 <CardTitle className="text-secondary">Realizar Ingreso</CardTitle>

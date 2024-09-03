@@ -26,7 +26,16 @@ export async function GET(request: Request) {
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }
-  const result = await sql`SELECT * FROM accounts where Username = ${username}`;
+  const result = await sql`SELECT *
+  FROM accounts
+  WHERE Username = ${username}
+  ORDER BY
+    CASE type
+      WHEN 'principal' THEN 1
+      WHEN 'ahorros' THEN 2
+      WHEN 'inversion' THEN 3
+      ELSE 4
+    END;`;
   return NextResponse.json({ ...result }, { status: 200 });
 }
 

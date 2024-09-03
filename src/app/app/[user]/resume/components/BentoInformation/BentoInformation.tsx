@@ -1,30 +1,35 @@
-import SkeletonResume from "@/app/loaders/SkeletonResume"
-import { AccountModel } from "../../../accounts/models/account.model"
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
 import { useState } from "react"
+import SkeletonResume from "@/app/loaders/SkeletonResume"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { ExpenseModel } from "../../hooks/useExpenses"
 import useAccounts from "../../../accounts/hooks/useAccounts"
 import useDebts from "../../../debts/hooks/useDebts"
 import Link from "next/link"
+import { TrendingDown, TrendingUp } from "lucide-react"
+import { AccountModel } from "../../../accounts/models/account.model"
 
-
-export default function BentoInformation ({expensesAgruped}: {expensesAgruped: ExpenseModel[]}) {
+export default function BentoInformation ({expensesAgruped, crecimiento, accounts}: {expensesAgruped: ExpenseModel[], crecimiento: (account: string) => string, accounts: AccountModel[]}) {
 
   const [accountSelected, setAccountSelected] = useState('')
   const [debtSelected, setDebtSelected] = useState('')
 
-  const {data:accounts, loading: loadingAccounts} = useAccounts()
+  const {loading: loadingAccounts} = useAccounts()
   const {data:debts, loading: loadingDebts} = useDebts()
 
-  const datosTorta = expensesAgruped.map(gasto => ({
-    name: gasto.categoryname,
-    value: gasto.value
-  }))
+  const datosLinea = expensesAgruped.reduce((acc: any, gasto) => {
+      const dia = parseInt(gasto.date.split("-")[2])
+      if (acc[dia]) {
+        acc[dia].value += gasto.value
+      } else {
+        acc[dia] = { dia, value: gasto.value }
+      }
+      return acc
+    }, {})
+
+  const datosLineaArray = Object.values(datosLinea).sort((a: any, b:any) => a.dia - b.dia)
 
   const baseUrl = window.location.pathname
   const newUrl = (route: string) => baseUrl.replace('resume', route)
-
-  const COLORS = ['#66BFFF', '#66D6C2', '#FFD68A', '#FFB38A', '#B3AFE6', '#B3DEC0']
 
   return (
     <div className='grid grid-cols-2 min-h-[290px]'>
@@ -50,8 +55,17 @@ export default function BentoInformation ({expensesAgruped}: {expensesAgruped: E
                   : !accounts.length ? <Link href={newUrl('accounts')} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
                 }
               </h2>
-              <small className="bg-palette px-3 py-1 rounded-full text-black">+0 %</small>
-            </>
+                <div className="flex items-center mt-2 text-sm">
+                  {parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? (
+                    <TrendingUp className="w-4 h-4 mr-1 text-green-500" />
+                  ) : (
+                    <TrendingDown className="w-4 h-4 mr-1 text-red-500" />
+                  )}
+                  <span className={parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? "text-green-500" : "text-red-500"}>
+                    {crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)}% este mes
+                  </span>
+                </div>
+              </>
           )
         }
       </div>
@@ -85,22 +99,13 @@ export default function BentoInformation ({expensesAgruped}: {expensesAgruped: E
           (
             <>
               <ResponsiveContainer width="100%" height={200}>
-                <PieChart>
-                  <Pie
-                    data={datosTorta}
-                    cx="50%"
-                    cy="50%"
-                    labelLine={false}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    dataKey="value"
-                  >
-                    {datosTorta.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
+                <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" />
+                  <YAxis />
                   <Tooltip />
-                </PieChart>
+                  <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+                </LineChart>
               </ResponsiveContainer>
             </>
           )

@@ -19,7 +19,7 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
     <>
     <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4">
       <span>Categoria</span>
-      <span className="hidden md:block">Descripción</span>
+      <span className="hidden md:block">Cuenta</span>
       <span>Fecha</span>
       <span>Valor</span>
     </header>
@@ -36,16 +36,12 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
                     <DialogTrigger asChild>
                       <div className="py-5 grid grid-cols-3 md:grid-cols-4 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer">
                         <div className="flex gap-2 items-center text-white">
-                          <div className="hidden md:block">
-                            {/* <FoodIcon /> */}
-                            <DeleteConfirmation deleteItem={() => handleDelete(item?.id)} message="¿Deseas eliminar este gasto?" />
-                          </div>
                           <div>
                             <span>{item?.categoryname}</span>
-                            <p className="block md:hidden opacity-70 text-sm">{item?.description}</p>
+                            <p className="opacity-70 text-sm">{item?.description}</p>
                           </div>
                         </div>
-                        <p className="text-white opacity-70 hidden md:block">{item?.description !== '' ? item.description : 'Sin descripción'}</p>
+                          <p className="text-white opacity-70 hidden md:block">{item?.accountname}</p>
                         <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
                         <span className='text-red-400 font-medium'> - $ {item?.value?.toLocaleString()}</span>
                       </div>
@@ -61,7 +57,8 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
                           {item?.details?.map((detalle) => (
                             <div key={detalle.id} className="flex justify-between items-center">
                               <div>
-                                <div className="font-medium text-white">{detalle.description}</div>
+                                <div className="font-medium text-white">{detalle.description} <
+                                  DeleteConfirmation deleteItem={() => handleDelete(item?.id)} message={`¿Deseas eliminar el gasto ${detalle.description}?`} /></div>
                                 <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
                               </div>
                               <div className="font-medium text-palette">${detalle?.value?.toLocaleString()}</div>
