@@ -1,10 +1,16 @@
 import { FormatDate } from "@/app/utils/FormatDate"
-import useIncomes from "./hooks/useIncomes"
 import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation"
+import { IncomeModel } from "./hooks/useIncomes";
 
-export default function TableExpenses({ monthCurrent, yearCurrent }: { monthCurrent: number, yearCurrent: number}) {
+interface Props {
+  monthCurrent: number,
+  yearCurrent: number,
+  incomes: IncomeModel[],
+  deleteIncome: (id: number) => void
+}
 
-  const {data, deleteIncome} = useIncomes()
+export default function TableExpenses(props: Props) {
+  const {monthCurrent, yearCurrent, incomes:data, deleteIncome} = props
 
   const gastosFiltrados = data.filter(gasto => {
     let [año, mesA, día] = gasto.date.split('T')[0].split('-');

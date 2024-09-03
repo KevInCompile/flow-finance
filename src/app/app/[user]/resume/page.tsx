@@ -20,10 +20,10 @@ import TableIncomes from "./components/TableIncomes/TableIncomes";
 import useIncomes from "./components/TableIncomes/hooks/useIncomes";
 
 export default function Resume() {
-  const { data: accounts, setRefresh } = useAccounts()
+  const { data: accounts, loading: loadingAccounts, setRefresh } = useAccounts()
   const { expenses, loading: loadingExpenses, setRefresh: setRefreshExpenses } = useExpenses()
-  const {data: incomes} = useIncomes()
-  const [mesActual, setMesActual] = useState(7)
+  const {data: incomes, deleteIncome} = useIncomes()
+  const [mesActual, setMesActual] = useState(0)
   const [anioActual, setAnioActual] = useState(2024)
 
   const currentDate = new Date()
@@ -47,7 +47,7 @@ export default function Resume() {
   })
 
   const gastosAgrupados = gastosFiltrados.reduce((acc: ExpenseAgrupedModel[], gasto) => {
-    const gastoExistente = acc.find(g => g.description === gasto.description)
+    const gastoExistente = acc.find(g => g.categoryname === gasto.categoryname)
     if (gastoExistente) {
       gastoExistente.value += gasto.value
       gastoExistente.details?.push(gasto)
@@ -58,9 +58,9 @@ export default function Resume() {
   }, [])
 
   const ingresosFiltrados = incomes.filter(ingreso => {
-      const [anio, mes] = ingreso.date.split("-")
-      return parseInt(anio) === anioActual && parseInt(mes) - 1 === mesActual
-    })
+    const [anio, mes] = ingreso.date.split("-")
+    return parseInt(anio) === anioActual && parseInt(mes) - 1 === mesActual
+  })
 
   const calcularCrecimiento = (cuenta: string) => {
     const ingresosDelMes = ingresosFiltrados.filter(ingreso => ingreso.account === cuenta)
@@ -96,11 +96,11 @@ export default function Resume() {
         <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
           <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in'>Resumen</h1>
           <div className='grid grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
-          <BentoInformation expensesAgruped={gastosAgrupados} crecimiento={calcularCrecimiento} accounts={accounts} />
+          <BentoInformation expenses={gastosFiltrados} crecimiento={calcularCrecimiento} accounts={accounts} loadingAccounts={loadingAccounts} />
             <Card className="col-span-2 lg:col-span-1 bg-[#1F1D1D]">
               <CardHeader>
                 <CardTitle className="text-secondary">Realizar Ingreso</CardTitle>
-                <CardDescription>Ingresa dinero a tus cuentas o paga deudas</CardDescription>
+                <CardDescription>Ingresa dinero a tus cuentas</CardDescription>
               </CardHeader>
               <CardContent>
                 <FormNewIncome />
@@ -131,17 +131,17 @@ export default function Resume() {
                       <TabsTrigger value="ingresos">Ingresos</TabsTrigger>
                     </TabsList>
                     <TabsContent value="gastos">
-                      <TableExpenses data={gastosAgrupados} refresh={refreshData} monthCurrent={mesActual} />
+                      <TableExpenses data={gastosAgrupados} monthCurrent={mesActual} refresh={setRefresh} />
                     </TabsContent>
                     <TabsContent value='ingresos'>
-                      <TableIncomes monthCurrent={mesActual} yearCurrent={anioActual} />
+                      <TableIncomes monthCurrent={mesActual} yearCurrent={anioActual} incomes={incomes} deleteIncome={deleteIncome} />
                     </TabsContent>
                   </Tabs>
                 )
             }
           </div>
         </section>
-        <ModalNewExpense refresh={refreshData} />
+        <ModalNewExpense refresh={refreshData} accounts={accounts} />
       </div>
     </>
   );

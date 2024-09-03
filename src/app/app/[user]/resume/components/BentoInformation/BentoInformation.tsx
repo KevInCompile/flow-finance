@@ -2,29 +2,27 @@ import { useState } from "react"
 import SkeletonResume from "@/app/loaders/SkeletonResume"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { ExpenseModel } from "../../hooks/useExpenses"
-import useAccounts from "../../../accounts/hooks/useAccounts"
 import useDebts from "../../../debts/hooks/useDebts"
 import Link from "next/link"
 import { TrendingDown, TrendingUp } from "lucide-react"
 import { AccountModel } from "../../../accounts/models/account.model"
 
-export default function BentoInformation ({expensesAgruped, crecimiento, accounts}: {expensesAgruped: ExpenseModel[], crecimiento: (account: string) => string, accounts: AccountModel[]}) {
+export default function BentoInformation ({expenses, crecimiento, accounts, loadingAccounts}: {expenses: ExpenseModel[], crecimiento: (account: string) => string, accounts: AccountModel[], loadingAccounts: boolean}) {
 
   const [accountSelected, setAccountSelected] = useState('')
   const [debtSelected, setDebtSelected] = useState('')
 
-  const {loading: loadingAccounts} = useAccounts()
   const {data:debts, loading: loadingDebts} = useDebts()
 
-  const datosLinea = expensesAgruped.reduce((acc: any, gasto) => {
-      const dia = parseInt(gasto.date.split("-")[2])
-      if (acc[dia]) {
-        acc[dia].value += gasto.value
-      } else {
-        acc[dia] = { dia, value: gasto.value }
-      }
-      return acc
-    }, {})
+  const datosLinea = expenses.reduce((acc: any, gasto) => {
+    const dia = parseInt(gasto.date.split("-")[2])
+    if (acc[dia]) {
+      acc[dia].value += gasto.value
+    } else {
+      acc[dia] = { dia, value: gasto.value }
+    }
+    return acc
+  }, {})
 
   const datosLineaArray = Object.values(datosLinea).sort((a: any, b:any) => a.dia - b.dia)
 
@@ -55,17 +53,17 @@ export default function BentoInformation ({expensesAgruped, crecimiento, account
                   : !accounts.length ? <Link href={newUrl('accounts')} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
                 }
               </h2>
-                <div className="flex items-center mt-2 text-sm">
-                  {parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? (
-                    <TrendingUp className="w-4 h-4 mr-1 text-green-500" />
-                  ) : (
-                    <TrendingDown className="w-4 h-4 mr-1 text-red-500" />
-                  )}
-                  <span className={parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? "text-green-500" : "text-red-500"}>
-                    {crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)}% este mes
-                  </span>
-                </div>
-              </>
+              <div className="flex items-center mt-2 text-sm">
+                {parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? (
+                  <TrendingUp className="w-4 h-4 mr-1 text-green-700" />
+                ) : (
+                  <TrendingDown className="w-4 h-4 mr-1 text-red-500" />
+                )}
+                <span className={parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? "text-green-700" : "text-red-500"}>
+                  {crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)}% este mes
+                </span>
+              </div>
+            </>
           )
         }
       </div>

@@ -28,7 +28,7 @@ export default function useAccounts() {
     getData(params.user as string);
 
     return () => setRefresh(false)
-  }, [params.user, refresh]);
+  }, [refresh]);
 
   return { data, loading, setRefresh, setData, router };
 }

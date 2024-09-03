@@ -4,23 +4,29 @@ import { toast } from "sonner"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ExpenseAgrupedModel } from "../../models/ExpenseAgruped"
 
-export default function TableExpenses ({data, refresh, monthCurrent}: {data: ExpenseAgrupedModel[], refresh: any, monthCurrent: number}) {
+interface Props {
+  data: ExpenseAgrupedModel[]
+  monthCurrent: number
+  refresh: React.Dispatch<boolean>
+}
+
+export default function TableExpenses (props: Props) {
+  const {data, monthCurrent, refresh} = props
 
   const handleDelete = async (id: number) => {
     const res = await fetch(`/api/expenses?id=${id}`, {
       method: 'DELETE',
     })
     const data = await res.json()
-    refresh()
+    refresh(true)
     if(data) toast.info('Gasto eliminado, dinero devuelto a la cuenta...')
   }
 
   return (
     <>
-    <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4">
+    <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3">
       <span>Categoria</span>
-      <span className="hidden md:block">Cuenta</span>
-      <span>Fecha</span>
+      <span >Cuenta</span>
       <span>Valor</span>
     </header>
     <div className='max-h-[400px] overflow-y-auto'>
@@ -34,15 +40,13 @@ export default function TableExpenses ({data, refresh, monthCurrent}: {data: Exp
                   <div className="flex flex-col" key={item.id}>
                   <Dialog>
                     <DialogTrigger asChild>
-                      <div className="py-5 grid grid-cols-3 md:grid-cols-4 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer">
+                      <div className="py-5 grid grid-cols-3 items-center border-b text-sm md:text-md hover:bg-[#201D1D] cursor-pointer">
                         <div className="flex gap-2 items-center text-white">
                           <div>
                             <span>{item?.categoryname}</span>
-                            <p className="opacity-70 text-sm">{item?.description}</p>
                           </div>
                         </div>
-                          <p className="text-white opacity-70 hidden md:block">{item?.accountname}</p>
-                        <span className='text-white opacity-70'>{FormatDate(item?.date)}</span>
+                          <p className="text-white opacity-70">{item?.accountname}</p>
                         <span className='text-red-400 font-medium'> - $ {item?.value?.toLocaleString()}</span>
                       </div>
                     </DialogTrigger>

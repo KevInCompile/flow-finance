@@ -5,14 +5,13 @@ import useModal from "@/app/components/Modal/useModal";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
-import useAccounts from "../../accounts/hooks/useAccounts";
 import createExpense from "../actions/expense.actions";
 import useCategories from "../hooks/useCategories";
+import { AccountModel } from "../../accounts/models/account.model";
 
-export default function ModalNewExpense({refresh}: any) {
+export default function ModalNewExpense({refresh, accounts}: {refresh: any, accounts: AccountModel[]}) {
   const [loading, setLoading] = useState(false)
   const {categories} = useCategories()
-  const {data: accounts} = useAccounts()
   const {handleCloseModal} = useModal()
   const [value, setValue] = useState('')
   const {user} = useParams()

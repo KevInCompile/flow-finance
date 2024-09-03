@@ -1,10 +1,10 @@
+import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { serviceIncomes } from "../service/income.service";
-import { useSession } from "next-auth/react";
 import deleteIncomeService from "../../../services/delete-income.service";
 import { toast } from "sonner";
 
-interface IncomeModel {
+export interface IncomeModel {
   id: number
   username: string
   typeincome: string
@@ -16,10 +16,10 @@ interface IncomeModel {
 
 export default function useIncomes () {
   const [data, setData] = useState<IncomeModel[]>([])
-  const {data: session} = useSession()
+  const {user} = useParams()
 
   const getData = async () => {
-    const response = await serviceIncomes(session?.user?.name ?? '')
+    const response = await serviceIncomes(user as string)
     if(response.length) return setData(response)
     return setData([])
   }
@@ -36,8 +36,7 @@ export default function useIncomes () {
 
   useEffect(() => {
     getData()
-  }, [session?.user?.name])
-
+  }, [])
 
   return {
     data,
