@@ -7,7 +7,7 @@ export default function OpenButton() {
     <div>
       <button
         onClick={handleShowModal}
-        className="bg-transparent rounded-md p-2 hover:scale-105 transition-transform ease-out"
+        className="bg-transparent rounded-md p-2 hover:scale-105 transition-transform ease-out registrar-movimiento"
       >
         <svg xmlns="http://www.w3.org/2000/svg" className="icon icon-tabler icon-tabler-square-rounded-plus-filled" width="44" height="44" viewBox="0 0 24 24" strokeWidth="1.5" stroke="#ffffff" fill="none" strokeLinecap="round" strokeLinejoin="round">
           <path stroke="none" d="M0 0h24v24H0z" fill="none"/>

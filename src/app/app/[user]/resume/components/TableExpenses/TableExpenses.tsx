@@ -7,18 +7,18 @@ import { ExpenseAgrupedModel } from "../../models/ExpenseAgruped"
 interface Props {
   data: ExpenseAgrupedModel[]
   monthCurrent: number
-  refresh: React.Dispatch<boolean>
+  refresh: () => void
 }
 
 export default function TableExpenses (props: Props) {
-  const {data, monthCurrent, refresh} = props
+  const { data, monthCurrent, refresh } = props
 
   const handleDelete = async (id: number) => {
     const res = await fetch(`/api/expenses?id=${id}`, {
       method: 'DELETE',
     })
     const data = await res.json()
-    refresh(true)
+    refresh()
     if(data) toast.info('Gasto eliminado, dinero devuelto a la cuenta...')
   }
 
@@ -29,7 +29,7 @@ export default function TableExpenses (props: Props) {
       <span >Cuenta</span>
       <span>Valor</span>
     </header>
-    <div className='max-h-[400px] overflow-y-auto'>
+    <div className='max-h-[400px] overflow-y-auto movimientos'>
       {
         data.length >= 1 ?
             data.map((item) => {

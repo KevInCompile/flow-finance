@@ -5,7 +5,6 @@ import Head from "@/app/components/Head/Head";
 import SkeletonTable from "@/app/loaders/SkeletonTable";
 import OpenButton from "../accounts/OpenButton/OpenButton";
 import useAccounts from "../accounts/hooks/useAccounts";
-import BentoInformation from "./components/BentoInformation/BentoInformation";
 import ModalNewExpense from "./components/ModalNewExpense";
 import TableExpenses from "./components/TableExpenses/TableExpenses";
 import useExpenses from "./hooks/useExpenses";
@@ -16,14 +15,21 @@ import { ExpenseAgrupedModel } from "./models/ExpenseAgruped";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TableIncomes from "./components/TableIncomes/TableIncomes";
 import useIncomes from "./components/TableIncomes/hooks/useIncomes";
-import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { Button } from "@/components/ui/button";
+import { CircleHelp } from "lucide-react";
+import dynamic from "next/dynamic";
+import Tour from "./utils/steps-tour";
+
+const BentoInformation = dynamic(() => import( "./components/BentoInformation/BentoInformation"), {ssr: false})
+
 
 export default function Resume() {
   const { data: accounts, loading: loadingAccounts, setRefresh } = useAccounts()
   const { expenses, loading: loadingExpenses, setRefresh: setRefreshExpenses } = useExpenses()
-  const {data: incomes, deleteIncome} = useIncomes()
+  const {data: incomes, deleteIncome, setData: setIncomes} = useIncomes()
   const [mesActual, setMesActual] = useState(0)
   const [anioActual, setAnioActual] = useState(2024)
+  const [tour, setTour] = useState(false)
 
   const currentDate = new Date()
   const monthName = monthNames[mesActual]
@@ -88,14 +94,24 @@ export default function Resume() {
     }
   }
 
+
   return (
     <>
       <Head />
+      <Tour runTour={tour}  />
       <div>
         <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
-          <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in'>Resumen</h1>
+          <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in flex items-center'>
+            Resumen
+            <Button className="text-white" onClick={() => setTour(true)}><CircleHelp /></Button>
+          </h1>
           <div className='grid grid-cols-1 lg:grid-cols-2 mt-3 gap-5'>
-            <BentoInformation expenses={gastosFiltrados} crecimiento={calcularCrecimiento} accounts={accounts} loadingAccounts={loadingAccounts} />
+            <BentoInformation
+              expenses={gastosFiltrados}
+              crecimiento={calcularCrecimiento}
+              accounts={accounts}
+              loadingAccounts={loadingAccounts}
+            />
           </div>
           <div className="mt-12">
             <div className="grid grid-cols-2 items-center">
@@ -121,17 +137,25 @@ export default function Resume() {
                       <TabsTrigger value="ingresos">Ingresos</TabsTrigger>
                     </TabsList>
                     <TabsContent value="gastos">
-                      <TableExpenses data={gastosAgrupados} monthCurrent={mesActual} refresh={setRefresh} />
+                      <TableExpenses
+                        data={gastosAgrupados}
+                        monthCurrent={mesActual}
+                        refresh={refreshData}
+                       />
                     </TabsContent>
                     <TabsContent value='ingresos'>
-                      <TableIncomes monthCurrent={mesActual} yearCurrent={anioActual} incomes={incomes} deleteIncome={deleteIncome} />
+                      <TableIncomes
+                        monthCurrent={mesActual}
+                        yearCurrent={anioActual}
+                        incomes={incomes}
+                        deleteIncome={deleteIncome} />
                     </TabsContent>
                   </Tabs>
                 )
             }
           </div>
         </section>
-        <ModalNewExpense refresh={refreshData} accounts={accounts} />
+        <ModalNewExpense refresh={refreshData} accounts={accounts} setIncomes={setIncomes} incomes={incomes} />
       </div>
     </>
   );

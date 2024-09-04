@@ -25,6 +25,7 @@
     "react": "18",
     "react-content-loader": "^7.0.0",
     "react-dom": "18",
+    "react-joyride": "^2.8.2",
     "recharts": "^2.12.7",
     "sonner": "^1.4.41",
     "tailwind-merge": "^2.5.2",

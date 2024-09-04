@@ -40,6 +40,7 @@ export default function useIncomes () {
 
   return {
     data,
-    deleteIncome
+    deleteIncome,
+    setData
   }
 }

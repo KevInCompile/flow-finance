@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import SkeletonResume from "@/app/loaders/SkeletonResume"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { ExpenseModel } from "../../hooks/useExpenses"
@@ -31,7 +31,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
 
   return (
     <div className='grid grid-cols-2 min-h-[290px]'>
-      <div className="py-4 px-5 flex flex-col gap-3 bg-gradient-to-r from-purple-200 to-purple-300 items-start rounded-tl-md">
+      <div className="py-4 px-5 flex flex-col gap-3 bg-gradient-to-r from-purple-200 to-purple-300 items-start rounded-tl-md saldo-total">
         {
           loadingAccounts ? <SkeletonResume />
           : (
@@ -50,7 +50,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
                 {
                   accounts.length >= 1 && accountSelected === ''
                   ? '$ ' + accounts[0]?.value.toLocaleString()
-                  : !accounts.length ? <Link href={newUrl('accounts')} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
+                  : !accounts.length ? <Link href={''} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
                 }
               </h2>
               <div className="flex items-center mt-2 text-sm">
@@ -67,7 +67,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
           )
         }
       </div>
-      <div className="py-4 px-5 flex flex-col gap-3 items-start text-white bg-[#1F1D1D] rounded-tr-md border-b border-r border-t">
+      <div className="py-4 px-5 flex flex-col gap-3 items-start text-white bg-[#1F1D1D] rounded-tr-md border-b border-r border-t deudas">
         {
           loadingDebts ? <SkeletonResume /> :
             <>
@@ -92,7 +92,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
             </>
         }
       </div>
-      <div className="py-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 ">
+      <div className="py-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 grafico">
         <h3 className="my-2">Gráfico</h3>
         <ResponsiveContainer width="100%" height={200}>
           <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -100,7 +100,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
             <XAxis dataKey="dia" />
             <YAxis />
             <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#8884d8" activeDot={{ r: 8 }} />
+            <Line type="monotone" dataKey="value" stroke="#c49422" activeDot={{ r: 8 }} />
           </LineChart>
         </ResponsiveContainer>
       </div>

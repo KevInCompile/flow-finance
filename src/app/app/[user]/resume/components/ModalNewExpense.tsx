@@ -11,28 +11,33 @@ import { AccountModel } from "../../accounts/models/account.model";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import createIncome from "../actions/income.actions";
+import { IncomeModel } from "./TableIncomes/hooks/useIncomes";
 
 interface Props {
-  refresh: React.Dispatch<boolean>
+  refresh: () => void
   accounts: AccountModel[]
+  setIncomes: React.Dispatch<IncomeModel[]>
+  incomes: IncomeModel[]
+}
+
+const INITIAL_STATE = {
+  description: '',
+  categoryid: 0,
+  accountid: 0
 }
 
 export default function ModalNewExpense(props: Props) {
-  const {refresh, accounts} = props
+  const { refresh, accounts, setIncomes, incomes } = props
   const [loading, setLoading] = useState(false)
-  const {categories} = useCategories()
-  const {handleCloseModal} = useModal()
+  const { categories } = useCategories()
+  const { handleCloseModal } = useModal()
   const [value, setValue] = useState('')
-  const {user} = useParams()
+  const { user } = useParams()
   const [movetype, setMoveType] = useState("expense")
 
   const fecha = new Date().toISOString().split('T')[0]
 
-  const [data, setData] = useState({
-    description: '',
-    categoryid: 0,
-    accountid: 0
-  })
+  const [data, setData] = useState(INITIAL_STATE)
 
   const sendMove = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -49,17 +54,20 @@ export default function ModalNewExpense(props: Props) {
       ...data,
       [name]: value
     })
-
   }
 
   const handleIncome = async () => {
 
-    const [error] = await createIncome({ accountId: data.accountid, value, typeIncome: data.description, username: user, date: fecha })
+    const [error, response] = await createIncome({ accountId: data.accountid, value, typeIncome: data.description, username: user, date: fecha })
     handleCloseModal()
+    setIncomes([...incomes, response.result])
+    setData(INITIAL_STATE)
+    refresh()
     if (error) {
      toast.error(error)
     } else {
-      toast.success('Ingreso eliminado, dinero removido de la cuenta')
+      refresh()
+      toast.success('Ingreso eliminado, dinero removido de la cuenta.')
     }
   }
 
@@ -70,12 +78,13 @@ export default function ModalNewExpense(props: Props) {
       categoryId: data.categoryid,
       username: user,
       description: data.description,
+      date: fecha,
       value
     });
-
     handleCloseModal()
     if(error) return toast.warning('Error al registrar el gasto...')
-    refresh(true)
+    refresh()
+    setData(INITIAL_STATE)
     // reset form and values
     setValue('')
     // Finally create
