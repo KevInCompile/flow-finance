@@ -12,11 +12,7 @@ const steps: Step[] = [
     },
     {
       target: ".grafico",
-      content: "En este grafico puedes ver reflejado de forma visual los dias en los mas generaste gastos"
-    },
-    {
-      target: ".gastos-diarios",
-      content: "Este gráfico muestra tus gastos diarios del mes actual. Puedes navegar entre los meses usando los botones 'Anterior' y 'Siguiente'.",
+      content: "Este gráfico muestra tus gastos diarios del mes actual. Puedes navegar entre los meses usando los botones 'Anterior' y 'Siguiente'."
     },
     {
       target: ".registrar-movimiento",

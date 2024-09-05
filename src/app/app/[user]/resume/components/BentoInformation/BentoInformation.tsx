@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import SkeletonResume from "@/app/loaders/SkeletonResume"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts"
 import { ExpenseModel } from "../../hooks/useExpenses"
@@ -53,16 +53,20 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
                   : !accounts.length ? <Link href={''} className="text-purple-500 text-sm underline animate-pulse">Agregar cuentas</Link> : '$ ' + accounts?.filter((item) => item.name === accountSelected)[0]?.value?.toLocaleString()
                 }
               </h2>
-              <div className="flex items-center mt-2 text-sm">
-                {parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? (
-                  <TrendingUp className="w-4 h-4 mr-1 text-green-700" />
-                ) : (
-                  <TrendingDown className="w-4 h-4 mr-1 text-red-500" />
-                )}
-                <span className={parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? "text-green-700" : "text-red-500"}>
-                  {crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)}% este mes
-                </span>
-              </div>
+                {
+                  accounts.length > 1 && (
+                    <div className="flex items-center mt-2 text-sm">
+                      {parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? (
+                        <TrendingUp className="w-4 h-4 mr-1 text-green-700" />
+                      ) : (
+                        <TrendingDown className="w-4 h-4 mr-1 text-red-500" />
+                      )}
+                      <span className={parseFloat(crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)) >= 0 ? "text-green-700" : "text-red-500"}>
+                        {crecimiento(accounts.length >= 1 && accountSelected === '' ? accounts[0].name : accountSelected)}% este mes
+                      </span>
+                    </div>
+                  )
+                }
             </>
           )
         }
@@ -92,17 +96,21 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
             </>
         }
       </div>
-      <div className="py-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 grafico">
-        <h3 className="my-2">Gráfico</h3>
-        <ResponsiveContainer width="100%" height={200}>
-          <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="dia" />
-            <YAxis />
-            <Tooltip />
-            <Line type="monotone" dataKey="value" stroke="#c49422" activeDot={{ r: 8 }} />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="py-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 grafico">
+          <h3 className="my-2">Gráfico</h3>
+        {
+          datosLinea.length > 1 && (
+            <ResponsiveContainer width="100%" height={200}>
+              <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="dia" />
+                <YAxis />
+                <Tooltip />
+                <Line type="monotone" dataKey="value" stroke="#c49422" activeDot={{ r: 8 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          )
+        }
       </div>
     </div>
   )

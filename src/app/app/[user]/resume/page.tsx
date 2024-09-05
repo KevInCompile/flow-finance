@@ -94,11 +94,25 @@ export default function Resume() {
     }
   }
 
+  const obtenerConsejoFinanciero = () => {
+    const totalGastos = gastosFiltrados.reduce((total, gasto) => total + gasto.value, 0)
+    const totalIngresos = ingresosFiltrados.reduce((total, ingreso) => total + ingreso.value, 0)
+    const porcentajeGastos = (totalGastos / totalIngresos) * 100
+
+    if (porcentajeGastos > 80) {
+      return "Estás gastando más del 80% de tus ingresos. Considera reducir gastos no esenciales."
+    } else if (porcentajeGastos > 50) {
+      return "Tu nivel de gastos es moderado. Intenta aumentar tus ahorros si es posible."
+    } else {
+      return "¡Buen trabajo! Estás manteniendo tus gastos bajo control. Considera invertir el excedente."
+    }
+  }
+
 
   return (
     <>
-      <Head />
       <Tour runTour={tour}  />
+      <Head />
       <div>
         <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
           <h1 className='text-2xl font-medium text-start text-[var(--color-usage)] pb-2 animate-fade-in flex items-center'>
@@ -113,8 +127,11 @@ export default function Resume() {
               loadingAccounts={loadingAccounts}
             />
           </div>
-          <div className="mt-12">
-            <div className="grid grid-cols-2 items-center">
+          <div className="mt-5">
+            {
+              expenses.length > 1 && <small className="italic opacity-70">{obtenerConsejoFinanciero()}</small>
+            }
+            <div className="grid grid-cols-2 items-center mt-4">
               <div className="flex gap-3 items-center">
                 <h3 className="text-md md:text-2xl text-[var(--color-usage)] font-medium">{monthName} - {anioActual }</h3>
                 <OpenButton />
@@ -128,6 +145,7 @@ export default function Resume() {
                 </button>
               </div>
             </div>
+
             {
               loadingExpenses ? <SkeletonTable />
               : (
