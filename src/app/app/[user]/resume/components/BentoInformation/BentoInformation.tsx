@@ -99,7 +99,7 @@ export default function BentoInformation ({expenses, crecimiento, accounts, load
         <div className="py-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-br-md rounded-bl-md border-l border-b border-r col-span-2 grafico">
           <h3 className="my-2">Gráfico</h3>
         {
-          datosLinea.length > 1 && (
+          datosLineaArray.length > 1 && (
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
