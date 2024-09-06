@@ -25,7 +25,6 @@ const steps: Step[] = [
   ]
 
 export default function Tour ({runTour}: {runTour: boolean}) {
-
   return (
     <Joyride
       steps={steps}
