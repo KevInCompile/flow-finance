@@ -38,10 +38,6 @@ export default function CardDebt(props: PropsCardDebt) {
 
   return (
     <div className="bg-[#242424/50] rounded-md py-2 border border-gray-500 relative">
-      <DeleteConfirmation
-        deleteItem={deleteDebt}
-        message="Quiere eliminar la deuda?"
-      />
       <div className="flex justify-between items-center border-b border-palette px-3 pb-2 flex-wrap">
         <div className="hidden md:block">
           <h2 className="text-[var(--color-usage)] font-medium text-sm">
@@ -49,8 +45,12 @@ export default function CardDebt(props: PropsCardDebt) {
           </h2>
         </div>
         <div className="text-center">
-          <h1 className="text-[var(--palette)] font-bold">
-            ${totaldue?.toLocaleString()}{" "}
+          <h1 className="text-[var(--palette)] font-bold flex items-center gap-1">
+            ${totaldue?.toLocaleString()}
+            <DeleteConfirmation
+              deleteItem={deleteDebt}
+              message="¿Quiere eliminar la deuda?"
+            />
           </h1>
           <span className="text-[var(--color-usage)] text-sm">
             {description}{" "}
