@@ -1,8 +1,8 @@
-import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
-import { serviceIncomes } from "../service/income.service";
-import deleteIncomeService from "../../../services/delete-income.service";
-import { toast } from "sonner";
+import { useParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { serviceIncomes } from '../services/incomes.service'
+import deleteIncomeService from '../services/delete-income.service'
+import { toast } from 'sonner'
 
 export interface IncomeModel {
   id: number
@@ -14,23 +14,23 @@ export interface IncomeModel {
   account: string
 }
 
-export default function useIncomes () {
+export default function useIncomes() {
   const [data, setData] = useState<IncomeModel[]>([])
-  const {user} = useParams()
+  const { user } = useParams()
 
   const getData = async () => {
     const response = await serviceIncomes(user as string)
-    if(response.length) return setData(response)
+    if (response.length) return setData(response)
     return setData([])
   }
 
   const deleteIncome = async (id: number) => {
     const [error, message] = await deleteIncomeService(id)
-    if(error){
+    if (error) {
       toast.error(error)
-    }else{
+    } else {
       toast.success(message)
-      setData(data.filter(item => item.id !== id))
+      setData(data.filter((item) => item.id !== id))
     }
   }
 

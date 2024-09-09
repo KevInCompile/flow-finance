@@ -1,11 +1,11 @@
-import axios from "axios"
+import axios from 'axios'
 
 export const serviceIncomes = async (username: string) => {
   try {
     const fetching = await axios.get(`/api/income?username=${username}`)
-    const {data} = fetching
+    const { data } = fetching
     return data.result
-  }catch(e){
+  } catch (e) {
     console.log(e)
   }
 }

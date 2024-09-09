@@ -1,4 +1,4 @@
-import { IncomeModel } from "../components/TableIncomes/hooks/useIncomes";
-import { ExpenseModel } from "../hooks/useExpenses";
+import { ExpenseModel } from '../hooks/useExpenses'
+import { IncomeModel } from './IncomeModel'
 
 export interface DataAgruped extends ExpenseModel, IncomeModel {}
