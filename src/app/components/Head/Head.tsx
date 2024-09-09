@@ -25,7 +25,7 @@ export default function Head() {
               </div>
             </label>
             <span className="hidden md:block font-bold text-secondary">
-              {session?.user?.name}
+              Hello, {session?.user?.name}
             </span>
           </div>
         ) : (

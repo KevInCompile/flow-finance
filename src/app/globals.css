@@ -2,37 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Estilo del contenedor del toggle */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+}
+
+/* Ocultar el checkbox original */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Estilo del slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #d8b4fe;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 12px;
+  width: 12px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+/* Estado activado (cuando est� checked) */
+input:checked + .slider {
+  background-color: #a855f7;
+}
+
+input:checked + .slider:before {
+  transform: translateX(20px);
+}
+
+/* Estilo del slider cuando est� redondeado */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
 @layer base {
   :root {
-      --background: #222222;
-      --foreground: #fff;
-      --card: 222.2 84% 4.9%;
-      --card-foreground: 210 40% 98%;
-      --popover: 222.2 84% 4.9%;
-      --popover-foreground: 210 40% 98%;
-      --primary: 210 40% 98%;
-      --primary-foreground: 222.2 47.4% 11.2%;
-      --secondary: 217.2 32.6% 17.5%;
-      --secondary-foreground: 210 40% 98%;
-      --muted: 217.2 32.6% 17.5%;
-      --muted-foreground: 215 20.2% 65.1%;
-      --accent: 217.2 32.6% 17.5%;
-      --accent-foreground: 210 40% 98%;
-      --destructive: 0 62.8% 30.6%;
-      --destructive-foreground: 210 40% 98%;
-      --border: 210 40% 98%;
-      --input: 217.2 32.6% 17.5%;
-      --ring: 212.7 26.8% 83.9%;
-      --chart-1: 220 70% 50%;
-      --chart-2: 160 60% 45%;
-      --chart-3: 30 80% 55%;
-      --chart-4: 280 65% 60%;
-      --chart-5: 340 75% 55%;
-      --color-usage: #ddd6fe;
-      --palette: #dcac0a;
-      --dark:#242424;
-      --radius:8px;
-      --accent-gradient: linear-gradient(45deg, rgb(220 172 10), rgb(221, 214, 254) 80%);
+    --background: #222222;
+    --foreground: #fff;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 210 40% 98%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+    --color-usage: #ddd6fe;
+    --palette: #dcac0a;
+    --dark: #242424;
+    --radius: 8px;
+    --accent-gradient: linear-gradient(
+      45deg,
+      rgb(220 172 10),
+      rgb(221, 214, 254) 80%
+    );
   }
   .dark {
     --background: 0 0% 100%;
@@ -65,24 +127,24 @@
   }
 }
 
-.bg-gradient{
-    background-image: url(../../public/noise-extra.webp), var(--accent-gradient);
-    -webkit-text-fill-color: transparent;
-    -webkit-background-clip: text;
-    background-position: 0;
-    background-size: 200px,100%;
+.bg-gradient {
+  background-image: url(../../public/noise-extra.webp), var(--accent-gradient);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-position: 0;
+  background-size: 200px, 100%;
 }
 
-.selectField{
-    width: 100%;
-    height: 50px;
-    border-radius: 6px;
-    font-size: 15px;
-    padding: 0px 15px;
-    border: 2px solid #fff;
-    color: #fff;
-    outline: none;
-    background: transparent;
+.selectField {
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  font-size: 15px;
+  padding: 0px 15px;
+  border: 2px solid #fff;
+  color: #fff;
+  outline: none;
+  background: transparent;
 }
 
 @layer base {
