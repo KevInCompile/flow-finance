@@ -141,19 +141,19 @@ export default function BentoInformation({
             </div>
           </>
         )}
-        <div className="grid grid-cols-3 w-full border-t">
+        <div className="grid grid-cols-3 w-full border-t border-gray-500">
           <button
             onClick={showModal}
-            className="flex items-center gap-1 text-primary border-r justify-center p-4"
+            className="flex items-center gap-1 text-primary border-r justify-center p-4 border-gray-500 hover:bg-purple-600 hover:rounded-bl-lg"
           >
             <ArrowUpRight className="text-purple-400" />
             <span className="text-sm">Expense</span>
           </button>
-          <button className="flex items-center gap-1 text-primary border-r justify-center p-4">
+          <button className="flex items-center gap-1 text-primary border-r justify-center p-4 border-gray-500  hover:bg-purple-600">
             <ArrowDownLeft className="text-purple-400" />
             <span className="text-sm">Request</span>
           </button>
-          <button className="flex items-center gap-1 text-primary justify-center p-4">
+          <button className="flex items-center gap-1 text-primary justify-center p-4 hover:bg-purple-600 rounded-br-lg ">
             <SendToBack className="text-purple-400" />
             <span className="text-sm">Exchange</span>
           </button>
