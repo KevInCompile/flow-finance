@@ -29,7 +29,7 @@ export default function Head() {
             </span>
           </div>
         ) : (
-          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">v 0.7.4</div>
+          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">v 0.8.5</div>
         )}
       </div>
       <div>
