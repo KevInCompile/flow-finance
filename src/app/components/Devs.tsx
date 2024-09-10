@@ -1,12 +1,10 @@
-import Image from "next/image";
-import GithubIcon from "../icons/GithubIcon";
+import Image from 'next/image'
+import GithubIcon from '../icons/GithubIcon'
 
 export default function Devs() {
   return (
     <div className="max-w-[800px] m-auto [line-height:3rem] my-10">
-      <h2 className="text-center text-3xl font-medium text-secondary">
-        Esta app es para ustedes realizada por:
-      </h2>
+      <h2 className="text-center text-3xl font-medium text-purple-500">Designed by</h2>
       <div className="flex flex-wrap gap-5 justify-center py-5">
         <button className="bg-[#333]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">
           <div className="flex gap-5 items-center justify-between">
@@ -27,5 +25,5 @@ export default function Devs() {
         </button>
       </div>
     </div>
-  );
+  )
 }

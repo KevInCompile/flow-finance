@@ -32,7 +32,7 @@
 
 .slider:before {
   position: absolute;
-  content: "";
+  content: '';
   height: 12px;
   width: 12px;
   left: 4px;
@@ -62,7 +62,7 @@ input:checked + .slider:before {
 
 @layer base {
   :root {
-    --background: #222222;
+    --background: #191919;
     --foreground: #fff;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
@@ -88,13 +88,9 @@ input:checked + .slider:before {
     --chart-5: 340 75% 55%;
     --color-usage: #ddd6fe;
     --palette: #dcac0a;
-    --dark: #242424;
+    --dark: #191919;
     --radius: 8px;
-    --accent-gradient: linear-gradient(
-      45deg,
-      rgb(220 172 10),
-      rgb(221, 214, 254) 80%
-    );
+    --accent-gradient: linear-gradient(45deg, rgb(220 172 10), rgb(168, 85, 247) 80%);
   }
   .dark {
     --background: 0 0% 100%;
