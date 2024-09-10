@@ -6,36 +6,53 @@ import { ArrowDownLeft, ArrowUpRight, SendToBack, TrendingDown, TrendingUp } fro
 import { AccountModel } from '../../../accounts/models/account.model'
 import { formatCOP } from '../../utils/formatPrice'
 import { DataAgruped } from '../../models/ExpensesIncomesModel'
+import useModal from '@/app/components/Modal/useModal'
+import ModalNewExpense from '../ModalNewExpense'
+import { IncomeModel } from '../../models/IncomeModel'
 // ICONS
 
 export default function BentoInformation({
   expenses,
   crecimiento,
   accounts,
-  loadingAccounts,
-  showModal
+  incomes,
+  refreshData,
+  setIncomes,
+  loadingAccounts
 }: {
   expenses: any
   crecimiento: (account: string) => string
   accounts: AccountModel[]
   loadingAccounts: boolean
-  showModal: () => void
+  incomes: IncomeModel[]
+  setIncomes: (incomes: IncomeModel[]) => void
+  refreshData: () => void
 }) {
   const [accountSelected, setAccountSelected] = useState('')
+  const [typeAction, setTypeAction] = useState('')
+  const { handleShowModal } = useModal()
 
-  const datosLinea = expenses.reduce((acc: any, gasto: DataAgruped) => {
-    const dia = parseInt(gasto.date.split('-')[2])
-    if (acc[dia]) {
-      acc[dia].value += gasto.value
-      acc[dia] = { dia, value: gasto.value }
-    }
-    return acc
-  }, {})
+  const datosLinea = expenses
+    .filter((item: any) => item.type === 'expense')
+    .reduce((acc: any, gasto: DataAgruped) => {
+      const dia = parseInt(gasto.date.split('-')[2])
+      if (acc[dia]) {
+        acc[dia].value += gasto.value
+      } else {
+        acc[dia] = { dia, value: gasto.value }
+      }
+      return acc
+    }, {})
 
   const datosLineaArray = Object.values(datosLinea).sort((a: any, b: any) => a.dia - b.dia)
 
   const baseUrl = window.location.pathname
   const newUrl = (route: string) => baseUrl.replace('resume', route)
+
+  const handleChangeTypeAction = (action: string) => {
+    setTypeAction(action)
+    handleShowModal()
+  }
 
   return (
     <div>
@@ -99,7 +116,7 @@ export default function BentoInformation({
         )}
         <div className="grid grid-cols-3 w-full border-t border-gray-500">
           <button
-            onClick={showModal}
+            onClick={() => handleChangeTypeAction('expense')}
             className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 rounded-bl-lg hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed' : ''}`}
             disabled={accounts.length < 1}
           >
@@ -107,6 +124,7 @@ export default function BentoInformation({
             <span className="text-sm">Expense</span>
           </button>
           <button
+            onClick={() => handleChangeTypeAction('income')}
             className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed' : ''}`}
             disabled={accounts.length < 1}
           >
@@ -114,15 +132,15 @@ export default function BentoInformation({
             <span className="text-sm">Request</span>
           </button>
           <button
-            className={`flex items-center gap-1 text-primary justify-center p-4 hover:bg-purple-600 rounded-br-lg ${accounts.length < 1 ? 'cursor-not-allowed' : ''}`}
-            disabled={accounts.length < 1}
+            className={`flex items-center gap-1 text-primary justify-center p-4 hover:bg-purple-600 rounded-br-lg cursor-not-allowed opacity-50`}
+            disabled={true}
           >
             <SendToBack className="text-purple-400" />
             <span className="text-sm">Exchange</span>
           </button>
         </div>
       </div>
-      {datosLineaArray.length > 1 && (
+      {datosLineaArray.length >= 1 && (
         <>
           <h3 className="py-6 text-purple-300 font-semibold text-md md:text-2xl">Statistics of expenses</h3>
           <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-xl border border-gray-500 grafico">
@@ -138,6 +156,13 @@ export default function BentoInformation({
           </div>
         </>
       )}
+      <ModalNewExpense
+        refresh={refreshData}
+        accounts={accounts}
+        setIncomes={setIncomes}
+        incomes={incomes}
+        typeAction={typeAction}
+      />
     </div>
   )
 }

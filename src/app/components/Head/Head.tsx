@@ -1,16 +1,16 @@
-"use client";
+'use client'
 
-import { signIn, useSession, signOut } from "next-auth/react";
-import MenuIcon from "@/app/icons/MenuIcon";
-import Aside from "./Aside";
-import GoogleIcon from "@/app/icons/GoogleIcon";
+import { signIn, useSession, signOut } from 'next-auth/react'
+import MenuIcon from '@/app/icons/MenuIcon'
+import Aside from './Aside'
+import GoogleIcon from '@/app/icons/GoogleIcon'
 
 export default function Head() {
-  const { data: session } = useSession();
+  const { data: session } = useSession()
 
   const handleSignIn = (provider: string) => {
-    signIn(provider);
-  };
+    signIn(provider)
+  }
 
   return (
     <nav className="flex justify-between p-5 px-10">
@@ -25,13 +25,11 @@ export default function Head() {
               </div>
             </label>
             <span className="hidden md:block font-bold text-secondary">
-              Hello, {session?.user?.name}
+              Hello, {session?.user?.name?.split(' ')[0]}
             </span>
           </div>
         ) : (
-          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v 0.7.4
-          </div>
+          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">v 0.7.4</div>
         )}
       </div>
       <div>
@@ -41,7 +39,7 @@ export default function Head() {
         {!session ? (
           <button
             className="bg-[#DDDDDD] text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
-            onClick={() => handleSignIn("google")}
+            onClick={() => handleSignIn('google')}
           >
             <GoogleIcon className="w-5 h-5" />
             Iniciar sesión
@@ -76,5 +74,5 @@ export default function Head() {
         {/* <ThemeToogle /> */}
       </div>
     </nav>
-  );
+  )
 }

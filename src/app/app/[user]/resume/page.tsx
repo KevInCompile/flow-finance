@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react'
 import Head from '@/app/components/Head/Head'
 import SkeletonTable from '@/app/loaders/SkeletonTable'
 import useAccounts from '../accounts/hooks/useAccounts'
-import ModalNewExpense from './components/ModalNewExpense'
 import useExpenses from './hooks/useExpenses'
 import { monthNames } from '@/app/utils/months'
 import BackIcon from './assets/back'
@@ -17,6 +16,7 @@ import dynamic from 'next/dynamic'
 import Tour from './utils/steps-tour'
 import useModal from '@/app/components/Modal/useModal'
 import { DataAgruped } from './models/ExpensesIncomesModel'
+import ModalNewExpense from './components/ModalNewExpense'
 
 const BentoInformation = dynamic(() => import('./components/BentoInformation/BentoInformation'), { ssr: false })
 
@@ -137,8 +137,10 @@ export default function Resume() {
             expenses={transactionsFilterForDate}
             crecimiento={calcularCrecimiento}
             accounts={accounts}
+            incomes={incomes}
+            refreshData={refreshData}
+            setIncomes={setIncomes}
             loadingAccounts={loadingAccounts}
-            showModal={handleShowModal}
           />
           <div className="border rounded-lg border-gray-500 bg-[#1F1D1D]">
             <div className="flex flex-row gap-5 justify-between p-4">
@@ -171,7 +173,6 @@ export default function Resume() {
           </div>
         </div>
       </section>
-      <ModalNewExpense refresh={refreshData} accounts={accounts} setIncomes={setIncomes} incomes={incomes} />
       <Tour runTour={tour} />
     </>
   )

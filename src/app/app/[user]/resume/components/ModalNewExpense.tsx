@@ -18,6 +18,7 @@ interface Props {
   accounts: AccountModel[]
   setIncomes: React.Dispatch<IncomeModel[]>
   incomes: IncomeModel[]
+  typeAction: string
 }
 
 const INITIAL_STATE = {
@@ -27,13 +28,12 @@ const INITIAL_STATE = {
 }
 
 export default function ModalNewExpense(props: Props) {
-  const { refresh, accounts, setIncomes, incomes } = props
+  const { refresh, accounts, setIncomes, incomes, typeAction } = props
   const [loading, setLoading] = useState(false)
   const { categories } = useCategories()
   const { handleCloseModal } = useModal()
   const [value, setValue] = useState('')
   const { user } = useParams()
-  const [movetype, setMoveType] = useState('expense')
 
   const fecha = new Date().toISOString().split('T')[0]
 
@@ -41,7 +41,7 @@ export default function ModalNewExpense(props: Props) {
 
   const sendMove = (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (movetype === 'expense') {
+    if (typeAction === 'expense') {
       postExpense()
     } else {
       handleIncome()
@@ -100,19 +100,11 @@ export default function ModalNewExpense(props: Props) {
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
-          <h1 className="text-2xl md:text-3xl font-medium text-yellow-400">Nuevo movimiento</h1>
+          <h1 className="text-2xl md:text-3xl font-medium text-yellow-400">
+            {typeAction === 'expense' ? 'Nuevo gasto' : 'Nuevo ingreso'}
+          </h1>
         </div>
         <form id="form" className="py-5 text-white" onSubmit={sendMove}>
-          <RadioGroup defaultValue="expense" onValueChange={setMoveType} className="flex space-x-4 pb-6">
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="expense" id="expense" />
-              <Label htmlFor="expense">Gasto</Label>
-            </div>
-            <div className="flex items-center space-x-2">
-              <RadioGroupItem value="income" id="income" />
-              <Label htmlFor="income">Ingreso</Label>
-            </div>
-          </RadioGroup>
           <div className="flex flex-col gap-1 pb-2">
             <Input
               type="text"
@@ -145,7 +137,7 @@ export default function ModalNewExpense(props: Props) {
               ))}
             </select>
           </div>
-          {movetype === 'expense' && (
+          {typeAction === 'expense' && (
             <div className="flex flex-col gap-1 pb-2">
               <span>
                 ¿En que lo usaste? <span className="text-red-500">*</span>
@@ -176,7 +168,7 @@ export default function ModalNewExpense(props: Props) {
               name="description"
               rows={2}
               value={data.description}
-              placeholder={movetype === 'expense' ? 'Tacos' : 'Salario, Freelance, etc...'}
+              placeholder={typeAction === 'expense' ? 'Tacos' : 'Salario, Freelance, etc...'}
               onChange={handleChange}
             />
           </div>
