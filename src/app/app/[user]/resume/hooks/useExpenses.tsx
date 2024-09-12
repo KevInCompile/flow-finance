@@ -12,6 +12,7 @@ export interface ExpenseModel {
   description: string;
   username: string;
   type: string;
+  typeincome?: string;
   details?: ExpenseModel[];
 }
 export default function useExpenses() {

@@ -1,107 +1,96 @@
-import { formatterValue } from '@/app/app/utils/formatterValue'
-import Input from '@/app/components/Input/Input'
-import Modal from '@/app/components/Modal/Modal'
-import useModal from '@/app/components/Modal/useModal'
-import { useParams } from 'next/navigation'
-import { useState } from 'react'
-import { toast } from 'sonner'
-import createExpense from '../actions/expense.actions'
-import useCategories from '../hooks/useCategories'
-import { AccountModel } from '../../accounts/models/account.model'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
-import createIncome from '../actions/income.actions'
-import { IncomeModel } from '../models/IncomeModel'
+import { formatterValue } from "@/app/app/utils/formatterValue";
+import Input from "@/app/components/Input/Input";
+import Modal from "@/app/components/Modal/Modal";
+import useModal from "@/app/components/Modal/useModal";
+import { useParams } from "next/navigation";
+import { SetStateAction, useState } from "react";
+import useCategories from "../hooks/useCategories";
+import { AccountModel } from "../../accounts/models/account.model";
+import { IncomeModel } from "../models/IncomeModel";
+import { addNewValueHelper } from "../helpers/addNewValue";
+import { handleIncomeHelper } from "../helpers/newIncome";
+import { handleExpenseHelper } from "../helpers/newExpense";
 
 interface Props {
-  refresh: () => void
-  accounts: AccountModel[]
-  setIncomes: React.Dispatch<IncomeModel[]>
-  incomes: IncomeModel[]
-  typeAction: string
+  accounts: AccountModel[];
+  setIncomes: React.Dispatch<SetStateAction<IncomeModel[]>>;
+  incomes: IncomeModel[];
+  typeAction: string;
+  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>;
 }
 
 const INITIAL_STATE = {
-  description: '',
+  description: "",
   categoryid: 0,
-  accountid: 0
-}
+  accountid: 0,
+  value: 0,
+};
 
 export default function ModalNewExpense(props: Props) {
-  const { refresh, accounts, setIncomes, incomes, typeAction } = props
-  const [loading, setLoading] = useState(false)
-  const { categories } = useCategories()
-  const { handleCloseModal } = useModal()
-  const [value, setValue] = useState('')
-  const { user } = useParams()
+  const { accounts, setIncomes, typeAction, setAccounts } = props;
+  const [loading, setLoading] = useState(false);
+  const { categories } = useCategories();
+  const { handleCloseModal } = useModal();
+  const [value, setValue] = useState("");
+  const { user } = useParams();
 
-  const fecha = new Date().toISOString().split('T')[0]
+  const fecha = new Date().toISOString().split("T")[0];
 
-  const [data, setData] = useState(INITIAL_STATE)
+  const [data, setData] = useState(INITIAL_STATE);
 
-  const sendMove = (e: React.ChangeEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    if (typeAction === 'expense') {
-      postExpense()
+  const sendMove = async (e: React.ChangeEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (typeAction === "expense") {
+      return handleExpenseHelper(
+        data,
+        user,
+        fecha,
+        value,
+        setLoading,
+        addNewValue,
+      );
     } else {
-      handleIncome()
+      return handleIncomeHelper(
+        data,
+        value,
+        user,
+        fecha,
+        setLoading,
+        setIncomes,
+        addNewValue,
+      );
     }
-  }
+  };
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target
+    const { name, value } = e.target;
     setData({
       ...data,
-      [name]: value
-    })
-  }
+      [name]: value,
+    });
+  };
 
-  const handleIncome = async () => {
-    const [error, response] = await createIncome({
-      accountId: data.accountid,
+  const addNewValue = (type: string) => {
+    // Call the helper function with necessary parameters
+    return addNewValueHelper(
+      type,
+      accounts,
+      data.accountid,
       value,
-      typeIncome: data.description,
-      username: user,
-      date: fecha
-    })
-    handleCloseModal()
-    setIncomes([...incomes, response.result])
-    setData(INITIAL_STATE)
-    refresh()
-    if (error) {
-      toast.error(error)
-    } else {
-      refresh()
-      toast.success('Ingreso eliminado, dinero removido de la cuenta.')
-    }
-  }
+      handleCloseModal,
+      setData,
+      setValue,
+      setAccounts,
+      INITIAL_STATE,
+    );
+  };
 
-  async function postExpense() {
-    setLoading(true)
-    const [error] = await createExpense({
-      accountId: data.accountid,
-      categoryId: data.categoryid,
-      username: user,
-      description: data.description,
-      date: fecha,
-      value
-    })
-    handleCloseModal()
-    if (error) return toast.warning('Error al registrar el gasto...')
-    refresh()
-    setData(INITIAL_STATE)
-    // reset form and values
-    setValue('')
-    // Finally create
-    setLoading(false)
-    return toast.success('Gasto registrado, dinero descontado de la cuenta')
-  }
   return (
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
           <h1 className="text-2xl md:text-3xl font-medium text-yellow-400">
-            {typeAction === 'expense' ? 'Nuevo gasto' : 'Nuevo ingreso'}
+            {typeAction === "expense" ? "Nuevo gasto" : "Nuevo ingreso"}
           </h1>
         </div>
         <form id="form" className="py-5 text-white" onSubmit={sendMove}>
@@ -137,7 +126,7 @@ export default function ModalNewExpense(props: Props) {
               ))}
             </select>
           </div>
-          {typeAction === 'expense' && (
+          {typeAction === "expense" && (
             <div className="flex flex-col gap-1 pb-2">
               <span>
                 ¿En que lo usaste? <span className="text-red-500">*</span>
@@ -168,7 +157,11 @@ export default function ModalNewExpense(props: Props) {
               name="description"
               rows={2}
               value={data.description}
-              placeholder={typeAction === 'expense' ? 'Tacos' : 'Salario, Freelance, etc...'}
+              placeholder={
+                typeAction === "expense"
+                  ? "Tacos"
+                  : "Salario, Freelance, etc..."
+              }
               onChange={handleChange}
             />
           </div>
@@ -183,5 +176,5 @@ export default function ModalNewExpense(props: Props) {
         </form>
       </div>
     </Modal>
-  )
+  );
 }

@@ -1,14 +1,26 @@
-CREATE OR REPLACE FUNCTION insert_register_debt()
+CREATE OR REPLACE FUNCTION descontar_totaldue()
 RETURNS TRIGGER AS $$
 BEGIN
-    -- Verifica si la fecha del evento es el día 1 de cualquier mes
-    IF EXTRACT(DAY FROM NEW.fecha_evento) = 1 THEN
-        -- Inserta un nuevo registro en la tabla registro_eventos
-        INSERT INTO registro_eventos(evento_id, descripcion, fecha_registro)
-        VALUES (NEW.id, NEW.descripcion, CURRENT_DATE);
+    -- Verifica si el día actual es el mismo que el día de pago (Payday)
+    IF EXTRACT(DAY FROM CURRENT_DATE) = NEW.Payday THEN
+        -- Descuenta el valor de FeeValue de TotalDue
+        NEW.TotalDue := NEW.TotalDue - NEW.FeeValue;
+        
+        -- Resta 1 a Fee
+        NEW.Fee := NEW.Fee - 1;
+
+        -- Asegúrate de que TotalDue y Fee no sean valores negativos
+        IF NEW.TotalDue < 0 THEN
+            NEW.TotalDue := 0;
+        END IF;
+
+        IF NEW.Fee < 0 THEN
+            NEW.Fee := 0;
+        END IF;
     END IF;
 
-    -- Retorna el registro NEW para proceder con la inserción original en la tabla eventos
+    -- Retorna el registro modificado
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
+

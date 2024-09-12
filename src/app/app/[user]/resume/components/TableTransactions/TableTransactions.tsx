@@ -1,47 +1,58 @@
-import DeleteConfirmation from '@/app/components/DeleteConfirmation/DeleteConfirmation'
-import { FormatDate } from '@/app/utils/FormatDate'
-import { toast } from 'sonner'
+import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
+import { FormatDate } from "@/app/utils/FormatDate";
+import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger
-} from '@/components/ui/dialog'
-import { formatCOP } from '../../utils/formatPrice'
-import { DataAgruped } from '../../models/ExpensesIncomesModel'
-import { useState } from 'react'
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { formatCOP } from "../../utils/formatPrice";
+import { DataAgruped } from "../../models/ExpensesIncomesModel";
 
 interface Props {
-  data: any
-  monthCurrent: number
-  refresh: () => void
-  isAgruped: boolean
+  data: any;
+  monthCurrent: number;
+  refresh: () => void;
+  isAgruped: boolean;
+  deleteIncome: (id: number) => void;
 }
 
 export default function TableTransactions(props: Props) {
-  const { data, monthCurrent, refresh, isAgruped } = props
+  const { data, monthCurrent, refresh, isAgruped, deleteIncome } = props;
 
-  const handleDelete = async (id: number) => {
+  const serviceDeleteExpense = async (id: number) => {
     const res = await fetch(`/api/expenses?id=${id}`, {
-      method: 'DELETE'
-    })
-    const data = await res.json()
-    refresh()
-    if (data) toast.info('Gasto eliminado, dinero devuelto a la cuenta...')
-  }
+      method: "DELETE",
+    });
+    const data = await res.json();
+    refresh();
+    if (data) toast.info("Gasto eliminado, dinero devuelto a la cuenta...");
+  };
+
+  const handleDelete = async (id: number, type: string) => {
+    if (type) {
+      deleteIncome(id);
+      refresh();
+    } else {
+      serviceDeleteExpense(id);
+    }
+  };
 
   const gastosAgrupados = data.reduce((acc: DataAgruped[], gasto: any) => {
-    const gastoExistente = acc.find((g) => g.categoryname === gasto.categoryname)
+    const gastoExistente = acc.find(
+      (g) => g.categoryname === gasto.categoryname,
+    );
     if (gastoExistente) {
-      gastoExistente.value += gasto.value
-      gastoExistente.details?.push(gasto)
+      gastoExistente.value += gasto.value;
+      gastoExistente.details?.push(gasto);
     } else {
-      acc.push({ ...gasto, details: [gasto] })
+      acc.push({ ...gasto, details: [gasto] });
     }
-    return acc
-  }, [])
+    return acc;
+  }, []);
 
   return (
     <>
@@ -62,8 +73,8 @@ export default function TableTransactions(props: Props) {
       <div className="overflow-y-auto movimientos">
         {isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date)
-              const monthExpense = dateExpense.getMonth()
+              const dateExpense = new Date(item.date);
+              const monthExpense = dateExpense.getMonth();
               if (monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
@@ -72,10 +83,12 @@ export default function TableTransactions(props: Props) {
                         <div className="py-4 px-5 grid grid-cols-3 items-center border-b border-gray-500 text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6">
                           <div className="text-white">
                             <span className="text-purple-500 font-light">
-                              {item?.type === 'expense' ? item?.categoryname : item?.typeincome}
+                              {item?.type === "expense"
+                                ? item?.categoryname
+                                : item?.typeincome}
                             </span>
                           </div>
-                          {item?.type === 'expense' ? (
+                          {item?.type === "expense" ? (
                             <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                               Expense
                             </span>
@@ -84,43 +97,59 @@ export default function TableTransactions(props: Props) {
                               Request
                             </span>
                           )}
-                          <span className="font-medium">{formatCOP.format(item?.value)}</span>
+                          <span className="font-medium">
+                            {formatCOP.format(item?.value)}
+                          </span>
                         </div>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
-                          <DialogTitle className="text-[var(--color-usage)]">
-                            Detalles de {item.categoryname}
+                          <DialogTitle className="text-purple-500">
+                            Detalles de {item.categoryname ?? item.typeincome}
                           </DialogTitle>
-                          <DialogDescription>Total: ${item?.value?.toLocaleString()}</DialogDescription>
+                          <DialogDescription>
+                            Total: ${item?.value?.toLocaleString()}
+                          </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-2">
                           {item?.details?.map((detalle) => (
-                            <div key={detalle.id} className="flex justify-between items-center">
+                            <div
+                              key={detalle.id}
+                              className="flex justify-between items-center"
+                            >
                               <div>
-                                <div className="font-medium text-white">
-                                  {detalle.description}{' '}
+                                <div className="font-medium text-white flex items-center gap-1">
+                                  {detalle.description ?? detalle.typeincome}
                                   <DeleteConfirmation
-                                    deleteItem={() => handleDelete(item?.id)}
-                                    message={`�Deseas eliminar el gasto ${detalle.description}?`}
+                                    deleteItem={() =>
+                                      handleDelete(
+                                        item?.id,
+                                        detalle?.typeincome!,
+                                      )
+                                    }
+                                    message={`Deseas eliminar ${detalle.description ?? detalle.typeincome}?`}
                                   />
                                 </div>
-                                <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
+                                <div className="text-sm text-muted-foreground">
+                                  {FormatDate(detalle.date)}
+                                </div>
                               </div>
-                              <div className="font-medium text-palette">${detalle?.value?.toLocaleString()}</div>
+                              <div className="font-medium text-palette">
+                                ${detalle?.value?.toLocaleString()}
+                              </div>
                             </div>
                           ))}
                         </div>
                       </DialogContent>
                     </Dialog>
                   </div>
-                )
+                );
               }
-              return null // Retorno nulo si no coincide el mes
+              return null; // Retorno nulo si no coincide el mes
             })
           : data.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date)
-              const monthExpense = dateExpense.getMonth()
+              const dateExpense = new Date(item.date);
+              const monthExpense = dateExpense.getMonth();
               if (monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
@@ -128,13 +157,17 @@ export default function TableTransactions(props: Props) {
                       <div className="text-white">
                         <div className="flex flex-col gap-2">
                           <span className="text-purple-500 font-light">
-                            {item?.type === 'expense' ? item?.categoryname : item?.typeincome}
+                            {item?.type === "expense"
+                              ? item?.categoryname
+                              : item?.typeincome}
                           </span>
-                          <small className="font-light opacity-70">{item?.description}</small>
+                          <small className="font-light opacity-70">
+                            {item?.description}
+                          </small>
                         </div>
                       </div>
                       <span className="hidden md:block">{item?.date}</span>
-                      {item?.type === 'expense' ? (
+                      {item?.type === "expense" ? (
                         <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                           Expense
                         </span>
@@ -143,31 +176,42 @@ export default function TableTransactions(props: Props) {
                           Request
                         </span>
                       )}
-                      <span className="font-medium">{formatCOP.format(item?.value)}</span>
+                      <span className="font-medium">
+                        {formatCOP.format(item?.value)}
+                      </span>
                     </div>
                     <div className="space-y-2">
                       {item?.details?.map((detalle) => (
-                        <div key={detalle.id} className="flex justify-between items-center">
+                        <div
+                          key={detalle.id}
+                          className="flex justify-between items-center"
+                        >
                           <div>
                             <div className="font-medium text-white">
-                              {detalle.description}{' '}
+                              {detalle.description}{" "}
                               <DeleteConfirmation
-                                deleteItem={() => handleDelete(item?.id)}
+                                deleteItem={() =>
+                                  handleDelete(item?.id, detalle.typeincome!)
+                                }
                                 message={`�Deseas eliminar el gasto ${detalle.description}?`}
                               />
                             </div>
-                            <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {FormatDate(detalle.date)}
+                            </div>
                           </div>
-                          <div className="font-medium text-palette">${detalle?.value?.toLocaleString()}</div>
+                          <div className="font-medium text-palette">
+                            ${detalle?.value?.toLocaleString()}
+                          </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                )
+                );
               }
-              return null // Retorno nulo si no coincide el mes
+              return null; // Retorno nulo si no coincide el mes
             })}
       </div>
     </>
-  )
+  );
 }

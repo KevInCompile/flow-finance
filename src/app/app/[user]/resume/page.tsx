@@ -1,108 +1,162 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Head from '@/app/components/Head/Head'
-import SkeletonTable from '@/app/loaders/SkeletonTable'
-import useAccounts from '../accounts/hooks/useAccounts'
-import useExpenses from './hooks/useExpenses'
-import { monthNames } from '@/app/utils/months'
-import BackIcon from './assets/back'
-import NextIcon from './assets/nextIcon'
-import TableTransactions from './components/TableTransactions/TableTransactions'
-import useIncomes from './hooks/useIncomes'
-import { Button } from '@/components/ui/button'
-import { CircleHelp, Search } from 'lucide-react'
-import dynamic from 'next/dynamic'
-import Tour from './utils/steps-tour'
-import useModal from '@/app/components/Modal/useModal'
-import { DataAgruped } from './models/ExpensesIncomesModel'
-import ModalNewExpense from './components/ModalNewExpense'
+import { useEffect, useState } from "react";
+import Head from "@/app/components/Head/Head";
+import SkeletonTable from "@/app/loaders/SkeletonTable";
+import useAccounts from "../accounts/hooks/useAccounts";
+import useExpenses from "./hooks/useExpenses";
+import { monthNames } from "@/app/utils/months";
+import BackIcon from "./assets/back";
+import NextIcon from "./assets/nextIcon";
+import TableTransactions from "./components/TableTransactions/TableTransactions";
+import useIncomes from "./hooks/useIncomes";
+import { Button } from "@/components/ui/button";
+import { CircleHelp, Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import Tour from "./utils/steps-tour";
+import { DataAgruped } from "./models/ExpensesIncomesModel";
 
-const BentoInformation = dynamic(() => import('./components/BentoInformation/BentoInformation'), { ssr: false })
+/**
+ * Dynamically import BentoInformation component to improve initial load time
+ */
+const BentoInformation = dynamic(
+  () => import("./components/BentoInformation/BentoInformation"),
+  { ssr: false },
+);
+
+/**
+ * Resume Component
+ *
+ * This component displays a financial summary for the user, including:
+ * - Total balance for the current month
+ * - List of transactions (expenses and incomes)
+ * - Options to view transactions in aggregated or detailed format
+ * - Month navigation
+ *
+ * It uses custom hooks for managing accounts, expenses, and incomes data,
+ * and provides functionality to filter and display this data based on the selected month.
+ */
 
 export default function Resume() {
-  const { data: accounts, loading: loadingAccounts, setRefresh } = useAccounts()
-  const { expenses, loading: loadingExpenses, setRefresh: setRefreshExpenses } = useExpenses()
-  const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes()
-  const [mesActual, setMesActual] = useState(0)
-  const [anioActual, setAnioActual] = useState(2024)
-  const [tour, setTour] = useState(false)
-  const [isDataAgruped, setIsDataAgruped] = useState(false)
+  const {
+    data: accounts,
+    loading: loadingAccounts,
+    setRefresh,
+    setData: setAccounts,
+  } = useAccounts();
+  const {
+    expenses,
+    loading: loadingExpenses,
+    setRefresh: setRefreshExpenses,
+  } = useExpenses();
+  const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
+  const [mesActual, setMesActual] = useState(0);
+  const [anioActual, setAnioActual] = useState(2024);
+  const [tour, setTour] = useState(false);
+  const [isDataAgruped, setIsDataAgruped] = useState(false);
 
-  const currentDate = new Date()
-  const monthName = monthNames[mesActual]
+  const currentDate = new Date();
+  const monthName = monthNames[mesActual];
 
   useEffect(() => {
-    setMesActual(currentDate.getMonth())
-  }, [])
+    setMesActual(currentDate.getMonth());
+  }, []);
 
+  /**
+   * Refreshes the accounts and expenses data
+   */
   const refreshData = () => {
-    setRefresh(true)
-    setRefreshExpenses(true)
-  }
+    setRefresh((prevState) => !prevState);
+    setRefreshExpenses((prevState) => !prevState);
+  };
 
-  const { handleShowModal } = useModal()
+  /**
+   * Combines expenses and incomes into a single transactions array
+   */
+  const transactions = [...expenses, ...incomes];
 
-  const transactions = [...expenses, ...incomes]
-
+  /**
+   * Filters transactions for the current month and year, and sorts them by date
+   */
   const transactionsFilterForDate = transactions
     .filter((gasto) => {
-      if (!gasto.date) return false // Verificar si la fecha existe
-      const [year, month] = gasto.date.split('-')
-
-      return (
-        parseInt(year) === anioActual && parseInt(month) - 1 === mesActual // Aseg�rate de restar 1 al mes
-      )
+      if (!gasto.date) return false;
+      const [year, month] = gasto.date.split("-");
+      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual;
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  /**
+   * Filters an array of transactions for the current month and year
+   * @param {Array} array - The array of transactions to filter
+   * @returns {Array} Filtered array of transactions
+   */
   const filterForMonth = (array: any) => {
     return array?.filter((gasto: DataAgruped) => {
-      const [year, month] = gasto.date.split('-')
-      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual
-    })
-  }
+      const [year, month] = gasto.date.split("-");
+      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual;
+    });
+  };
 
+  /**
+   * Calculates the growth percentage for a given account
+   * @param {string} cuenta - The account name
+   * @returns {string} The growth percentage as a string
+   */
   const calcularCrecimiento = (cuenta: string) => {
     const ingresosDelMes = filterForMonth(incomes)
       .filter((ingreso: DataAgruped) => ingreso.account === cuenta)
-      .reduce((total: number, ingreso: DataAgruped) => total + ingreso.value, 0)
+      .reduce(
+        (total: number, ingreso: DataAgruped) => total + ingreso.value,
+        0,
+      );
     const gastosDelMes = filterForMonth(expenses)
       .filter((gasto: DataAgruped) => gasto.accountname === cuenta)
-      .reduce((total: number, gasto: DataAgruped) => total + gasto.value, 0)
-    const crecimiento = ingresosDelMes - gastosDelMes
-    const value = accounts.filter((acc) => acc.name === cuenta)[0]
-    const porcentajeCrecimiento = (crecimiento / +value?.value) * 100
-    if (!porcentajeCrecimiento) return '0'
-    return porcentajeCrecimiento.toFixed(2)
-  }
+      .reduce((total: number, gasto: DataAgruped) => total + gasto.value, 0);
+    const crecimiento = ingresosDelMes - gastosDelMes;
+    const value = accounts.filter((acc) => acc.name === cuenta)[0];
+    const porcentajeCrecimiento = (crecimiento / +value?.value) * 100;
+    if (!porcentajeCrecimiento) return "0";
+    return porcentajeCrecimiento.toFixed(2);
+  };
 
+  /**
+   * Changes the current month, updating the year if necessary
+   * @param {string} direccion - The direction to change the month ("anterior" or "siguiente")
+   */
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
-      if (direccion === 'anterior') {
-        return prevMes === 0 ? 11 : prevMes - 1
+      if (direccion === "anterior") {
+        return prevMes === 0 ? 11 : prevMes - 1;
       } else {
-        return prevMes === 11 ? 0 : prevMes + 1
+        return prevMes === 11 ? 0 : prevMes + 1;
       }
-    })
-    if (mesActual === 0 && direccion === 'anterior') {
-      setAnioActual((prevAnio) => prevAnio - 1)
-    } else if (mesActual === 11 && direccion === 'siguiente') {
-      setAnioActual((prevAnio) => prevAnio + 1)
+    });
+    if (mesActual === 0 && direccion === "anterior") {
+      setAnioActual((prevAnio) => prevAnio - 1);
+    } else if (mesActual === 11 && direccion === "siguiente") {
+      setAnioActual((prevAnio) => prevAnio + 1);
     }
-  }
+  };
 
+  /**
+   * Handles the change of aggregated data view
+   * @param {Event} e - The event object from the checkbox
+   */
   const handleAgruped = (e: any) => {
-    const value = e.target.checked
-    window.localStorage.setItem('isAgruped', value)
-    setIsDataAgruped(value)
-  }
+    const value = e.target.checked;
+    window.localStorage.setItem("isAgruped", value);
+    setIsDataAgruped(value);
+  };
 
+  /**
+   * Sets the initial aggregated data view state from localStorage
+   */
   useEffect(() => {
-    const local = window.localStorage.getItem('isAgruped') as string
-    if (local === 'true') return setIsDataAgruped(true)
-    return setIsDataAgruped(false)
-  }, [])
+    const local = window.localStorage.getItem("isAgruped") as string;
+    if (local === "true") return setIsDataAgruped(true);
+    return setIsDataAgruped(false);
+  }, []);
 
   return (
     <>
@@ -119,14 +173,14 @@ export default function Resume() {
             <button
               className="border-gray-300 border rounded-md mr-3 hover:bg-[var(--color-usage)] transition-colors"
               title="Mes anterior"
-              onClick={() => cambiarMes('anterior')}
+              onClick={() => cambiarMes("anterior")}
             >
               <BackIcon />
             </button>
             <button
               className="border-gray-300 border rounded-md hover:bg-[var(--color-usage)] transition-colors"
               title="Mes siguiente"
-              onClick={() => cambiarMes('siguiente')}
+              onClick={() => cambiarMes("siguiente")}
             >
               <NextIcon />
             </button>
@@ -138,8 +192,8 @@ export default function Resume() {
             crecimiento={calcularCrecimiento}
             accounts={accounts}
             incomes={incomes}
-            refreshData={refreshData}
             setIncomes={setIncomes}
+            setAccounts={setAccounts}
             loadingAccounts={loadingAccounts}
           />
           <div className="border rounded-lg border-gray-500 bg-[#1F1D1D]">
@@ -148,7 +202,12 @@ export default function Resume() {
                 <div className="flex flex-row gap-3 items-center">
                   <h1 className="text-purple-400">Transactions agruped</h1>
                   <label className="switch" title="Agruped">
-                    <input type="checkbox" id="toggle-switch" onChange={handleAgruped} checked={isDataAgruped} />
+                    <input
+                      type="checkbox"
+                      id="toggle-switch"
+                      onChange={handleAgruped}
+                      checked={isDataAgruped}
+                    />
                     <span className="slider"></span>
                   </label>
                 </div>
@@ -168,6 +227,7 @@ export default function Resume() {
                 monthCurrent={mesActual}
                 refresh={refreshData}
                 isAgruped={isDataAgruped}
+                deleteIncome={deleteIncome}
               />
             )}
           </div>
@@ -175,5 +235,5 @@ export default function Resume() {
       </section>
       <Tour runTour={tour} />
     </>
-  )
+  );
 }
