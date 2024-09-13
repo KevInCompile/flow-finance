@@ -1,6 +1,5 @@
-import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
-import { FormatDate } from "@/app/utils/FormatDate";
-import { toast } from "sonner";
+import DeleteConfirmation from '@/app/components/DeleteConfirmation/DeleteConfirmation'
+import { FormatDate } from '@/app/utils/FormatDate'
 import {
   Dialog,
   DialogContent,
@@ -8,51 +7,76 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { formatCOP } from "../../utils/formatPrice";
-import { DataAgruped } from "../../models/ExpensesIncomesModel";
+} from '@/components/ui/dialog'
+import { formatCOP } from '../../utils/formatPrice'
+import { DataAgruped } from '../../models/ExpensesIncomesModel'
+import { SetStateAction } from 'react'
+import { AccountModel } from '../../../accounts/models/account.model'
 
 interface Props {
-  data: any;
-  monthCurrent: number;
-  refresh: () => void;
-  isAgruped: boolean;
-  deleteIncome: (id: number) => void;
+  data: any
+  monthCurrent: number
+  accounts: AccountModel[]
+  isAgruped: boolean
+  deleteIncome: (id: number) => void
+  deleteExpense: (id: number) => void
+  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>
 }
 
 export default function TableTransactions(props: Props) {
-  const { data, monthCurrent, refresh, isAgruped, deleteIncome } = props;
+  const {
+    data,
+    monthCurrent,
+    isAgruped,
+    deleteIncome,
+    setAccounts,
+    accounts,
+    deleteExpense,
+  } = props
 
-  const serviceDeleteExpense = async (id: number) => {
-    const res = await fetch(`/api/expenses?id=${id}`, {
-      method: "DELETE",
-    });
-    const data = await res.json();
-    refresh();
-    if (data) toast.info("Gasto eliminado, dinero devuelto a la cuenta...");
-  };
-
-  const handleDelete = async (id: number, type: string) => {
+  const handleDelete = (
+    id: number,
+    value: number,
+    accountid: number,
+    type: string
+  ) => {
+    const newValue = accounts.find((item) => item.id === accountid)
     if (type) {
-      deleteIncome(id);
-      refresh();
+      deleteIncome(id)
+      const newData = {
+        ...newValue,
+        value: +newValue?.value! - value,
+      }
+      const newAccounts = accounts.map((account) =>
+        account.id === accountid ? newData : account
+      )
+      setAccounts(newAccounts as any)
     } else {
-      serviceDeleteExpense(id);
+      deleteExpense(id)
+      const newData = {
+        ...newValue,
+        value: newValue?.value! + value,
+      }
+      console.log(newValue, value, accountid)
+      const newAccounts = accounts.map((account) =>
+        account.id === accountid ? newData : account
+      )
+      setAccounts(newAccounts as any)
     }
-  };
+  }
 
   const gastosAgrupados = data.reduce((acc: DataAgruped[], gasto: any) => {
     const gastoExistente = acc.find(
-      (g) => g.categoryname === gasto.categoryname,
-    );
+      (g) => g.categoryname === gasto.categoryname
+    )
     if (gastoExistente) {
-      gastoExistente.value += gasto.value;
-      gastoExistente.details?.push(gasto);
+      gastoExistente.value += gasto.value
+      gastoExistente.details?.push(gasto)
     } else {
-      acc.push({ ...gasto, details: [gasto] });
+      acc.push({ ...gasto, details: [gasto] })
     }
-    return acc;
-  }, []);
+    return acc
+  }, [])
 
   return (
     <>
@@ -73,8 +97,8 @@ export default function TableTransactions(props: Props) {
       <div className="overflow-y-auto movimientos">
         {isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date);
-              const monthExpense = dateExpense.getMonth();
+              const dateExpense = new Date(item.date)
+              const monthExpense = dateExpense.getMonth()
               if (monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
@@ -83,12 +107,12 @@ export default function TableTransactions(props: Props) {
                         <div className="py-4 px-5 grid grid-cols-3 items-center border-b border-gray-500 text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6">
                           <div className="text-white">
                             <span className="text-purple-500 font-light">
-                              {item?.type === "expense"
+                              {item?.type === 'expense'
                                 ? item?.categoryname
                                 : item?.typeincome}
                             </span>
                           </div>
-                          {item?.type === "expense" ? (
+                          {item?.type === 'expense' ? (
                             <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                               Expense
                             </span>
@@ -124,7 +148,9 @@ export default function TableTransactions(props: Props) {
                                     deleteItem={() =>
                                       handleDelete(
                                         item?.id,
-                                        detalle?.typeincome!,
+                                        detalle.value,
+                                        detalle.accountid,
+                                        detalle?.typeincome!
                                       )
                                     }
                                     message={`Deseas eliminar ${detalle.description ?? detalle.typeincome}?`}
@@ -143,13 +169,13 @@ export default function TableTransactions(props: Props) {
                       </DialogContent>
                     </Dialog>
                   </div>
-                );
+                )
               }
-              return null; // Retorno nulo si no coincide el mes
+              return null // Retorno nulo si no coincide el mes
             })
           : data.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date);
-              const monthExpense = dateExpense.getMonth();
+              const dateExpense = new Date(item.date)
+              const monthExpense = dateExpense.getMonth()
               if (monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
@@ -157,7 +183,7 @@ export default function TableTransactions(props: Props) {
                       <div className="text-white">
                         <div className="flex flex-col gap-2">
                           <span className="text-purple-500 font-light">
-                            {item?.type === "expense"
+                            {item?.type === 'expense'
                               ? item?.categoryname
                               : item?.typeincome}
                           </span>
@@ -167,7 +193,7 @@ export default function TableTransactions(props: Props) {
                         </div>
                       </div>
                       <span className="hidden md:block">{item?.date}</span>
-                      {item?.type === "expense" ? (
+                      {item?.type === 'expense' ? (
                         <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                           Expense
                         </span>
@@ -188,10 +214,15 @@ export default function TableTransactions(props: Props) {
                         >
                           <div>
                             <div className="font-medium text-white">
-                              {detalle.description}{" "}
+                              {detalle.description}{' '}
                               <DeleteConfirmation
                                 deleteItem={() =>
-                                  handleDelete(item?.id, detalle.typeincome!)
+                                  handleDelete(
+                                    item?.id,
+                                    detalle.value,
+                                    detalle.accountid,
+                                    detalle.typeincome!
+                                  )
                                 }
                                 message={`�Deseas eliminar el gasto ${detalle.description}?`}
                               />
@@ -207,11 +238,11 @@ export default function TableTransactions(props: Props) {
                       ))}
                     </div>
                   </div>
-                );
+                )
               }
-              return null; // Retorno nulo si no coincide el mes
+              return null // Retorno nulo si no coincide el mes
             })}
       </div>
     </>
-  );
+  )
 }

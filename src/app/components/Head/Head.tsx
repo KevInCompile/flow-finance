@@ -25,11 +25,16 @@ export default function Head() {
               </div>
             </label>
             <span className="hidden md:block font-bold text-secondary">
-              Hello, <span className="text-purple-500">{session?.user?.name?.split(' ')[0]}</span>
+              Hello,{' '}
+              <span className="text-purple-500">
+                {session?.user?.name?.split(' ')[0]}
+              </span>
             </span>
           </div>
         ) : (
-          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">v 0.8.5</div>
+          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
+            v 0.9.5
+          </div>
         )}
       </div>
       <div>

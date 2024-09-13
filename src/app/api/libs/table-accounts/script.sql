@@ -15,3 +15,6 @@ CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), 
 
 // TABLA DE INGRESOS
 CREATE TABLE incomes (Id SERIAL PRIMARY KEY, Username varchar(100), TypeIncome varchar(50), AccountId INT REFERENCES accounts(Id), Value int, date varchar(20));
+
+// TABLA DE EXCHANGE
+CREATE TABLE exchanges (Id SERIAL PRIMARY KEY,FromAccountId INTEGER REFERENCES accounts(Id),ToAccountId INTEGER REFERENCES accounts(Id),Username VARCHAR(255), Value INT,Date DATE DEFAULT CURRENT_DATE);

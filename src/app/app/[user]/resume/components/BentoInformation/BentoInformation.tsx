@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction, useState } from "react";
-import SkeletonResume from "@/app/loaders/SkeletonResume";
+import { SetStateAction, useState } from 'react'
+import SkeletonResume from '@/app/loaders/SkeletonResume'
 import {
   LineChart,
   Line,
@@ -8,67 +8,69 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-} from "recharts";
-import Link from "next/link";
-import { AccountModel } from "../../../accounts/models/account.model";
-import { formatCOP } from "../../utils/formatPrice";
-import { DataAgruped } from "../../models/ExpensesIncomesModel";
-import useModal from "@/app/components/Modal/useModal";
-import ModalNewExpense from "../ModalNewExpense";
-import { IncomeModel } from "../../models/IncomeModel";
+} from 'recharts'
+import Link from 'next/link'
+import { AccountModel } from '../../../accounts/models/account.model'
+import { formatCOP } from '../../utils/formatPrice'
+import { DataAgruped } from '../../models/ExpensesIncomesModel'
+import useModal from '@/app/components/Modal/useModal'
+import { IncomeModel } from '../../models/IncomeModel'
+import ModalNewExpense from '../Modals/ModalNewExpense'
+import { ExpenseModel } from '../../hooks/useExpenses'
 // ICONS
 import {
   ArrowDownLeft,
   ArrowUpRight,
-  SendToBack,
   TrendingDown,
   TrendingUp,
-} from "lucide-react";
+} from 'lucide-react'
+import ModalExchange from '../Modals/ModalExchange'
 
 export default function BentoInformation({
   expenses,
   crecimiento,
   accounts,
-  incomes,
   setIncomes,
   loadingAccounts,
   setAccounts,
+  setExpenses,
 }: {
-  expenses: any;
-  crecimiento: (account: string) => string;
-  accounts: AccountModel[];
-  loadingAccounts: boolean;
-  incomes: IncomeModel[];
-  setIncomes: any;
-  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>;
+  expenses: any
+  crecimiento: (account: string) => string
+  accounts: AccountModel[]
+  loadingAccounts: boolean
+  incomes: IncomeModel[]
+  setIncomes: any
+  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>
+  setExpenses: React.Dispatch<SetStateAction<ExpenseModel[]>>
 }) {
-  const [accountSelected, setAccountSelected] = useState("");
-  const [typeAction, setTypeAction] = useState("");
-  const { handleShowModal } = useModal();
+  const [accountSelected, setAccountSelected] = useState('')
+  const [typeAction, setTypeAction] = useState('')
+  const { handleShowModal } = useModal()
 
   const lineData = expenses
-    .filter((item: any) => item.type === "expense")
+    .filter((item: any) => item.type === 'expense')
     .reduce((acc: any, expense: DataAgruped) => {
-      const day = parseInt(expense.date.split("-")[2]);
+      const day = parseInt(expense.date.split('-')[2])
       if (acc[day]) {
-        acc[day].value += expense.value;
+        acc[day].value += expense.value
       } else {
-        acc[day] = { day, value: expense.value };
+        acc[day] = { day, value: expense.value }
       }
-      return acc;
-    }, {});
+      return acc
+    }, {})
 
   const datosLineaArray = Object.values(lineData).sort(
-    (a: any, b: any) => a.day - b.day,
-  );
+    (a: any, b: any) => a.day - b.day
+  )
 
-  const baseUrl = window.location.pathname;
-  const newUrl = (route: string) => baseUrl.replace("resume", route);
+  const baseUrl = window.location.pathname
+  const newUrl = (route: string) => baseUrl.replace('resume', route)
 
   const handleChangeTypeAction = (action: string) => {
-    setTypeAction(action);
-    handleShowModal();
-  };
+    setTypeAction(action)
+    handleShowModal()
+  }
 
   return (
     <div>
@@ -95,16 +97,16 @@ export default function BentoInformation({
                   >
                     {account.name}
                   </option>
-                );
+                )
               })}
             </select>
             <div className="flex flex-wrap items-center pb-4">
               <h2 className="text-2xl md:text-3xl text-primary px-6">
-                {accounts.length >= 1 && accountSelected === "" ? (
+                {accounts.length >= 1 && accountSelected === '' ? (
                   formatCOP.format(parseInt(accounts[0].value))
                 ) : !accounts.length ? (
                   <Link
-                    href={newUrl("accounts")}
+                    href={newUrl('accounts')}
                     className="text-purple-400 text-sm underline animate-pulse"
                   >
                     Agregar cuentas
@@ -113,9 +115,9 @@ export default function BentoInformation({
                   formatCOP.format(
                     parseInt(
                       accounts?.filter(
-                        (item) => item.name === accountSelected,
-                      )[0]?.value,
-                    ),
+                        (item) => item.name === accountSelected
+                      )[0]?.value
+                    )
                   )
                 )}
               </h2>
@@ -123,10 +125,10 @@ export default function BentoInformation({
                 <div className="flex items-center text-xs md:text-sm">
                   {parseFloat(
                     crecimiento(
-                      accounts.length >= 1 && accountSelected === ""
+                      accounts.length >= 1 && accountSelected === ''
                         ? accounts[0].name
-                        : accountSelected,
-                    ),
+                        : accountSelected
+                    )
                   ) >= 0 ? (
                     <TrendingUp className="w-4 h-4 mr-1 text-green-700" />
                   ) : (
@@ -136,19 +138,19 @@ export default function BentoInformation({
                     className={
                       parseFloat(
                         crecimiento(
-                          accounts.length >= 1 && accountSelected === ""
+                          accounts.length >= 1 && accountSelected === ''
                             ? accounts[0].name
-                            : accountSelected,
-                        ),
+                            : accountSelected
+                        )
                       ) >= 0
-                        ? "text-green-700"
-                        : "text-red-500"
+                        ? 'text-green-700'
+                        : 'text-red-500'
                     }
                   >
                     {crecimiento(
-                      accounts.length >= 1 && accountSelected === ""
+                      accounts.length >= 1 && accountSelected === ''
                         ? accounts[0].name
-                        : accountSelected,
+                        : accountSelected
                     )}
                     % este mes
                   </span>
@@ -159,28 +161,22 @@ export default function BentoInformation({
         )}
         <div className="grid grid-cols-3 w-full border-t border-gray-500">
           <button
-            onClick={() => handleChangeTypeAction("expense")}
-            className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 rounded-bl-lg hover:bg-purple-600 ${accounts.length < 1 ? "cursor-not-allowed" : ""}`}
+            onClick={() => handleChangeTypeAction('expense')}
+            className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 rounded-bl-lg hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed' : ''}`}
             disabled={accounts.length < 1}
           >
             <ArrowUpRight className="text-purple-400" />
             <span className="text-sm">Expense</span>
           </button>
           <button
-            onClick={() => handleChangeTypeAction("income")}
-            className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 hover:bg-purple-600 ${accounts.length < 1 ? "cursor-not-allowed" : ""}`}
+            onClick={() => handleChangeTypeAction('income')}
+            className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed' : ''}`}
             disabled={accounts.length < 1}
           >
             <ArrowDownLeft className="text-purple-400" />
             <span className="text-sm">Request</span>
           </button>
-          <button
-            className={`flex items-center gap-1 text-primary justify-center p-4 hover:bg-purple-600 rounded-br-lg cursor-not-allowed opacity-50`}
-            disabled={true}
-          >
-            <SendToBack className="text-purple-400" />
-            <span className="text-sm">Exchange</span>
-          </button>
+          <ModalExchange accounts={accounts} setAccounts={setAccounts} />
         </div>
       </div>
       {datosLineaArray.length >= 1 && (
@@ -195,7 +191,7 @@ export default function BentoInformation({
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="dia" />
+                <XAxis dataKey="day" />
                 <YAxis />
                 <Tooltip />
                 <Line
@@ -211,11 +207,11 @@ export default function BentoInformation({
       )}
       <ModalNewExpense
         accounts={accounts}
-        setAccounts={setAccounts}
         setIncomes={setIncomes}
-        incomes={incomes}
         typeAction={typeAction}
+        setAccounts={setAccounts}
+        setExpenses={setExpenses}
       />
     </div>
-  );
+  )
 }

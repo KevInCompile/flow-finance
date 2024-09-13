@@ -1,10 +1,9 @@
-// import { useEffect } from "react";
-export default async function deleteIncomeService(id: number) {
+export default async function serviceDeleteExpense(id: number) {
   try {
-    const fetching = await fetch(`/api/income?id=${id}`, {
+    const res = await fetch(`/api/expenses?id=${id}`, {
       method: 'DELETE',
     })
-    const data = await fetching.json()
+    const data = await res.json()
     if (!data.message) return [new Error('Server error...')]
     return [undefined, data.message]
   } catch (error) {
