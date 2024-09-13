@@ -1,6 +1,6 @@
-import { toast } from "sonner";
-import createIncome from "../actions/income.actions";
-import { IncomeModel } from "../models/IncomeModel";
+import { toast } from 'sonner'
+import createIncome from '../actions/income.actions'
+import { IncomeModel } from '../models/IncomeModel'
 
 export const handleIncomeHelper = async (
   data: any,
@@ -9,9 +9,9 @@ export const handleIncomeHelper = async (
   fecha: string,
   setLoading: React.Dispatch<React.SetStateAction<boolean>>,
   setIncomes: React.Dispatch<React.SetStateAction<IncomeModel[]>>,
-  addNewValue: (type: string) => void,
+  addNewValue: (type: string) => void
 ) => {
-  setLoading(true);
+  setLoading(true)
   try {
     const [error, response] = await createIncome({
       accountId: data.accountid,
@@ -19,13 +19,13 @@ export const handleIncomeHelper = async (
       typeIncome: data.description,
       username: user,
       date: fecha,
-    });
-    setIncomes((prevIncomes) => [...prevIncomes, response.result]);
-    addNewValue("income");
-    toast.success("New income added!");
+    })
+    setIncomes((prevIncomes) => [...prevIncomes, response.result])
+    addNewValue('income')
+    toast.success('New income added!')
   } catch (error: any) {
-    toast.error(error.message || "An error occurred");
+    toast.error(error.message || 'An error occurred')
   } finally {
-    setLoading(false);
+    setLoading(false)
   }
-};
+}

@@ -3,16 +3,7 @@ import { useEffect, useState } from 'react'
 import { serviceIncomes } from '../services/incomes.service'
 import deleteIncomeService from '../services/delete-income.service'
 import { toast } from 'sonner'
-
-export interface IncomeModel {
-  id: number
-  username: string
-  typeincome: string
-  accountid: number
-  value: number
-  date: string
-  account: string
-}
+import { IncomeModel } from '../models/IncomeModel'
 
 export default function useIncomes() {
   const [data, setData] = useState<IncomeModel[]>([])
@@ -41,6 +32,6 @@ export default function useIncomes() {
   return {
     data,
     deleteIncome,
-    setData
+    setData,
   }
 }

@@ -1,7 +1,7 @@
 import { SetStateAction } from 'react'
 import { toast } from 'sonner'
-import { IncomeModel } from '../hooks/useIncomes'
 import { exchangeService } from '../services/exchange.service'
+import { IncomeModel } from '../models/IncomeModel'
 
 export const handleExchangeHelper = async (
   fromAccount: string,

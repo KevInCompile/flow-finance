@@ -6,11 +6,11 @@ import { useParams } from 'next/navigation'
 import { SetStateAction, useState } from 'react'
 import useCategories from '../../hooks/useCategories'
 import { AccountModel } from '../../../accounts/models/account.model'
-import { IncomeModel } from '../../hooks/useIncomes'
 import { addNewValueHelper } from '../../helpers/addNewValue'
 import { handleIncomeHelper } from '../../helpers/newIncome'
 import { handleExpenseHelper } from '../../helpers/newExpense'
 import { ExpenseModel } from '../../hooks/useExpenses'
+import { IncomeModel } from '../../models/IncomeModel'
 
 interface Props {
   accounts: AccountModel[]
