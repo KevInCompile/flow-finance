@@ -12,13 +12,14 @@ export const addNewValueHelper = (
   setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>,
   INITIAL_STATE: any,
 ) => {
+  const numericValue = parseInt(value.replace(/,/g, ""));
   const newValue = accounts.find((item) => item.id === +accountId);
   const newData = {
     ...newValue,
     value:
       type === "income"
-        ? newValue?.value! + parseInt(value)
-        : +newValue?.value! - parseInt(value),
+        ? +newValue?.value! + numericValue
+        : +newValue?.value! - numericValue,
   };
   const newAccounts = accounts.map((account) =>
     account.id === +accountId ? newData : account,
