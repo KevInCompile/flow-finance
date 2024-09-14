@@ -16,15 +16,24 @@ export default function Debts() {
     <>
       <Head />
       <div className="flex items-center justify-center pb-3">
-        <h1 className="text-2xl font-semibold text-center text-purple-500">Deudas</h1>
+        <h1 className="text-2xl font-semibold text-center text-purple-500">
+          Debts
+        </h1>
         <OpenButton />
       </div>
       {loading ? (
         <></>
       ) : data.length === 0 ? (
         <div className="flex flex-col gap-3 items-center m-auto w-full">
-          <Image src={Gift} alt="Sin items" className="rounded-md px-5 md:px-0" priority />
-          <small className="opacity-50 italic font-medium text-white">No tienes nada registrado aún!</small>
+          <Image
+            src={Gift}
+            alt="Sin items"
+            className="rounded-md px-5 md:px-0"
+            priority
+          />
+          <small className="opacity-50 italic font-medium text-white">
+            You haven&apos;t registered anything yet!
+          </small>
         </div>
       ) : (
         <></>

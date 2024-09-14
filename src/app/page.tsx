@@ -20,7 +20,8 @@ export default function Home() {
         <LoaderPage />
       </div>
     )
-  if (status === 'authenticated') return router.push(`/app/${session.user?.name}/resume`)
+  if (status === 'authenticated')
+    return router.push(`/app/${session.user?.name}/profile`)
 
   return (
     <>
@@ -33,14 +34,21 @@ export default function Home() {
               <span className="bg-gradient">Flow Finance</span>
             </h1>
             <p className="text-start text-secondary font-medium text-2xl md:p-0 opacity-70">
-              Track your assets, income, savings, investments, and deduct your liabilities to understand your spending,
-              identify areas to cut costs, and allocate your income effectively.
+              Track your assets, income, savings, investments, and deduct your
+              liabilities to understand your spending, identify areas to cut
+              costs, and allocate your income effectively.
             </p>
           </div>
-          <Image src={example} alt="example" className="mt-10 rounded-xl border relative z-10" />
+          <Image
+            src={example}
+            alt="example"
+            className="mt-10 rounded-xl border relative z-10"
+          />
         </div>
         <div className="text-center mt-10 md:mt-40 md:px-20 px-6">
-          <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">How it works?</div>
+          <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
+            How it works?
+          </div>
           <div>
             <h2 className="text-3xl [letter-spacing:-.0625rem] text-purple-500 font-semibold [line-height:3rem]">
               One manager, many functions

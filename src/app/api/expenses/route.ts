@@ -7,6 +7,7 @@ type ExpenseForm = {
   accountId: string
   categoryId: string
   description: string
+  date: string
 }
 
 async function insertExpense(form: ExpenseForm) {
@@ -16,12 +17,13 @@ async function insertExpense(form: ExpenseForm) {
     accountId,
     categoryId,
     description,
+    date,
   } = form
-  const value = parseFloat(valueString.replace(/,/g, ''))
+  const value = parseFloat(valueString)
   const username = decodeURIComponent(userEncode)
 
-  await sql`INSERT INTO expenses (AccountId, CategoryId, Username, Description, Value)
-    VALUES (${+accountId}, ${+categoryId}, ${username}, ${description}, ${value})`
+  await sql`INSERT INTO expenses (AccountId, CategoryId, Username, Description, Date, Value)
+    VALUES (${accountId}, ${categoryId}, ${username}, ${description}, ${date}, ${value})`
   await sql`UPDATE accounts
     SET Value = Value - ${value}
     WHERE Id = ${accountId} AND Username = ${username}`
@@ -87,7 +89,7 @@ export async function DELETE(request: Request) {
     const expense = result.rows[0]
 
     if (expense.value) {
-      await sql`UPDATE accounts SET Value = Value + ${expense.value} WHERE Id = ${expense.accountid}`
+      await sql`UPDATE accounts SET Value = Value + ${parseFloat(expense.value)} WHERE Id = ${expense.accountid}`
     }
 
     await sql`DELETE FROM expenses WHERE Id = ${id}`

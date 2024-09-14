@@ -6,4 +6,6 @@ export interface IncomeModel {
   value: number
   date: string
   account: string
+  categoryname?: string
+  description?: string
 }

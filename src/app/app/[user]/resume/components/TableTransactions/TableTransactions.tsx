@@ -8,7 +8,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { formatCOP } from '../../utils/formatPrice'
+import { formatCurrency } from '../../utils/formatPrice'
 import { DataAgruped } from '../../models/ExpensesIncomesModel'
 import { SetStateAction } from 'react'
 import { AccountModel } from '../../../accounts/models/account.model'
@@ -45,7 +45,9 @@ export default function TableTransactions(props: Props) {
       deleteIncome(id)
       const newData = {
         ...newValue,
-        value: +newValue?.value! - value,
+        value:
+          parseFloat(newValue?.value?.toString() || '0') -
+          parseFloat(value.toString()),
       }
       const newAccounts = accounts.map((account) =>
         account.id === accountid ? newData : account
@@ -55,9 +57,10 @@ export default function TableTransactions(props: Props) {
       deleteExpense(id)
       const newData = {
         ...newValue,
-        value: newValue?.value! + value,
+        value:
+          parseFloat(newValue?.value?.toString() || '0') +
+          parseFloat(value.toString()),
       }
-      console.log(newValue, value, accountid)
       const newAccounts = accounts.map((account) =>
         account.id === accountid ? newData : account
       )
@@ -70,10 +73,11 @@ export default function TableTransactions(props: Props) {
       (g) => g.categoryname === gasto.categoryname
     )
     if (gastoExistente) {
-      gastoExistente.value += gasto.value
+      gastoExistente.value =
+        parseFloat(gastoExistente.value.toString()) + parseFloat(gasto.value)
       gastoExistente.details?.push(gasto)
     } else {
-      acc.push({ ...gasto, details: [gasto] })
+      acc.push({ ...gasto, value: parseFloat(gasto.value), details: [gasto] })
     }
     return acc
   }, [])
@@ -109,7 +113,7 @@ export default function TableTransactions(props: Props) {
                             <span className="text-purple-500 font-light">
                               {item?.type === 'expense'
                                 ? item?.categoryname
-                                : item?.typeincome}
+                                : 'Incomes'}
                             </span>
                           </div>
                           {item?.type === 'expense' ? (
@@ -122,17 +126,17 @@ export default function TableTransactions(props: Props) {
                             </span>
                           )}
                           <span className="font-medium">
-                            {formatCOP.format(item?.value)}
+                            {formatCurrency(item?.value)}
                           </span>
                         </div>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle className="text-purple-500">
-                            Detalles de {item.categoryname ?? item.typeincome}
+                            Detalles de {item.categoryname ?? 'Incomes'}
                           </DialogTitle>
                           <DialogDescription>
-                            Total: ${item?.value?.toLocaleString()}
+                            Total: {formatCurrency(item?.value)}
                           </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-2">
@@ -161,7 +165,7 @@ export default function TableTransactions(props: Props) {
                                 </div>
                               </div>
                               <div className="font-medium text-palette">
-                                ${detalle?.value?.toLocaleString()}
+                                {formatCurrency(detalle?.value)}
                               </div>
                             </div>
                           ))}
@@ -203,7 +207,7 @@ export default function TableTransactions(props: Props) {
                         </span>
                       )}
                       <span className="font-medium">
-                        {formatCOP.format(item?.value)}
+                        {formatCurrency(item?.value)}
                       </span>
                     </div>
                     <div className="space-y-2">
@@ -213,26 +217,12 @@ export default function TableTransactions(props: Props) {
                           className="flex justify-between items-center"
                         >
                           <div>
-                            <div className="font-medium text-white">
-                              {detalle.description}{' '}
-                              <DeleteConfirmation
-                                deleteItem={() =>
-                                  handleDelete(
-                                    item?.id,
-                                    detalle.value,
-                                    detalle.accountid,
-                                    detalle.typeincome!
-                                  )
-                                }
-                                message={`�Deseas eliminar el gasto ${detalle.description}?`}
-                              />
-                            </div>
                             <div className="text-sm text-muted-foreground">
                               {FormatDate(detalle.date)}
                             </div>
                           </div>
                           <div className="font-medium text-palette">
-                            ${detalle?.value?.toLocaleString()}
+                            {formatCurrency(detalle?.value)}
                           </div>
                         </div>
                       ))}

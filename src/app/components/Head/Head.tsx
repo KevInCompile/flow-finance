@@ -33,7 +33,7 @@ export default function Head() {
           </div>
         ) : (
           <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v 0.9.5
+            v 0.10.5
           </div>
         )}
       </div>
@@ -47,34 +47,44 @@ export default function Head() {
             onClick={() => handleSignIn('google')}
           >
             <GoogleIcon className="w-5 h-5" />
-            Iniciar sesión
+            Log In
           </button>
         ) : (
-          <button
-            className="bg-[var(--color-usage)] font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-black text-sm"
-            onClick={() => signOut()}
-          >
-            <span>Cerrar sesión</span>
-            <div>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="icon icon-tabler icon-tabler-logout"
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                strokeWidth="2"
-                stroke="#000"
-                fill="none"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
-                <path d="M9 12h12l-3 -3" />
-                <path d="M18 15l3 -3" />
-              </svg>
+          <>
+            <div className="flex items-center gap-2 mr-4 bg-gray-100 rounded-lg p-2">
+              <span className="text-sm font-semibold text-gray-700">
+                Currency:
+              </span>
+              <span className="text-sm font-bold text-purple-600">
+                {localStorage.getItem('userCurrency') || 'COP'}
+              </span>
             </div>
-          </button>
+            <button
+              className="bg-purple-500 text-white font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-sm"
+              onClick={() => signOut()}
+            >
+              <span>Log out</span>
+              <div>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="icon icon-tabler icon-tabler-logout"
+                  width="15"
+                  height="15"
+                  viewBox="0 0 24 24"
+                  strokeWidth="2"
+                  stroke="#fff"
+                  fill="none"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                  <path d="M9 12h12l-3 -3" />
+                  <path d="M18 15l3 -3" />
+                </svg>
+              </div>
+            </button>
+          </>
         )}
         {/* <ThemeToogle /> */}
       </div>

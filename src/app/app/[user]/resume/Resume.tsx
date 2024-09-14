@@ -14,7 +14,6 @@ import { Button } from '@/components/ui/button'
 import { CircleHelp, Search } from 'lucide-react'
 import dynamic from 'next/dynamic'
 import Tour from './utils/steps-tour'
-import { DataAgruped } from './models/ExpensesIncomesModel'
 
 /**
  * Dynamically import BentoInformation component to improve initial load time
@@ -54,6 +53,8 @@ export default function Resume() {
   const [anioActual, setAnioActual] = useState(2024)
   const [tour, setTour] = useState(false)
   const [isDataAgruped, setIsDataAgruped] = useState(false)
+  const [isSearching, setIsSearching] = useState(false)
+  const [searchTerm, setSearchTerm] = useState('')
 
   const currentDate = new Date()
   const monthName = monthNames[mesActual]
@@ -78,41 +79,25 @@ export default function Resume() {
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-  /**
-   * Filters an array of transactions for the current month and year
-   * @param {Array} array - The array of transactions to filter
-   * @returns {Array} Filtered array of transactions
-   */
-  const filterForMonth = (array: any) => {
-    return array?.filter((gasto: DataAgruped) => {
-      const [year, month] = gasto.date.split('-')
-      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual
-    })
-  }
+  const filteredTransactions = transactionsFilterForDate.filter(
+    (transaction) => {
+      if (searchTerm === '') return true
+      if (isDataAgruped) {
+        return (
+          transaction?.categoryname
+            ?.toLowerCase()
+            ?.includes(searchTerm.toLowerCase()) ?? false
+        )
+      } else {
+        return (
+          transaction?.description
+            ?.toLowerCase()
+            ?.includes(searchTerm.toLowerCase()) ?? false
+        )
+      }
+    }
+  )
 
-  /**
-   * Calculates the growth percentage for a given account
-   * @param {string} cuenta - The account name
-   * @returns {string} The growth percentage as a string
-   */
-  const calcularCrecimiento = (cuenta: string) => {
-    const ingresosDelMes = filterForMonth(incomes)
-      .filter((ingreso: DataAgruped) => ingreso.account === cuenta)
-      .reduce((total: number, ingreso: DataAgruped) => total + ingreso.value, 0)
-    const gastosDelMes = filterForMonth(expenses)
-      .filter((gasto: DataAgruped) => gasto.accountname === cuenta)
-      .reduce((total: number, gasto: DataAgruped) => total + gasto.value, 0)
-    const crecimiento = ingresosDelMes - gastosDelMes
-    const value = accounts.filter((acc) => acc.name === cuenta)[0]
-    const porcentajeCrecimiento = (crecimiento / +value?.value) * 100
-    if (!porcentajeCrecimiento) return '0'
-    return porcentajeCrecimiento.toFixed(2)
-  }
-
-  /**
-   * Changes the current month, updating the year if necessary
-   * @param {string} direccion - The direction to change the month ("anterior" or "siguiente")
-   */
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
       if (direccion === 'anterior') {
@@ -147,12 +132,19 @@ export default function Resume() {
     return setIsDataAgruped(false)
   }, [])
 
+  const toggleSearch = () => {
+    setIsSearching(!isSearching)
+    if (isSearching) {
+      setSearchTerm('')
+    }
+  }
+
   return (
     <>
       <Head />
       <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
         <div className="grid grid-cols-2 items-center">
-          <h1 className="text-md md:text-2xl font-semibold text-start text-purple-300 pb-2 animate-fade-in flex items-center">
+          <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
             Total Balance of {monthName}
             <Button className="text-white" onClick={() => setTour(true)}>
               <CircleHelp />
@@ -178,7 +170,6 @@ export default function Resume() {
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14">
           <BentoInformation
             expenses={transactionsFilterForDate}
-            crecimiento={calcularCrecimiento}
             accounts={accounts}
             incomes={incomes}
             setIncomes={setIncomes}
@@ -201,19 +192,43 @@ export default function Resume() {
                     <span className="slider"></span>
                   </label>
                 </div>
-                <small>You can view details your tansactions story</small>
+                <small>Your tansactions story</small>
               </div>
               <div className="flex gap-3 items-center">
-                <button className="border-[1px] rounded-xl border-gray-700 p-2 h-10 w-10">
-                  <Search />
-                </button>
+                <div
+                  className={
+                    isSearching ? 'relative w-full' : 'relative w-10 h-10'
+                  }
+                >
+                  <input
+                    type="text"
+                    placeholder={
+                      isDataAgruped
+                        ? 'Search by category'
+                        : 'Search by description'
+                    }
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className={`border-[1px] rounded-xl border-white px-2 h-10  bg-transparent text-white transition-all duration-300 ${
+                      isSearching ? 'w-full opacity-100' : 'w-0 opacity-0'
+                    }`}
+                  />
+                  <button
+                    className={`border-[1px] rounded-xl border-gray-700 p-2 h-10 w-10 search absolute inset-0 transition-all duration-300 ${
+                      isSearching ? 'opacity-0' : 'opacity-100'
+                    }`}
+                    onClick={toggleSearch}
+                  >
+                    <Search />
+                  </button>
+                </div>
               </div>
             </div>
             {loadingExpenses ? (
               <SkeletonTable />
             ) : (
               <TableTransactions
-                data={transactionsFilterForDate}
+                data={filteredTransactions}
                 monthCurrent={mesActual}
                 isAgruped={isDataAgruped}
                 deleteIncome={deleteIncome}

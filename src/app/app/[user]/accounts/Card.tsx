@@ -9,10 +9,16 @@ const INITIAL_STATE = {
   id: 0,
   name: '',
   value: '',
-  type: ''
+  type: '',
 }
 
-export default function Card({ data, setData }: { data: AccountModel[]; setData: any }) {
+export default function Card({
+  data,
+  setData,
+}: {
+  data: AccountModel[]
+  setData: any
+}) {
   const [itemSelected, setItemSelected] = useState<AccountModel>(INITIAL_STATE)
 
   const selectItem = (data: AccountModel) => {
@@ -28,11 +34,14 @@ export default function Card({ data, setData }: { data: AccountModel[]; setData:
     try {
       const res = await fetch(`/api/account?id=${itemSelected?.id}`, {
         method: 'PUT',
-        body: JSON.stringify(itemSelected)
+        body: JSON.stringify(itemSelected),
       })
       const json = await res.json()
       if (json.message) {
-        setData([...data.filter((item) => item.id !== itemSelected.id), itemSelected])
+        setData([
+          ...data.filter((item) => item.id !== itemSelected.id),
+          itemSelected,
+        ])
         setItemSelected(INITIAL_STATE)
         toast.success(json.message)
       }
@@ -44,7 +53,7 @@ export default function Card({ data, setData }: { data: AccountModel[]; setData:
   async function deleteItem(id: number) {
     try {
       await fetch(`/api/account?id=${id}`, {
-        method: 'DELETE'
+        method: 'DELETE',
       })
       setData(data.filter((item) => item.id !== id))
       return toast('Cuenta eliminada correctamente!')
@@ -57,9 +66,14 @@ export default function Card({ data, setData }: { data: AccountModel[]; setData:
     <>
       {data.length >= 1 &&
         data.map((item) => (
-          <div key={item.id} className="rounded-xl border bg-[#242424]/50 text-card-foreground shadow text-white">
+          <div
+            key={item.id}
+            className="rounded-xl border bg-[#1F1D1D] text-card-foreground shadow text-white"
+          >
             <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
-              <h3 className="tracking-tight text-md font-medium text-palette">{item.name}</h3>
+              <h3 className="tracking-tight text-md font-medium text-palette">
+                {item.name}
+              </h3>
               <div className="flex gap-3">
                 {itemSelected?.id === item.id ? (
                   <button onClick={updateItem}>
@@ -70,7 +84,10 @@ export default function Card({ data, setData }: { data: AccountModel[]; setData:
                     <EditIcon />
                   </button>
                 )}
-                <DeleteConfirmation deleteItem={() => deleteItem(item.id)} message="¿Deseas eliminar esta cuenta?" />
+                <DeleteConfirmation
+                  deleteItem={() => deleteItem(item.id)}
+                  message="¿Deseas eliminar esta cuenta?"
+                />
               </div>
             </div>
             <div className="p-6 pt-0">
@@ -85,7 +102,10 @@ export default function Card({ data, setData }: { data: AccountModel[]; setData:
                 />
               ) : (
                 <div className="text-2xl font-semibold">
-                  {parseInt(item?.value).toLocaleString('es-CO', { style: 'currency', currency: 'COP' })}
+                  {parseInt(item?.value).toLocaleString('es-CO', {
+                    style: 'currency',
+                    currency: 'COP',
+                  })}
                 </div>
               )}
             </div>
