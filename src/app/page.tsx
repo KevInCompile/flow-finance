@@ -7,7 +7,6 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import LoaderPage from './components/LoaderPage/LoaderPage'
 import GridBento from './components/GridBento/GridBento'
-import example from '@/../../public/example.png'
 import Image from 'next/image'
 
 export default function Home() {
@@ -40,12 +39,15 @@ export default function Home() {
             </p>
           </div>
           <Image
-            src={example}
+            src="/preview/preview.png"
             alt="example"
+            width={1000}
+            height={200}
             className="mt-10 rounded-xl border relative z-10"
+            unoptimized
           />
         </div>
-        <div className="text-center mt-10 md:mt-40 md:px-20 px-6">
+        <div className="text-center mt-10 md:mt-32 md:px-20 px-6">
           <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
             How it works?
           </div>
