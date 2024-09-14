@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss'
+// @ts-ignore
 import animations from '@midudev/tailwind-animations'
 
 const config = {
