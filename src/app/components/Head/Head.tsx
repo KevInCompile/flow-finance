@@ -40,7 +40,7 @@ export default function Head() {
       <div>
         <slot />
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center md:gap-2">
         {!session ? (
           <button
             className="bg-[#DDDDDD] text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all flex items-center gap-2 m-auto md:text-sm"
@@ -52,10 +52,10 @@ export default function Head() {
         ) : (
           <>
             <div className="flex items-center gap-2 mr-4 bg-gray-100 rounded-lg p-2">
-              <span className="text-sm font-semibold text-gray-700">
+              <span className="text-sm font-semibold text-gray-700 hidden md:block">
                 Currency:
               </span>
-              <span className="text-sm font-bold text-purple-600">
+              <span className="text-xs md:text-sm font-bold text-purple-600">
                 {localStorage.getItem('userCurrency') || 'COP'}
               </span>
             </div>
@@ -63,7 +63,7 @@ export default function Head() {
               className="bg-purple-500 text-white font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-sm"
               onClick={() => signOut()}
             >
-              <span>Log out</span>
+              <span className="hidden md:block">Log out</span>
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
