@@ -143,7 +143,7 @@ export default function Resume() {
     <>
       <Head />
       <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
-        <div className="grid grid-cols-2 items-center">
+        <div className="grid grid-cols-2 items-cente">
           <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
             Total Balance of {monthName}
             <Button className="text-white" onClick={() => setTour(true)}>
@@ -167,7 +167,7 @@ export default function Resume() {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14">
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14 items-center">
           <BentoInformation
             expenses={transactionsFilterForDate}
             accounts={accounts}

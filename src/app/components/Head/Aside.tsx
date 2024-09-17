@@ -70,6 +70,15 @@ export default function Aside() {
               <span>Debts</span>
             </li>
           </Link>
+          <Link
+            href={`/app/${session?.user?.name}/saving-goals`}
+            className="bg-transparent"
+          >
+            <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
+              <CreditCardRefundIcon />
+              <span>Saving goals</span>
+            </li>
+          </Link>
           <li className="absolute bottom-0 w-full justify-center opacity-50 text-sm">
             {FormatDate(session?.expires ?? '')}
           </li>

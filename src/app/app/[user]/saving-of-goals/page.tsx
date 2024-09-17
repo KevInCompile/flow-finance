@@ -1,99 +1,56 @@
-"use client";
+'use client'
 
-import { useState } from "react";
-import { PlusCircle, Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Head from '@/app/components/Head/Head'
+import SavingGoalCard from './components/saving-goal-card'
+import ModalNewSavingGoal from './modal/modal-new-saving-goal'
+import useSavingGoals from './hooks/useSavingGoals'
+import SkeletonAccount from '../accounts/loading'
+import Image from 'next/image'
+import Gift from '@/../public/empty.gif'
+import OpenButton from '../accounts/OpenButton/OpenButton'
 
-interface SavingsGoal {
-  id: number;
-  name: string;
-  target: number;
-  current: number;
-}
-
-export default function SavingsGoals() {
-  const [goals, setGoals] = useState<SavingsGoal[]>([
-    { id: 1, name: "Vacaciones", target: 5000, current: 2500 },
-    { id: 2, name: "Nuevo teléfono", target: 1000, current: 750 },
-  ]);
-  const [newGoal, setNewGoal] = useState({ name: "", target: "" });
-
-  const addGoal = () => {
-    if (newGoal.name && newGoal.target) {
-      setGoals([
-        ...goals,
-        {
-          id: goals.length + 1,
-          name: newGoal.name,
-          target: parseFloat(newGoal.target),
-          current: 0,
-        },
-      ]);
-      setNewGoal({ name: "", target: "" });
-    }
-  };
-
-  const deleteGoal = (id: number) => {
-    setGoals(goals.filter((goal) => goal.id !== id));
-  };
+export default function SavingGoals() {
+  const { data, loading, setRefresh, setData } = useSavingGoals()
 
   return (
-    <Card className="w-full max-w-3xl mx-auto bg-[#1F1D1D]">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-violet-400">
-          Metas de Ahorro
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {goals.map((goal) => (
-            <div key={goal.id} className="flex items-center space-x-4">
-              <div className="flex-grow">
-                <h3 className="font-semibold">{goal.name}</h3>
-                <Progress
-                  value={(goal.current / goal.target) * 100}
-                  className="h-2 bg-white"
-                />
-                <p className="text-sm text-gray-500">
-                  {goal.current.toLocaleString("es-ES", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}{" "}
-                  de{" "}
-                  {goal.target.toLocaleString("es-ES", {
-                    style: "currency",
-                    currency: "EUR",
-                  })}
-                </p>
-              </div>
-              <Button size="icon" onClick={() => deleteGoal(goal.id)}>
-                <Trash2 className="h-4 w-4" />
-                <span className="sr-only">Eliminar meta</span>
-              </Button>
+    <>
+      <Head />
+      <section>
+        <div className="flex items-center justify-center pb-3">
+          <h1 className="text-2xl font-medium text-center text-purple-500">
+            Metas de Ahorro
+          </h1>
+          <OpenButton />
+        </div>
+        <div className="flex gap-3 items-center max-w-[800px] m-auto justify-center">
+          {loading ? (
+            <></>
+          ) : data.length === 0 ? (
+            <div className="flex flex-col gap-3 items-center m-auto w-full">
+              <Image
+                src={Gift}
+                alt="Sin items"
+                className="rounded-md px-5 md:px-0"
+                priority
+              />
+              <small className="opacity-50 italic font-medium text-white">
+                ¡Aún no has registrado ninguna meta de ahorro! Comienza a crear
+                tus objetivos financieros.
+              </small>
             </div>
-          ))}
+          ) : (
+            <></>
+          )}
         </div>
-        <div className="mt-6 flex space-x-2">
-          <Input
-            placeholder="Nombre de la meta"
-            value={newGoal.name}
-            onChange={(e) => setNewGoal({ ...newGoal, name: e.target.value })}
-          />
-          <Input
-            type="number"
-            placeholder="Cantidad objetivo"
-            value={newGoal.target}
-            onChange={(e) => setNewGoal({ ...newGoal, target: e.target.value })}
-          />
-          <Button onClick={addGoal}>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            Agregar
-          </Button>
+        <div className="grid grid-cols-1 px-10 gap-5 py-5 md:grid-cols-3">
+          {loading ? (
+            <SkeletonAccount />
+          ) : (
+            <SavingGoalCard data={data} setData={setData} />
+          )}
         </div>
-      </CardContent>
-    </Card>
-  );
+      </section>
+      <ModalNewSavingGoal refresh={setRefresh} />
+    </>
+  )
 }
