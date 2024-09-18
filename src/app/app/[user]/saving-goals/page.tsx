@@ -10,7 +10,7 @@ import Gift from '@/../public/empty.gif'
 import OpenButton from '../accounts/OpenButton/OpenButton'
 
 export default function SavingGoals() {
-  const { data, loading, setRefresh, setData } = useSavingGoals()
+  const { data, loading, setData } = useSavingGoals()
 
   return (
     <>
@@ -18,7 +18,7 @@ export default function SavingGoals() {
       <section>
         <div className="flex items-center justify-center pb-3">
           <h1 className="text-2xl font-medium text-center text-purple-500">
-            Metas de Ahorro
+            Saving goals
           </h1>
           <OpenButton />
         </div>
@@ -34,15 +34,15 @@ export default function SavingGoals() {
                 priority
               />
               <small className="opacity-50 italic font-medium text-white">
-                ¡Aún no has registrado ninguna meta de ahorro! Comienza a crear
-                tus objetivos financieros.
+                You haven&apos;t registered any saving goals yet! Start creating
+                your financial objectives.
               </small>
             </div>
           ) : (
             <></>
           )}
         </div>
-        <div className="grid grid-cols-1 px-10 gap-5 py-5 md:grid-cols-3">
+        <div className="grid grid-cols-1 px-10 gap-5 py-5 md:grid-cols-2 lg:grid-cols-3">
           {loading ? (
             <SkeletonAccount />
           ) : (
@@ -50,7 +50,7 @@ export default function SavingGoals() {
           )}
         </div>
       </section>
-      <ModalNewSavingGoal refresh={setRefresh} />
+      <ModalNewSavingGoal setSavingGoals={setData} />
     </>
   )
 }

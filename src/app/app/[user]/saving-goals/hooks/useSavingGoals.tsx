@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { SavingGoalModel } from '../models/saving-goals.model'
 import serviceGetSavingGoals from '../services/saving-goals.service'
 
 export default function useSavingGoals() {
@@ -15,8 +16,7 @@ export default function useSavingGoals() {
       try {
         const [error, result] = await serviceGetSavingGoals(user)
         if (error) return toast.error(error)
-        setData(result)
-        setLoading(false)
+        setData(result.result)
       } catch (e) {
       } finally {
         setLoading(false)

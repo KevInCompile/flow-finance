@@ -167,7 +167,7 @@ export default function Resume() {
             </button>
           </div>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14 items-start">
           <BentoInformation
             expenses={transactionsFilterForDate}
             accounts={accounts}

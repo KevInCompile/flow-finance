@@ -8,7 +8,12 @@ import Resume from '../resume/Resume'
 export default function ValidateUser() {
   const { currency, loading: loadingGetUser, setDataSaved } = useGetUser()
 
-  if (loadingGetUser) return <LoaderPage />
+  if (loadingGetUser)
+    return (
+      <div className="grid place-items-center h-[80vh] mr-24">
+        <LoaderPage />
+      </div>
+    )
   if (currency === undefined)
     return <ChooseCurrency setDataSaved={setDataSaved} />
   if (currency) {

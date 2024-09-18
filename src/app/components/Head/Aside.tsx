@@ -9,6 +9,7 @@ import Image from 'next/image'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import './assets/aside.css'
+import SavingIcon from '@/app/icons/IconsAside/SavingIcon'
 
 export default function Aside() {
   const { data: session } = useSession()
@@ -75,7 +76,7 @@ export default function Aside() {
             className="bg-transparent"
           >
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
-              <CreditCardRefundIcon />
+              <SavingIcon />
               <span>Saving goals</span>
             </li>
           </Link>
@@ -83,9 +84,6 @@ export default function Aside() {
             {FormatDate(session?.expires ?? '')}
           </li>
         </ul>
-        <h1 className="w-full text-center opacity-50 italic text-white my-10">
-          Pronto se habilitarán las opciones
-        </h1>
       </div>
     </aside>
   )

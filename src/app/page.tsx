@@ -27,10 +27,10 @@ export default function Home() {
       <Head />
       <main className="!w-full animate-fade-in">
         <div className="animate-fade-in-down pt-24 md:pt-30 relative overflow-hidden px-10 md:px-20 min-h-[100vh]">
-          <div className="hidden md:block md:absolute bottom-0 h-[500px] w-[500px] top-[200px] right-[-95%] md:w-[700px] md:h-[700px] md:right-[-60%] md:top-[-100px] lg:right-[-80%] lg:top-[-120px] lg:h-[1300px] lg:w-[1300px] xl:w-[1500px] xl:h-[1500px] xl:right-[-60%] rounded-full bg-[radial-gradient(circle_farthest-side,rgb(168,85,247,.70),rgba(255,255,255,0))]"></div>
+          <div className="hidden md:block md:absolute bottom-0 h-[500px] w-[500px] top-[200px] right-[-95%] md:w-[700px] md:h-[700px] md:right-[-60%] md:top-[-100px] lg:right-[-80%] lg:top-[-120px] lg:h-[1300px] lg:w-[1300px] xl:w-[1500px] xl:h-[1500px] xl:right-[-80%] rounded-full bg-[radial-gradient(circle_farthest-side,rgb(168,85,247,.70),rgba(255,255,255,0))]"></div>
           <div className="max-w-[42rem]">
             <h1 className="mb-10 [font-size:5.2rem] [line-height:1] font-bold">
-              <span className="bg-gradient">Flow Finance</span>
+              <span className="bg-gradient">Ghost Finance</span>
             </h1>
             <p className="text-start text-secondary font-medium text-2xl md:p-0 opacity-70">
               Track your assets, income, savings, investments, and deduct your

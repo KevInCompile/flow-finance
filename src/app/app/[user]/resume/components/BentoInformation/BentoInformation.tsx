@@ -20,7 +20,7 @@ import { ExpenseModel } from '../../hooks/useExpenses'
 // ICONS
 import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 import ModalExchange from '../Modals/ModalExchange'
-import VisualizerSavingGoals from '../../../saving-of-goals/components/visualizer-resume'
+import VisualizerSavingGoals from '../../../saving-goals/components/visualizer-resume'
 
 export default function BentoInformation({
   expenses,

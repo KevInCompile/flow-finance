@@ -105,10 +105,13 @@ export default function TableTransactions(props: Props) {
               const monthExpense = dateExpense.getMonth()
               if (monthCurrent === monthExpense) {
                 return (
-                  <div className="flex flex-col" key={item.id}>
+                  <div
+                    className="flex flex-col border-b border-gray-500 listTable"
+                    key={item.id}
+                  >
                     <Dialog>
                       <DialogTrigger asChild>
-                        <div className="py-4 px-5 grid grid-cols-3 items-center border-b border-gray-500 text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6">
+                        <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6 ">
                           <div className="text-white">
                             <span className="text-purple-500 font-light">
                               {item?.type === 'expense'

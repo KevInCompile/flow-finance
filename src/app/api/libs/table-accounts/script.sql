@@ -20,4 +20,16 @@ CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), 
 CREATE TABLE incomes (Id SERIAL PRIMARY KEY, Username varchar(100), TypeIncome varchar(50), AccountId INT REFERENCES accounts(Id),  Value NUMERIC(15, 2), date varchar(20));
 
 // TABLA DE EXCHANGE
-CREATE TABLE exchanges (Id SERIAL PRIMARY KEY,FromAccountId INTEGER REFERENCES accounts(Id),ToAccountId INTEGER REFERENCES accounts(Id),Username VARCHAR(255), Value INT,Date DATE DEFAULT CURRENT_DATE);
+CREATE TABLE exchanges (Id SERIAL PRIMARY KEY, FromAccountId INTEGER REFERENCES accounts(Id),ToAccountId INTEGER REFERENCES accounts(Id),Username VARCHAR(100), Value INT,Date DATE DEFAULT CURRENT_DATE);
+
+// TABLE OF SAVING GOALS
+CREATE TABLE saving_goals (Id serial primary key, moneySaved NUMERIC(15,2), goal NUMERIC(15,2), nameGoal VARCHAR(50), username varchar(50));
+
+// TABLE REGISTER OF SAVING GOALS
+CREATE TABLE saving_goals_register (
+    Id SERIAL PRIMARY KEY,
+    SavingGoalId INT REFERENCES saving_goals(Id),
+    AccountId INT REFERENCES accounts(Id),
+    Amount NUMERIC(15,2),
+    DateRegister DATE DEFAULT CURRENT_DATE
+);
