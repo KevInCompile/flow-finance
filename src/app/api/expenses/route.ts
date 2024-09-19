@@ -1,50 +1,19 @@
 import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
-
-type ExpenseForm = {
-  username: string
-  value: string
-  accountId: string
-  categoryId: string
-  description: string
-  date: string
-}
-
-async function insertExpense(form: ExpenseForm) {
-  const {
-    username: userEncode,
-    value: valueString,
-    accountId,
-    categoryId,
-    description,
-    date,
-  } = form
-  const value = parseFloat(valueString)
-  const username = decodeURIComponent(userEncode)
-
-  await sql`INSERT INTO expenses (AccountId, CategoryId, Username, Description, Date, Value)
-    VALUES (${accountId}, ${categoryId}, ${username}, ${description}, ${date}, ${value})`
-  await sql`UPDATE accounts
-    SET Value = Value - ${value}
-    WHERE Id = ${accountId} AND Username = ${username}`
-
-  const { rows } = await sql`
-    SELECT e.Id, a.Name AS AccountName, c.Name AS CategoryName, a.Id as accountid,
-      e.Username, e.Date, e.Description, e.Value
-    FROM expenses AS e
-    INNER JOIN accounts AS a ON e.AccountId = a.Id
-    INNER JOIN categories AS c ON e.CategoryId = c.Id
-    WHERE e.Username=${username}
-    ORDER BY Id DESC
-    LIMIT 1`
-
-  return rows[0]
-}
+import { getSession } from '../session'
+import { insertExpense } from './functions'
 
 export async function POST(request: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   try {
     const form = await request.json()
-    const result = await insertExpense(form)
+    const result = await insertExpense({
+      username: session.user?.name,
+      ...form,
+    })
     return NextResponse.json(
       { message: 'Expense added', result: { ...result, type: 'expense' } },
       { status: 200 }
@@ -54,9 +23,10 @@ export async function POST(request: Request) {
   }
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url)
-  const username = searchParams.get('username')
+export async function GET() {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
   try {
     const result = await sql`
@@ -65,7 +35,7 @@ export async function GET(request: Request) {
       FROM expenses AS e
       INNER JOIN accounts AS a ON e.AccountId = a.Id
       INNER JOIN categories AS c ON e.CategoryId = c.Id
-      WHERE e.Username=${username}`
+      WHERE e.Username=${session.user?.name}`
 
     return NextResponse.json(
       {
@@ -79,6 +49,10 @@ export async function GET(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
 
@@ -89,10 +63,10 @@ export async function DELETE(request: Request) {
     const expense = result.rows[0]
 
     if (expense.value) {
-      await sql`UPDATE accounts SET Value = Value + ${parseFloat(expense.value)} WHERE Id = ${expense.accountid}`
+      await sql`UPDATE accounts SET Value = Value + ${parseFloat(expense.value)} WHERE Id = ${expense.accountid} and username = ${session.user?.name}`
     }
 
-    await sql`DELETE FROM expenses WHERE Id = ${id}`
+    await sql`DELETE FROM expenses WHERE Id = ${id} and username = ${session.user?.name}`
     return NextResponse.json({ message: 'Expense deleted' }, { status: 200 })
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 })

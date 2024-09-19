@@ -10,7 +10,7 @@ import GridBento from './components/GridBento/GridBento'
 import Image from 'next/image'
 
 export default function Home() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const router = useRouter()
 
   if (status === 'loading')
@@ -19,8 +19,7 @@ export default function Home() {
         <LoaderPage />
       </div>
     )
-  if (status === 'authenticated')
-    return router.push(`/app/${session.user?.name}/profile`)
+  if (status === 'authenticated') return router.push(`/app/private/profile`)
 
   return (
     <>

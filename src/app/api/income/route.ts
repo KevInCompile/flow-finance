@@ -1,30 +1,22 @@
 import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
-export const revalidate = 1
+import { getSession } from '../session'
 
 export async function POST(req: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const form = await req.json()
-  const {
-    username: userEncode,
-    typeIncome,
-    value: valueString,
-    accountId,
-    date,
-  } = form
+  const { typeIncome, value: valueString, accountId, date } = form
   const value = parseFloat(valueString)
-  const username = decodeURIComponent(userEncode as string)
 
   try {
-    if (!username)
-      return NextResponse.json(
-        { error: 'Username is required' },
-        { status: 500 }
-      )
     // Insert income
-    await sql`INSERT INTO incomes (Username, TypeIncome, AccountId, Value, Date) VALUES (${username}, ${typeIncome}, ${accountId}, ${value}, ${date})`
+    await sql`INSERT INTO incomes (Username, TypeIncome, AccountId, Value, Date) VALUES (${session.user?.name}, ${typeIncome}, ${accountId}, ${value}, ${date})`
     // Recuperar el ultimo registro de ese usuario
     const { rows } =
-      await sql`SELECT I.id, I.value, I.typeincome, I.date, C.name as account, I.AccountId FROM incomes as I INNER JOIN accounts as C ON I.AccountId = C.Id where I.Username = ${username} ORDER BY Id DESC LIMIT 1`
+      await sql`SELECT I.id, I.value, I.typeincome, I.date, C.name as account, I.AccountId FROM incomes as I INNER JOIN accounts as C ON I.AccountId = C.Id where I.Username = ${session.user?.name} ORDER BY Id DESC LIMIT 1`
     // Eliminar el valor sumado de la cuenta
     await sql`UPDATE accounts SET Value = Value + ${value} where Id = ${accountId}`
 
@@ -37,13 +29,14 @@ export async function POST(req: Request) {
   }
 }
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const username = searchParams.get('username')
+export async function GET() {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
   try {
     const result =
-      await sql`SELECT I.id, I.value, I.typeincome, I.date, C.name as account, I.AccountId FROM incomes as I INNER JOIN accounts as C ON I.AccountId = C.Id where I.Username = ${username}`
+      await sql`SELECT I.id, I.value, I.typeincome, I.date, C.name as account, I.AccountId FROM incomes as I INNER JOIN accounts as C ON I.AccountId = C.Id where I.Username = ${session.user?.name}`
 
     return NextResponse.json({ result: result.rows }, { status: 200 })
   } catch (e) {
@@ -52,6 +45,10 @@ export async function GET(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const { searchParams } = new URL(req.url)
   const id = searchParams.get('id')
 

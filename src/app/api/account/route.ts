@@ -1,70 +1,84 @@
-import { sql } from "@vercel/postgres";
-import { NextResponse } from "next/server";
-import { getParams } from '../utils/params';
+import { sql } from '@vercel/postgres'
+import { NextResponse } from 'next/server'
+import { getParams } from '../utils/params'
+import { getSession } from '../session'
 
 export async function POST(request: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const form = await request.formData()
-  const {name, value, username, type} =  getParams(form)
+  const { name, value, type } = getParams(form)
 
   try {
-    if (!username) return NextResponse.json({error: "User is required"}, { status: 500 });
-    if (!value || !name) return NextResponse.json({error: "Value, main, name is required"}, { status: 500 });
-    await sql`INSERT INTO accounts (Username, Name, Value, Type) VALUES (${username}, ${name}, ${value}, ${type})`;
+    if (!value || !name)
+      return NextResponse.json(
+        { error: 'Value, main, name is required' },
+        { status: 500 }
+      )
+    await sql`INSERT INTO accounts (Username, Name, Value, Type) VALUES (${session.user?.name}, ${name}, ${value}, ${type})`
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 })
   }
-  return NextResponse.json({ 'message': 'ok'}, { status: 200 });
+  return NextResponse.json({ message: 'ok' }, { status: 200 })
 }
 
-export async function GET(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const username = searchParams.get("username");
+export async function GET() {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
   try {
-    if (!username)
-      return NextResponse.json({ error: "Username is missing" }, { status: 500 });
+    const result = await sql`SELECT *
+    FROM accounts
+    WHERE Username = ${session.user?.name}
+    ORDER BY
+      CASE type
+        WHEN 'main' THEN 1
+        WHEN 'savings' THEN 2
+        WHEN 'investment' THEN 3
+        ELSE 4
+      END;`
+    return NextResponse.json({ ...result }, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 })
   }
-  const result = await sql`SELECT *
-  FROM accounts
-  WHERE Username = ${username}
-  ORDER BY
-    CASE type
-      WHEN 'principal' THEN 1
-      WHEN 'ahorros' THEN 2
-      WHEN 'inversion' THEN 3
-      ELSE 4
-    END;`;
-  return NextResponse.json({ ...result }, { status: 200 });
 }
 
 export async function PUT(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get('id')
   const body = await request.json()
 
   // se valida si existe el id de la cuenta
-  if(!id) return NextResponse.json({ error: "Id is missing" }, { status: 500 });
-
+  if (!id) return NextResponse.json({ error: 'Id is missing' }, { status: 500 })
 
   try {
-    await sql`UPDATE accounts SET Name = ${body.name}, Value = ${body.value} WHERE Id = ${id}`;
+    await sql`UPDATE accounts SET Name = ${body.name}, Value = ${body.value} WHERE Id = ${id} and username = ${session?.user?.name}`
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 })
   }
-  return NextResponse.json({ 'message': 'Cuenta actualizada'}, { status: 200 });
+  return NextResponse.json({ message: 'Account updated' }, { status: 200 })
 }
 
 export async function DELETE(request: Request) {
-  const { searchParams } = new URL(request.url);
-  const id = searchParams.get("id");
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
-  if(!id) return NextResponse.json({ error: "Id is missing" }, { status: 500 });
+  const { searchParams } = new URL(request.url)
+  const id = searchParams.get('id')
+
+  if (!id) return NextResponse.json({ error: 'Id is missing' }, { status: 500 })
   try {
-    await sql`DELETE FROM accounts WHERE Id = ${id}`;
+    await sql`DELETE FROM accounts WHERE Id = ${id} and username = ${session.user?.name}`
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 })
   }
-  return NextResponse.json({ 'message': 'Account deleted'}, { status: 200 });
+  return NextResponse.json({ message: 'Account deleted' }, { status: 200 })
 }

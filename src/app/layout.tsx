@@ -3,7 +3,6 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Provider from './session/Provider'
 import { Toaster } from 'sonner'
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {

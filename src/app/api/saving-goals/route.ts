@@ -1,14 +1,15 @@
 import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
+import { getSession } from '../session'
 
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const user = searchParams.get('user')!
-  const username = decodeURIComponent(user)
+export async function GET() {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
   try {
     const { rows } =
-      await sql`SELECT * FROM saving_goals where username=${username}`
+      await sql`SELECT * FROM saving_goals where username=${session.user?.name}`
     if (rows[0]) {
       return NextResponse.json({ result: [rows[0]] }, { status: 200 })
     } else {
@@ -24,8 +25,7 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const body = await req.json()
-  if (!body.username)
-    return NextResponse.json({ error: 'username is required' })
+
   try {
     const result = await insertNewSavingGoal(body)
     return NextResponse.json(
@@ -38,6 +38,10 @@ export async function POST(req: Request) {
 }
 
 export async function DELETE(req: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const { searchParams } = new URL(req.url)
   const id = searchParams.get('id')
 
@@ -50,6 +54,10 @@ export async function DELETE(req: Request) {
 }
 
 export async function PUT(req: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
   const body = await req.json()
   if (!body.amount || !body.accountId || !body.savingGoalId) {
     return NextResponse.json(
@@ -69,15 +77,18 @@ export async function PUT(req: Request) {
 }
 
 async function insertNewSavingGoal(data: any) {
-  const { username: us, moneySaved: ms, goal: g, nameGoal } = data
-  const username = decodeURIComponent(us)
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
+  const { moneySaved: ms, goal: g, nameGoal } = data
   const moneySaved = parseFloat(ms)
   const goal = parseFloat(g)
 
-  await sql`INSERT INTO saving_goals (username, moneySaved, goal, nameGoal) VALUES (${username}, ${moneySaved}, ${goal}, ${nameGoal});`
+  await sql`INSERT INTO saving_goals (username, moneySaved, goal, nameGoal) VALUES (${session.user?.name}, ${moneySaved}, ${goal}, ${nameGoal});`
 
   const { rows } =
-    await sql`SELECT * FROM saving_goals where username = ${username} ORDER BY Id DESC LIMIT 1`
+    await sql`SELECT * FROM saving_goals where username = ${session.user?.name} ORDER BY Id DESC LIMIT 1`
 
   return rows[0]
 }

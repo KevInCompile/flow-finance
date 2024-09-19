@@ -1,13 +1,12 @@
-import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { cookies } from 'next/headers'
+import { NextResponse } from 'next/server'
 
 export async function middleware(req: NextResponse) {
-  let cookie = cookies().get(process.env.NEXT_COOKIE as string);
-  // let cookieProd = cookies().get();
-  const response = NextResponse.next();
+  let cookie = cookies().get(process.env.NEXT_COOKIE as string)
+  const response = NextResponse.next()
 
-  if (!cookie) return NextResponse.redirect(new URL("/forbbiden", req.url));
-  return response;
+  if (!cookie) return NextResponse.redirect(new URL('/forbbiden', req.url))
+  return response
 }
 
-export const config = { matcher: ["/app/:path*"] };
+export const config = { matcher: ['/app/:path*'] }

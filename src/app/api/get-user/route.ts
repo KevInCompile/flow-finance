@@ -1,5 +1,40 @@
 import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
+import { getSession } from '../session'
+
+export async function GET() {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
+  try {
+    const result = await getUserCurrency(session.user?.name!)
+    return NextResponse.json({ result }, { status: 200 })
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
+  }
+}
+
+export async function POST(req: Request) {
+  const session = await getSession()
+  if (!session)
+    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+
+  const { currency } = await req.json()
+
+  if (currency === '')
+    return NextResponse.json({ error: 'Currency is required' }, { status: 400 })
+
+  try {
+    await updateUserCurrency(session.user?.name!, currency)
+    return NextResponse.json(
+      { message: 'Currency updated successfully' },
+      { status: 200 }
+    )
+  } catch (error) {
+    return NextResponse.json({ error }, { status: 500 })
+  }
+}
 
 async function getUserCurrency(username: string) {
   const { rows } =
@@ -8,38 +43,5 @@ async function getUserCurrency(username: string) {
 }
 
 async function updateUserCurrency(username: string, currency: string) {
-  await sql`INSERT INTO user_currency_preferences (username, currency)
-            VALUES (${username}, ${currency})
-            ON CONFLICT (username) DO UPDATE SET currency = ${currency}`
-}
-
-export async function GET(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const userEncode = searchParams.get('username') as string
-  const username = decodeURIComponent(userEncode)
-
-  try {
-    const result = await getUserCurrency(username)
-    return NextResponse.json({ result }, { status: 200 })
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
-  }
-}
-
-export async function POST(req: Request) {
-  const { username: userEncode, currency } = await req.json()
-  const username = decodeURIComponent(userEncode)
-
-  if (currency === '')
-    return NextResponse.json({ error: 'Currency is required' }, { status: 400 })
-
-  try {
-    await updateUserCurrency(username, currency)
-    return NextResponse.json(
-      { message: 'Currency updated successfully' },
-      { status: 200 }
-    )
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
-  }
+  await sql`INSERT INTO user_currency_preferences (username, currency) VALUES (${username}, ${currency}) ON CONFLICT (username) DO UPDATE SET currency = ${currency}`
 }

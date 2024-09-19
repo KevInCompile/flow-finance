@@ -44,37 +44,25 @@ export default function Aside() {
           </span>
         </div>
         <ul className="text-lg text-white flex flex-col gap-3">
-          <Link
-            href={`/app/${session?.user?.name}/profile`}
-            className="bg-transparent"
-          >
+          <Link href={`/app/private/profile`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ActivityIcon />
               <span>Resume</span>
             </li>
           </Link>
-          <Link
-            href={`/app/${session?.user?.name}/accounts`}
-            className="bg-transparent"
-          >
+          <Link href={`/app/private/accounts`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CoinIcon />
               <span>Accounts</span>
             </li>
           </Link>
-          <Link
-            href={`/app/${session?.user?.name}/debts`}
-            className="bg-transparent"
-          >
+          <Link href={`/app/private/debts`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CreditCardRefundIcon />
               <span>Debts</span>
             </li>
           </Link>
-          <Link
-            href={`/app/${session?.user?.name}/saving-goals`}
-            className="bg-transparent"
-          >
+          <Link href={`/app/private/saving-goals`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <SavingIcon />
               <span>Saving goals</span>
