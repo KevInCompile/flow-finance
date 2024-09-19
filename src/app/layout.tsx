@@ -7,7 +7,7 @@ import { Toaster } from 'sonner'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Flow Finance',
+  title: 'Ghost Finance',
   description: 'In progress...',
 }
 

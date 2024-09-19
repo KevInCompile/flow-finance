@@ -22,14 +22,7 @@ import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 import ModalExchange from '../Modals/ModalExchange'
 import VisualizerSavingGoals from '../../../saving-goals/components/visualizer-resume'
 
-export default function BentoInformation({
-  expenses,
-  accounts,
-  setIncomes,
-  loadingAccounts,
-  setAccounts,
-  setExpenses,
-}: {
+interface Props {
   expenses: any
   accounts: AccountModel[]
   loadingAccounts: boolean
@@ -37,26 +30,42 @@ export default function BentoInformation({
   setIncomes: any
   setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>
   setExpenses: React.Dispatch<SetStateAction<ExpenseModel[]>>
-}) {
+}
+
+export default function BentoInformation(props: Props) {
+  // Destructured props
+  const {
+    expenses,
+    accounts,
+    loadingAccounts,
+    incomes,
+    setIncomes,
+    setAccounts,
+    setExpenses,
+  } = props
+
+  // State
   const [accountSelected, setAccountSelected] = useState('')
   const [typeAction, setTypeAction] = useState('')
+
+  //hooks
   const { handleShowModal } = useModal()
 
-  const lineData = expenses
-    .filter((item: any) => item.type === 'expense')
-    .reduce((acc: any, expense: DataAgruped) => {
-      const day = parseInt(expense.date.split('-')[2])
-      if (acc[day]) {
-        acc[day].value += Number(expense.value)
-      } else {
-        acc[day] = { day, value: Number(expense.value) }
-      }
-      return acc
-    }, {})
+  const combinedLineData = expenses.reduce((acc: any, expense: DataAgruped) => {
+    const day = parseInt(expense.date.split('-')[2])
+    const isIncome = expense.typeincome
+    const key = isIncome ? 'valueincome' : 'value'
 
-  const datosLineaArray = Object.values(lineData).sort(
-    (a: any, b: any) => a.day - b.day
-  )
+    if (!acc[day]) {
+      acc[day] = { day }
+    }
+
+    acc[day][key] = (acc[day][key] || 0) + Number(expense.value)
+
+    return acc
+  }, {})
+
+  const datosLineaArray = Object.values(combinedLineData)
 
   const baseUrl = window.location.pathname
   const newUrl = (route: string) => baseUrl.replace('profile', route)
@@ -68,12 +77,12 @@ export default function BentoInformation({
 
   return (
     <div>
-      <div className="flex flex-col gap-3 items-start rounded-xl saldo-total bg-[#1F1D1D] border border-gray-500">
+      <div className="flex flex-col gap-3 items-start rounded-xl saldo-total bg-[#151515] border border-gray-500">
         {loadingAccounts ? (
           <SkeletonResume />
         ) : (
           <>
-            <small className="px-6 pt-6">
+            <small className="px-6 pt-6 text-[#C59422]">
               You can view your account details
             </small>
             <select
@@ -144,24 +153,31 @@ export default function BentoInformation({
       </div>
       {datosLineaArray.length >= 1 && (
         <>
-          <h3 className="py-6 text-purple-600 font-semibold text-md md:text-2xl">
+          <h3 className="py-6 text-purple-500 font-semibold text-md md:text-2xl">
             Statistics of expenses
           </h3>
-          <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white bg-[#1F1D1D] rounded-xl border border-gray-500 grafico">
+          <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white bg-[#151515] rounded-xl border border-gray-500 grafico">
             <ResponsiveContainer width="100%" height={200}>
               <LineChart
                 data={datosLineaArray}
                 margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
               >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="day" />
-                <YAxis />
+                <XAxis dataKey="day" fontSize={12} />
+                <YAxis fontSize={12} />
                 <Tooltip />
                 <Line
                   type="monotone"
                   dataKey="value"
-                  stroke="#c084fc"
+                  stroke="#f87171"
                   activeDot={{ r: 8 }}
+                  connectNulls={true}
+                />
+                <Line
+                  type="monotone"
+                  dataKey="valueincome"
+                  stroke="#4ade80"
+                  connectNulls={true}
                 />
               </LineChart>
             </ResponsiveContainer>

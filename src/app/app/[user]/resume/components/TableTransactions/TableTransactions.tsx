@@ -85,13 +85,13 @@ export default function TableTransactions(props: Props) {
   return (
     <>
       {isAgruped ? (
-        <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3 border-gray-500 px-5 gap-6">
+        <header className="uppercase text-purple-500 font-bold border-b pb-5 mt-5 text-sm grid grid-cols-3 border-gray-500 px-5 gap-6">
           <span>name</span>
           <span>type</span>
           <span>value</span>
         </header>
       ) : (
-        <header className="uppercase text-white border-b pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4 border-gray-500 px-5 gap-6">
+        <header className="uppercase text-purple-500   border-b font-bold pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4 border-gray-500 px-5 gap-6">
           <span>name</span>
           <span>type</span>
           <span className="hidden md:block">date</span>
@@ -111,9 +111,9 @@ export default function TableTransactions(props: Props) {
                   >
                     <Dialog>
                       <DialogTrigger asChild>
-                        <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6 ">
-                          <div className="text-white">
-                            <span className="text-purple-500 font-light">
+                        <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1] cursor-pointer gap-6 ">
+                          <div>
+                            <span className="font-light">
                               {item?.type === 'expense'
                                 ? item?.categoryname
                                 : 'Incomes'}
@@ -128,7 +128,7 @@ export default function TableTransactions(props: Props) {
                               Request
                             </span>
                           )}
-                          <span className="font-medium">
+                          <span className="font-medium text-[#C59422]">
                             {formatCurrency(item?.value)}
                           </span>
                         </div>
@@ -189,12 +189,12 @@ export default function TableTransactions(props: Props) {
                     <div className="py-4 px-5 grid grid-cols-3 md:grid-cols-4 items-center border-b border-gray-500 text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6">
                       <div className="text-white">
                         <div className="flex flex-col gap-2">
-                          <span className="text-purple-500 font-light">
+                          <span className="font-light">
                             {item?.type === 'expense'
                               ? item?.categoryname
                               : item?.typeincome}
                           </span>
-                          <small className="font-light opacity-70">
+                          <small className="font-light opacity-70 text-[#C59422]">
                             {item?.description}
                           </small>
                         </div>
@@ -209,7 +209,7 @@ export default function TableTransactions(props: Props) {
                           Request
                         </span>
                       )}
-                      <span className="font-medium">
+                      <span className="font-medium text-[#C59422]">
                         {formatCurrency(item?.value)}
                       </span>
                     </div>

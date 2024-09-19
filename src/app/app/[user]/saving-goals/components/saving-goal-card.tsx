@@ -31,7 +31,6 @@ export default function SavingGoalCard({
             className="rounded-xl border bg-[#1F1D1D] text-card-foreground shadow text-white p-6"
           >
             <div className="flex justify-between items-center mb-4">
-              {' '}
               <h3 className="text-lg font-medium text-palette">
                 {item?.namegoal}
               </h3>

@@ -177,7 +177,7 @@ export default function Resume() {
             loadingAccounts={loadingAccounts}
             setExpenses={setExpenses}
           />
-          <div className="border rounded-lg border-gray-500 bg-[#1F1D1D]">
+          <div className="border rounded-lg border-gray-500 bg-[#151515]">
             <div className="flex flex-row gap-5 justify-between p-4">
               <div>
                 <div className="flex flex-row gap-3 items-center">
@@ -192,7 +192,7 @@ export default function Resume() {
                     <span className="slider"></span>
                   </label>
                 </div>
-                <small>Your tansactions story</small>
+                <small className="text-[#C59422]">Your tansactions story</small>
               </div>
               <div className="flex gap-3 items-center">
                 <div

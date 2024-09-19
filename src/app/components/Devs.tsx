@@ -4,7 +4,9 @@ import GithubIcon from '../icons/GithubIcon'
 export default function Devs() {
   return (
     <div className="max-w-[800px] m-auto [line-height:3rem] my-10">
-      <h2 className="text-center text-3xl font-medium text-purple-500">Designed by</h2>
+      <h2 className="text-center text-3xl font-medium text-purple-500">
+        Designed by
+      </h2>
       <div className="flex flex-wrap gap-5 justify-center py-5">
         <button className="bg-[#333]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">
           <div className="flex gap-5 items-center justify-between">
@@ -16,10 +18,12 @@ export default function Devs() {
                 className="w-full h-full p-2 rounded-full"
                 decoding="async"
                 loading="lazy"
-                alt="KevBT"
+                alt="KevInCompile"
               />
             </div>
-            <span className="opacity-70 font-medium text-white">KevBT</span>
+            <span className="opacity-70 font-medium text-white">
+              KevInCompile
+            </span>
             <GithubIcon />
           </div>
         </button>

@@ -1,23 +1,26 @@
+import { FormEvent, SetStateAction, useState } from 'react'
+import axios from 'axios'
+import { toast } from 'sonner'
 import Input from '@/app/components/Input/Input'
 import Modal from '@/app/components/Modal/Modal'
 import useModal from '@/app/components/Modal/useModal'
-import { toast } from 'sonner'
 import { useParams } from 'next/navigation'
-import { FormEvent, SetStateAction, useState } from 'react'
-import axios from 'axios'
 import { SavingGoalModel } from '../models/saving-goals.model'
 
-export default function ModalNewSavingGoal({
-  setSavingGoals,
-}: {
+interface Props {
   setSavingGoals: React.Dispatch<SetStateAction<SavingGoalModel[]>>
-}) {
+}
+
+const INITIAL_STATE = {
+  nameGoal: '',
+  goal: '',
+  moneySaved: '',
+}
+
+export default function ModalNewSavingGoal(props: Props) {
+  const { setSavingGoals } = props
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState({
-    nameGoal: '',
-    goal: '',
-    moneySaved: '',
-  })
+  const [data, setData] = useState(INITIAL_STATE)
   const { user } = useParams()
   const { handleCloseModal } = useModal()
 
@@ -38,6 +41,7 @@ export default function ModalNewSavingGoal({
     } finally {
       handleCloseModal()
       setLoading(false)
+      setData(INITIAL_STATE)
     }
   }
 

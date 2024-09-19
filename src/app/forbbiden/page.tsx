@@ -12,17 +12,17 @@ export default function Forbbiden() {
   return (
     <div className="w-full flex flex-col justify-center items-center gap-10 py-10">
       <h1 className="text-white font-semibold text-xl px-10 md:px-0">
-        Inicia sesión para poder entrar a tu perfil.
+        Log in to access your profile.
       </h1>
       <small className="opacity-50 italic font-medium text-white">
-        No intentes cosas extrañas
+        Don&apos;t try strange things
       </small>
       {status === 'authenticated' ? (
         <Link
           href="/"
           className="bg-[#DDDDDD] text-sm font-medium bg-blur rounded-xl p-2 px-5 text-black hover:opacity-80 transition-all"
         >
-          Ir al inicio
+          Go to Profile
         </Link>
       ) : (
         <button

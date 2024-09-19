@@ -12,6 +12,10 @@ export default function Head() {
     signIn(provider)
   }
 
+  const handleSignOut = () => {
+    signOut({ callbackUrl: '/' })
+  }
+
   return (
     <nav className="flex justify-between p-5 px-10">
       <div className="flex items-center gap-2">
@@ -61,7 +65,7 @@ export default function Head() {
             </div>
             <button
               className="bg-purple-500 text-white font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-sm"
-              onClick={() => signOut()}
+              onClick={handleSignOut}
             >
               <span className="hidden md:block">Log out</span>
               <div>
