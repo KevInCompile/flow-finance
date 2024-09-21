@@ -10,7 +10,7 @@ import Image from 'next/image'
 import LoaderPage from '@/app/components/LoaderPage/LoaderPage'
 
 export default function Debts() {
-  const { data, loading, setRefresh, setData, actionDelete } = useDebts()
+  const { data, loading, setData, actionDelete } = useDebts()
 
   return (
     <>
@@ -52,14 +52,13 @@ export default function Debts() {
                   fullData={data}
                   data={item}
                   setData={setData}
-                  setRefresh={setRefresh}
                 />
               </div>
             )
           })
         )}
       </section>
-      <ModalNewDebt refresh={setRefresh} />
+      <ModalNewDebt />
     </>
   )
 }

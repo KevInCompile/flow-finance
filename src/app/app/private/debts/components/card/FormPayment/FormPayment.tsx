@@ -6,11 +6,10 @@ import Button from '@/app/components/Button/Button'
 interface Props {
   debtID: number
   setIsPay: React.Dispatch<boolean>
-  setRefresh: React.Dispatch<boolean>
 }
 
 export default function FormAbono(props: Props) {
-  const { debtID, setIsPay, setRefresh } = props
+  const { debtID, setIsPay } = props
 
   const [data, setData] = useState({
     paymentType: 'Abono',
@@ -32,7 +31,6 @@ export default function FormAbono(props: Props) {
     } else {
       setData({ ...data, payValue: '' })
       setIsPay(false)
-      setRefresh(true)
       toast.success('Abono registrado!')
     }
     setLoading(false)
