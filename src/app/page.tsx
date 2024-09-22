@@ -19,7 +19,7 @@ export default function Home() {
         <LoaderPage />
       </div>
     )
-  if (status === 'authenticated') return router.push(`/app/private/profile`)
+  if (status === 'authenticated') return router.push(`/private/profile`)
 
   return (
     <>
