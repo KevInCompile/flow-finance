@@ -1,84 +1,63 @@
-import { sql } from '@vercel/postgres'
 import { NextResponse } from 'next/server'
 import { getParams } from '../utils/params'
-import { getSession } from '../session'
+import { authMiddleware } from '../middleware/auth'
+import {
+  DELETE_ACCOUNT,
+  GET_ACCOUNTS,
+  GET_LAST_ACCOUNT,
+  INSERT_ACCOUNTS,
+  UPDATE_ACCOUNT,
+} from './services/accounts.service'
+import { handleError } from '../utils/handleError'
+import { handleSuccess } from '../utils/handleSuccess'
 
-export async function POST(request: Request) {
-  const session = await getSession()
-  if (!session)
-    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
-
+export const POST = authMiddleware(async (request, session) => {
   const form = await request.formData()
   const { name, value, type } = getParams(form)
+  if (!value || !name) return handleError('name, value is required')
 
   try {
-    if (!value || !name)
-      return NextResponse.json(
-        { error: 'Value, main, name is required' },
-        { status: 500 }
-      )
-    await sql`INSERT INTO accounts (Username, Name, Value, Type) VALUES (${session.user?.name}, ${name}, ${value}, ${type})`
+    await INSERT_ACCOUNTS({ username: session.user?.name, name, value, type })
+    const { rows } = await GET_LAST_ACCOUNT(session.user?.name!)
+    return NextResponse.json({ message: 'account inserted', result: rows[0] }, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return handleError(error)
   }
-  return NextResponse.json({ message: 'ok' }, { status: 200 })
-}
+})
 
-export async function GET() {
-  const session = await getSession()
-  if (!session)
-    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
-
+export const GET = authMiddleware(async (_, session) => {
   try {
-    const result = await sql`SELECT *
-    FROM accounts
-    WHERE Username = ${session.user?.name}
-    ORDER BY
-      CASE type
-        WHEN 'main' THEN 1
-        WHEN 'savings' THEN 2
-        WHEN 'investment' THEN 3
-        ELSE 4
-      END;`
-    return NextResponse.json({ ...result }, { status: 200 })
+    const { rows } = await GET_ACCOUNTS(session?.user?.name!)
+    return NextResponse.json({ result: rows[0] }, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return handleError(error)
   }
-}
+})
 
-export async function PUT(request: Request) {
-  const session = await getSession()
-  if (!session)
-    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
-
+export const PUT = authMiddleware(async (request, session) => {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
   const body = await request.json()
 
-  // se valida si existe el id de la cuenta
-  if (!id) return NextResponse.json({ error: 'Id is missing' }, { status: 500 })
+  if (!id) return handleError('Id is missing')
 
   try {
-    await sql`UPDATE accounts SET Name = ${body.name}, Value = ${body.value} WHERE Id = ${id} and username = ${session?.user?.name}`
+    await UPDATE_ACCOUNT({ id, username: session.user?.name, ...Object.values(body) })
+    return handleSuccess('Account updated')
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return handleError(error)
   }
-  return NextResponse.json({ message: 'Account updated' }, { status: 200 })
-}
+})
 
-export async function DELETE(request: Request) {
-  const session = await getSession()
-  if (!session)
-    return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
-
+export const DELETE = authMiddleware(async (request, session) => {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')
 
-  if (!id) return NextResponse.json({ error: 'Id is missing' }, { status: 500 })
+  if (!id) return handleError('Id is missing')
   try {
-    await sql`DELETE FROM accounts WHERE Id = ${id} and username = ${session.user?.name}`
+    await DELETE_ACCOUNT({ id, username: session.user?.name })
+    return handleSuccess('Account deleted')
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return handleError(error)
   }
-  return NextResponse.json({ message: 'Account deleted' }, { status: 200 })
-}
+})
