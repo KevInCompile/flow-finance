@@ -31,7 +31,6 @@ export default function DialogNewExpense(props: Props) {
   const { accounts, setIncomes, typeAction, setAccounts, setExpenses } = props
   const [loading, setLoading] = useState(false)
   const { categories } = useCategories()
-  const { handleCloseModal } = useModal()
 
   const fecha = new Date().toISOString().split('T')[0]
 
@@ -57,16 +56,7 @@ export default function DialogNewExpense(props: Props) {
 
   const addNewValue = (type: string) => {
     // Call the helper function with necessary parameters
-    return addNewValueHelper(
-      type,
-      accounts,
-      data.accountid,
-      data.value,
-      handleCloseModal,
-      setData,
-      setAccounts,
-      INITIAL_STATE,
-    )
+    return addNewValueHelper(type, accounts, data.accountid, data.value, setOpen, setData, setAccounts, INITIAL_STATE)
   }
 
   return (

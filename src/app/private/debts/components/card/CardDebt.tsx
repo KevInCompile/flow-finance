@@ -37,26 +37,18 @@ export default function CardDebt(props: PropsCardDebt) {
   }
 
   return (
-    <div className="bg-[#1F1D1D] rounded-md py-2 border border-gray-500 relative">
+    <div className="bg-[#191919] rounded-md py-2 border border-gray-500 relative">
       <div className="flex justify-between items-center border-b border-palette px-3 pb-2 flex-wrap">
         <div className="hidden md:block">
-          <h2 className="text-purple-400 font-medium text-sm">
-            Dia de pago: {payday}
-          </h2>
+          <h2 className="text-purple-400 font-medium text-sm">Dia de pago: {payday}</h2>
         </div>
         <div className="text-center">
           <h1 className="text-[var(--palette)] font-bold flex items-center gap-1">
             ${totaldue?.toLocaleString()}
-            <DeleteConfirmation
-              deleteItem={deleteDebt}
-              message="¿Quiere eliminar la deuda?"
-            />
+            <DeleteConfirmation deleteItem={deleteDebt} message="¿Quiere eliminar la deuda?" />
           </h1>
           <span className="text-[var(--color-usage)] text-sm">
-            {description}{' '}
-            <small className="bg-opacity-20 text-purple-500 text-sm font-bold">
-              ({fee})
-            </small>
+            {description} <small className="bg-opacity-20 text-purple-500 text-sm font-bold">({fee})</small>
           </span>
         </div>
         <button
@@ -72,9 +64,7 @@ export default function CardDebt(props: PropsCardDebt) {
         </div>
       ) : (
         <article className="text-white p-4 max-h-60 overflow-auto">
-          <h1 className="text-center text-[1em]">
-            {payments?.length > 0 ? 'Pagos' : 'Sin pagos registrados'}
-          </h1>
+          <h1 className="text-center text-[1em]">{payments?.length > 0 ? 'Pagos' : 'Sin pagos registrados'}</h1>
           {payments?.length > 0 ? (
             <div className="grid grid-cols-2 opacity-50 text-sm pb-1">
               <span>Valor</span>
@@ -84,20 +74,14 @@ export default function CardDebt(props: PropsCardDebt) {
             <></>
           )}
           {payments?.map((pay: any, i) => (
-            <article
-              className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500"
-              key={pay.id}
-            >
+            <article className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500" key={pay.id}>
               <span>
-                <b className="text-palette">{i + 1}.</b> $
-                {pay.payvalue.toLocaleString()}
+                <b className="text-palette">{i + 1}.</b> ${pay.payvalue.toLocaleString()}
               </span>
               <span className="text-end text-green-500 font-medium flex justify-end gap-2 text-sm">
                 {pay?.paymenttype}
                 <DeleteConfirmation
-                  deleteItem={() =>
-                    handleDelete(pay.id, pay.debtsid, pay.payvalue)
-                  }
+                  deleteItem={() => handleDelete(pay.id, pay.debtsid, pay.payvalue)}
                   message="Quiere eliminar el pago?"
                 />
               </span>
