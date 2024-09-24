@@ -1,39 +1,39 @@
 .inputField {
-    position: relative;
+  position: relative;
 }
 .inputField input {
-    width: 100%;
-    height: 50px;
-    border-radius: 6px;
-    font-size: 18px;
-    padding: 0px 15px;
-    border: 2px solid #fff;
-    color: #fff;
-    outline: none;
-    background: #242424;
+  width: 100%;
+  height: 50px;
+  border-radius: 6px;
+  font-size: 18px;
+  padding: 0px 15px;
+  border: 2px solid #fff;
+  color: #fff;
+  outline: none;
+  background: #191919;
 }
 
 .inputField label {
-    position: absolute;
-    top: 50%;
-    left: 15px;
-    transform: translateY(-50%);
-    color: #fff;
-    font-size: 15px;
-    pointer-events: none;
-    transition: 0.3s;
-    background: #242424;
-    width: 30%;
+  position: absolute;
+  top: 50%;
+  left: 15px;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 15px;
+  pointer-events: none;
+  transition: 0.3s;
+  background: #191919;
+  width: 30%;
 }
 
 .inputField input:focus {
-    border: 2px solid #d8b4fe;
+  border: 2px solid #d8b4fe;
 }
 
 .inputField input:focus ~ label,
 .inputField input:valid ~ label {
-    top: 0;
-    font-size: 14px;
-    padding: 0 15px;
-    background: #242424;
+  top: 0;
+  font-size: 14px;
+  padding: 0 15px;
+  background: #191919;
 }
