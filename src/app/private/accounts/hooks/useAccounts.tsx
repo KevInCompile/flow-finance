@@ -9,7 +9,6 @@ import accountsFetch from '../services/AccountsFetch'
 export default function useAccounts() {
   const [data, setData] = useState<AccountModel[]>([])
   const [loading, setLoading] = useState(true)
-  const params = useParams()
 
   const getData = async () => {
     try {

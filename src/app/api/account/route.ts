@@ -28,7 +28,7 @@ export const POST = authMiddleware(async (request, session) => {
 export const GET = authMiddleware(async (_, session) => {
   try {
     const { rows } = await GET_ACCOUNTS(session?.user?.name!)
-    return NextResponse.json({ result: rows[0] }, { status: 200 })
+    return NextResponse.json({ result: rows }, { status: 200 })
   } catch (error) {
     return handleError(error)
   }
