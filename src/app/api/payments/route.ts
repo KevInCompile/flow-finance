@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
 import { getSession } from '../session'
+import { authMiddleware } from '../middleware/auth'
 
-export async function POST(req: Request) {
+export const POST = authMiddleware(async (req) => {
   const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
   const form = await req.json()
@@ -20,7 +21,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ error }, { status: 500 })
   }
   return NextResponse.json({ message: 'ok' }, { status: 200 })
-}
+})
 
 export async function DELETE(req: Request) {
   const session = await getSession()
