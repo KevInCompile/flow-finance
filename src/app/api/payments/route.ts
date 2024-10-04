@@ -1,11 +1,9 @@
 import { NextResponse } from 'next/server'
 import { sql } from '@vercel/postgres'
-import { getSession } from '../session'
 import { authMiddleware } from '../middleware/auth'
+import { SELECT_PAYMENTS } from './services/payments.service'
 
 export const POST = authMiddleware(async (req) => {
-  const session = await getSession()
-  if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
   const form = await req.json()
   const { debtID, paymentType, payValue } = form
   const payFormatted = parseFloat(payValue!.toString().replace(/,/g, ''))
@@ -23,16 +21,14 @@ export const POST = authMiddleware(async (req) => {
   return NextResponse.json({ message: 'ok' }, { status: 200 })
 })
 
-export async function DELETE(req: Request) {
-  const session = await getSession()
-  if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
+export const DELETE = authMiddleware(async (req) => {
   const { searchParams } = new URL(req.url)
   const id = searchParams.get('id')
 
   try {
     if (!id) return NextResponse.json({ error: 'id is required' }, { status: 500 })
 
-    const result = await sql`SELECT DebtsId, PayValue FROM payments WHERE Id = ${id}`
+    const result = await SELECT_PAYMENTS(id)
     const { debtsid, payvalue } = result.rows[0]
     if (payvalue) {
       await sql`UPDATE debts SET TotalDue = TotalDue + ${payvalue} where Id = ${debtsid}`
@@ -42,4 +38,4 @@ export async function DELETE(req: Request) {
     return NextResponse.json({ error: e }, { status: 500 })
   }
   return NextResponse.json({ message: 'payment deleted!' }, { status: 200 })
-}
+})
