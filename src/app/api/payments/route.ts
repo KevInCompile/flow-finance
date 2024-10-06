@@ -1,24 +1,30 @@
-import { NextResponse } from 'next/server'
-import { sql } from '@vercel/postgres'
 import { authMiddleware } from '../middleware/auth'
-import { SELECT_PAYMENTS } from './services/payments.service'
+import {
+  DELETE_PAYMENTS,
+  INSERT_PAYMENTS,
+  SELECT_PAYMENTS,
+  UPDATE_FORMATT_PAYMENTS,
+  UPDATE_PAYMENTS,
+} from './services/payments.service'
+import { handleError } from '../utils/handleError'
+import { handleSuccess } from '../utils/handleSuccess'
 
 export const POST = authMiddleware(async (req) => {
   const form = await req.json()
   const { debtID, paymentType, payValue } = form
-  const payFormatted = parseFloat(payValue!.toString().replace(/,/g, ''))
+  const payFormatted = parseFloat(payValue)
+
+  if (!debtID) return handleError('Id is required')
 
   try {
-    if (!debtID) return NextResponse.json({ error: 'Debt not found' }, { status: 500 })
-
     // INSERT TO SQL
-    await sql`INSERT INTO payments (DebtsId, PaymentType, PayValue) VALUES (${debtID}, ${paymentType}, ${payFormatted})`
+    await INSERT_PAYMENTS(debtID, paymentType, payFormatted)
 
-    await sql`UPDATE debts SET TotalDue = TotalDue - ${payFormatted} where Id = ${debtID}`
+    await UPDATE_FORMATT_PAYMENTS(payFormatted, debtID)
   } catch (error) {
-    return NextResponse.json({ error }, { status: 500 })
+    return handleError(error)
   }
-  return NextResponse.json({ message: 'ok' }, { status: 200 })
+  return handleSuccess('OK', 201)
 })
 
 export const DELETE = authMiddleware(async (req) => {
@@ -26,16 +32,16 @@ export const DELETE = authMiddleware(async (req) => {
   const id = searchParams.get('id')
 
   try {
-    if (!id) return NextResponse.json({ error: 'id is required' }, { status: 500 })
+    if (!id) return handleError('Id is required')
 
     const result = await SELECT_PAYMENTS(id)
     const { debtsid, payvalue } = result.rows[0]
     if (payvalue) {
-      await sql`UPDATE debts SET TotalDue = TotalDue + ${payvalue} where Id = ${debtsid}`
-      await sql`DELETE FROM payments where Id = ${id}`
+      await UPDATE_PAYMENTS(payvalue, debtsid)
+      await DELETE_PAYMENTS(id)
     }
+    return handleSuccess('Payment deleted')
   } catch (e) {
-    return NextResponse.json({ error: e }, { status: 500 })
+    return handleError(e)
   }
-  return NextResponse.json({ message: 'payment deleted!' }, { status: 200 })
 })

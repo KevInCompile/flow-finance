@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server'
 
-export const handleSuccess = (message: unknown) => {
-  return NextResponse.json({ message }, { status: 200 })
+export const handleSuccess = (message: unknown, status?: number) => {
+  return NextResponse.json({ message }, { status: status ?? 200 })
 }
