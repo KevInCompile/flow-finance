@@ -42,7 +42,7 @@ export const PUT = authMiddleware(async (request, session) => {
   if (!id) return handleError('Id is missing')
 
   try {
-    await UPDATE_ACCOUNT({ id, username: session.user?.name, ...Object.values(body) })
+    await UPDATE_ACCOUNT({ id, username: session.user?.name, ...body })
     return handleSuccess('Account updated')
   } catch (error) {
     return handleError(error)

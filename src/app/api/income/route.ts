@@ -23,10 +23,7 @@ export const POST = authMiddleware(async (request, session) => {
   }
 })
 
-export async function GET() {
-  const session = await getSession()
-  if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
-
+export const GET = authMiddleware(async (_, session) => {
   try {
     const result =
       await sql`SELECT I.id, I.value, I.typeincome, I.date, C.name as account, I.AccountId FROM incomes as I INNER JOIN accounts as C ON I.AccountId = C.Id where I.Username = ${session.user?.name}`
@@ -35,9 +32,9 @@ export async function GET() {
   } catch (e) {
     return NextResponse.json({ error: e }, { status: 500 })
   }
-}
+})
 
-export async function DELETE(req: Request) {
+export const DELETE = authMiddleware(async (req) => {
   const session = await getSession()
   if (!session) return NextResponse.json({ error: 'Forbidden' }, { status: 401 })
 
@@ -53,4 +50,4 @@ export async function DELETE(req: Request) {
   }
 
   return NextResponse.json({ message: 'Income delete' }, { status: 200 })
-}
+})
