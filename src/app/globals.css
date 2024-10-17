@@ -151,6 +151,9 @@ input:checked + .slider:before {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply text-foreground;
+    background-image: url('/noise.png');
+    background-color: #131313;
+    background-blend-mode: overlay;
   }
 }

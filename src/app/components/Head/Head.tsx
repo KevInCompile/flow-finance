@@ -29,16 +29,11 @@ export default function Head() {
               </div>
             </label>
             <span className="hidden md:block font-bold text-secondary">
-              Hello,{' '}
-              <span className="text-purple-500">
-                {session?.user?.name?.split(' ')[0]}
-              </span>
+              Hello, <span className="text-purple-500">{session?.user?.name?.split(' ')[0]}</span>
             </span>
           </div>
         ) : (
-          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v 1.1.0
-          </div>
+          <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">v 1.2.0</div>
         )}
       </div>
       <div>
@@ -56,9 +51,7 @@ export default function Head() {
         ) : (
           <>
             <div className="flex items-center gap-2 mr-4 bg-gray-100 rounded-lg p-2">
-              <span className="text-sm font-semibold text-gray-700 hidden md:block">
-                Currency:
-              </span>
+              <span className="text-sm font-semibold text-gray-700 hidden md:block">Currency:</span>
               <span className="text-xs md:text-sm font-bold text-purple-600">
                 {localStorage.getItem('userCurrency') || 'COP'}
               </span>

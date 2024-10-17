@@ -5,11 +5,9 @@ import Link from 'next/link'
 import { AccountModel } from '../../../accounts/models/account.model'
 import { formatCurrency } from '../../utils/formatPrice'
 import { DataAgruped } from '../../models/ExpensesIncomesModel'
-import useModal from '@/app/components/Modal/useModal'
 import { IncomeModel } from '../../models/IncomeModel'
 import { ExpenseModel } from '../../hooks/useExpenses'
 // ICONS
-import { ArrowDownLeft, ArrowUpRight } from 'lucide-react'
 import ModalExchange from '../Modals/ModalExchange'
 import VisualizerSavingGoals from '../../../saving-goals/components/visualizer-resume'
 import DialogNewExpense from '../Modals/ModalNewExpense'
@@ -30,10 +28,6 @@ export default function BentoInformation(props: Props) {
 
   // State
   const [accountSelected, setAccountSelected] = useState('')
-  const [typeAction, setTypeAction] = useState('')
-
-  //hooks
-  const { handleShowModal } = useModal()
 
   const combinedLineData = expenses.reduce((acc: any, expense: DataAgruped) => {
     const day = parseInt(expense.date.split('-')[2])
@@ -53,11 +47,6 @@ export default function BentoInformation(props: Props) {
 
   const baseUrl = window.location.pathname
   const newUrl = (route: string) => baseUrl.replace('profile', route)
-
-  const handleChangeTypeAction = (action: string) => {
-    setTypeAction(action)
-    handleShowModal()
-  }
 
   return (
     <div>

@@ -6,7 +6,7 @@ export const addNewValueHelper = (
   accounts: AccountModel[],
   accountId: number,
   value: string,
-  setOpen: (param: boolean) => void,
+  setOpen: (v: boolean) => void,
   setData: React.Dispatch<SetStateAction<typeof INITIAL_STATE>>,
   setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>,
   INITIAL_STATE: any,
@@ -20,7 +20,7 @@ export const addNewValueHelper = (
         : parseFloat(newValue?.value!) - parseFloat(value),
   }
   const newAccounts = accounts.map((account) => (account.id === +accountId ? newData : account))
-  setOpen(false)
   setData(INITIAL_STATE)
+  setOpen(false)
   return setAccounts(newAccounts as any)
 }
