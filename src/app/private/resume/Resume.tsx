@@ -18,10 +18,7 @@ import Tour from './utils/steps-tour'
 /**
  * Dynamically import BentoInformation component to improve initial load time
  */
-const BentoInformation = dynamic(
-  () => import('./components/BentoInformation/BentoInformation'),
-  { ssr: false }
-)
+const BentoInformation = dynamic(() => import('./components/BentoInformation/BentoInformation'), { ssr: false })
 
 /**
  * Resume Component
@@ -37,17 +34,8 @@ const BentoInformation = dynamic(
  */
 
 export default function Resume() {
-  const {
-    data: accounts,
-    loading: loadingAccounts,
-    setData: setAccounts,
-  } = useAccounts()
-  const {
-    expenses,
-    loading: loadingExpenses,
-    setExpenses,
-    deleteExpense,
-  } = useExpenses()
+  const { data: accounts, loading: loadingAccounts, setData: setAccounts } = useAccounts()
+  const { expenses, loading: loadingExpenses, setExpenses, deleteExpense } = useExpenses()
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes()
   const [mesActual, setMesActual] = useState(0)
   const [anioActual, setAnioActual] = useState(2024)
@@ -79,24 +67,14 @@ export default function Resume() {
     })
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
 
-  const filteredTransactions = transactionsFilterForDate.filter(
-    (transaction) => {
-      if (searchTerm === '') return true
-      if (isDataAgruped) {
-        return (
-          transaction?.categoryname
-            ?.toLowerCase()
-            ?.includes(searchTerm.toLowerCase()) ?? false
-        )
-      } else {
-        return (
-          transaction?.description
-            ?.toLowerCase()
-            ?.includes(searchTerm.toLowerCase()) ?? false
-        )
-      }
+  const filteredTransactions = transactionsFilterForDate.filter((transaction) => {
+    if (searchTerm === '') return true
+    if (isDataAgruped) {
+      return transaction?.categoryname?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false
+    } else {
+      return transaction?.description?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false
     }
-  )
+  })
 
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
@@ -177,36 +155,23 @@ export default function Resume() {
             loadingAccounts={loadingAccounts}
             setExpenses={setExpenses}
           />
-          <div className="border rounded-lg border-gray-500 bg-[#151515]">
+          <div className="rounded-lg bg-[#191919] shadow-lg">
             <div className="flex flex-row gap-5 justify-between p-4">
               <div>
                 <div className="flex flex-row gap-3 items-center">
                   <h1 className="text-purple-400">Transactions agruped</h1>
                   <label className="switch" title="Agruped">
-                    <input
-                      type="checkbox"
-                      id="toggle-switch"
-                      onChange={handleAgruped}
-                      checked={isDataAgruped}
-                    />
+                    <input type="checkbox" id="toggle-switch" onChange={handleAgruped} checked={isDataAgruped} />
                     <span className="slider"></span>
                   </label>
                 </div>
                 <small className="text-[#C59422]">Your tansactions story</small>
               </div>
               <div className="flex gap-3 items-center">
-                <div
-                  className={
-                    isSearching ? 'relative w-full' : 'relative w-10 h-10'
-                  }
-                >
+                <div className={isSearching ? 'relative w-full' : 'relative w-10 h-10'}>
                   <input
                     type="text"
-                    placeholder={
-                      isDataAgruped
-                        ? 'Search by category'
-                        : 'Search by description'
-                    }
+                    placeholder={isDataAgruped ? 'Search by category' : 'Search by description'}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={`border-[1px] rounded-xl border-white px-2 h-10  bg-transparent text-white transition-all duration-300 ${

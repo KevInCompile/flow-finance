@@ -61,7 +61,7 @@ export default function DialogNewExpense(props: Props) {
       {typeAction === 'income' && (
         <button
           onClick={() => setOpen(true)}
-          className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+          className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-zinc-800 hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed opacity-50' : ''}`}
           disabled={accounts.length < 1}
         >
           <ArrowDownLeft className="text-purple-400" />
@@ -70,7 +70,7 @@ export default function DialogNewExpense(props: Props) {
       )}
       {typeAction === 'expense' && (
         <button
-          className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-gray-600 rounded-bl-lg hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed opacity-50' : ''}`}
+          className={`flex items-center gap-1 text-primary justify-center p-4 border-r border-zinc-800 rounded-bl-lg hover:bg-purple-600 ${accounts.length < 1 ? 'cursor-not-allowed opacity-50' : ''}`}
           disabled={accounts.length < 1}
           onClick={() => setOpen(true)}
         >

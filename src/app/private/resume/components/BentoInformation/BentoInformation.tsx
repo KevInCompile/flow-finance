@@ -50,7 +50,7 @@ export default function BentoInformation(props: Props) {
 
   return (
     <div>
-      <div className="flex flex-col gap-3 items-start rounded-xl saldo-total bg-[#151515] border border-gray-500">
+      <div className="flex flex-col gap-3 items-start rounded-xl saldo-total bg-[#191919] shadow-lg">
         {loadingAccounts ? (
           <SkeletonResume />
         ) : (
@@ -85,7 +85,7 @@ export default function BentoInformation(props: Props) {
             </div>
           </>
         )}
-        <div className="grid grid-cols-3 w-full border-t border-gray-500">
+        <div className="grid grid-cols-3 w-full border-t border-zinc-800">
           <DialogNewExpense
             accounts={accounts}
             setIncomes={setIncomes}
@@ -106,7 +106,7 @@ export default function BentoInformation(props: Props) {
       {datosLineaArray.length >= 1 && (
         <>
           <h3 className="py-6 text-purple-500 font-semibold text-md md:text-2xl">Statistics of expenses</h3>
-          <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white bg-[#151515] rounded-xl border border-gray-500 grafico">
+          <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white rounded-xl bg-[#191919] shadow-lg grafico">
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
