@@ -1,64 +1,65 @@
-import DeleteConfirmation from '@/app/components/DeleteConfirmation/DeleteConfirmation'
-import EditIcon from '@/app/icons/EditIcon'
-import { toast } from 'sonner'
-import { AccountModel } from './models/account.model'
-import { useState } from 'react'
-import SaveIcon from '@/app/icons/SaveIcon'
+import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
+import EditIcon from "@/app/icons/EditIcon";
+import { toast } from "sonner";
+import { AccountModel } from "./models/account.model";
+import { useState } from "react";
+import SaveIcon from "@/app/icons/SaveIcon";
 
 const INITIAL_STATE = {
   id: 0,
-  name: '',
-  value: '',
-  type: '',
-}
+  name: "",
+  value: "",
+  type: "",
+};
 
 export default function Card({
   data,
   setData,
 }: {
-  data: AccountModel[]
-  setData: any
+  data: AccountModel[];
+  setData: any;
 }) {
-  const [itemSelected, setItemSelected] = useState<AccountModel>(INITIAL_STATE)
+  const [itemSelected, setItemSelected] = useState<AccountModel>(INITIAL_STATE);
 
   const selectItem = (data: AccountModel) => {
-    setItemSelected(data)
-  }
+    setItemSelected(data);
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setItemSelected({ ...itemSelected, [name]: value })
-  }
+    const { name, value } = e.target;
+    setItemSelected({ ...itemSelected, [name]: value });
+  };
 
   async function updateItem() {
     try {
       const res = await fetch(`/api/account?id=${itemSelected?.id}`, {
-        method: 'PUT',
+        method: "PUT",
         body: JSON.stringify(itemSelected),
-      })
-      const json = await res.json()
+      });
+      const json = await res.json();
+
       if (json.message) {
         setData([
           ...data.filter((item) => item.id !== itemSelected.id),
           itemSelected,
-        ])
-        setItemSelected(INITIAL_STATE)
-        toast.success(json.message)
+        ]);
+        setItemSelected(INITIAL_STATE);
+        toast.success(json.message);
       }
     } catch (error) {
-      toast.error(error as string)
+      toast.error(error as string);
     }
   }
 
   async function deleteItem(id: number) {
     try {
       await fetch(`/api/account?id=${id}`, {
-        method: 'DELETE',
-      })
-      setData(data.filter((item) => item.id !== id))
-      return toast('Cuenta eliminada correctamente!')
+        method: "DELETE",
+      });
+      setData(data.filter((item) => item.id !== id));
+      return toast("Cuenta eliminada correctamente!");
     } catch (error) {
-      toast('Error al eliminar la cuenta...')
+      toast("Error al eliminar la cuenta...");
     }
   }
 
@@ -68,7 +69,7 @@ export default function Card({
         data.map((item) => (
           <div
             key={item.id}
-            className="rounded-xl border bg-[#1F1D1D] text-card-foreground shadow text-white"
+            className="rounded-xl bg-[#191919] text-card-foreground shadow text-white"
           >
             <div className="p-6 flex flex-row items-center justify-between space-y-0 pb-2">
               <h3 className="tracking-tight text-md font-medium text-palette">
@@ -102,9 +103,9 @@ export default function Card({
                 />
               ) : (
                 <div className="text-2xl font-semibold">
-                  {parseInt(item?.value).toLocaleString('es-CO', {
-                    style: 'currency',
-                    currency: 'COP',
+                  {parseInt(item?.value).toLocaleString("es-CO", {
+                    style: "currency",
+                    currency: "COP",
                   })}
                 </div>
               )}
@@ -112,5 +113,5 @@ export default function Card({
           </div>
         ))}
     </>
-  )
+  );
 }

@@ -1,24 +1,28 @@
-'use client'
+"use client";
 
-import { useEffect, useState } from 'react'
-import Head from '@/app/components/Head/Head'
-import SkeletonTable from '@/app/loaders/SkeletonTable'
-import useAccounts from '../accounts/hooks/useAccounts'
-import useExpenses from './hooks/useExpenses'
-import { monthNames } from '@/app/utils/months'
-import BackIcon from './assets/back'
-import NextIcon from './assets/nextIcon'
-import TableTransactions from './components/TableTransactions/TableTransactions'
-import useIncomes from './hooks/useIncomes'
-import { Button } from '@/components/ui/button'
-import { CircleHelp, Search } from 'lucide-react'
-import dynamic from 'next/dynamic'
-import Tour from './utils/steps-tour'
+import { useEffect, useState } from "react";
+import Head from "@/app/components/Head/Head";
+import SkeletonTable from "@/app/loaders/SkeletonTable";
+import useAccounts from "../accounts/hooks/useAccounts";
+import useExpenses from "./hooks/useExpenses";
+import { monthNames } from "@/app/utils/months";
+import BackIcon from "./assets/back";
+import NextIcon from "./assets/nextIcon";
+import TableTransactions from "./components/TableTransactions/TableTransactions";
+import useIncomes from "./hooks/useIncomes";
+import { Button } from "@/components/ui/button";
+import { CircleHelp, Search } from "lucide-react";
+import dynamic from "next/dynamic";
+import Tour from "./utils/steps-tour";
+import HelpSalary from "../help-salary/HelpSalary";
 
 /**
  * Dynamically import BentoInformation component to improve initial load time
  */
-const BentoInformation = dynamic(() => import('./components/BentoInformation/BentoInformation'), { ssr: false })
+const BentoInformation = dynamic(
+  () => import("./components/BentoInformation/BentoInformation"),
+  { ssr: false },
+);
 
 /**
  * Resume Component
@@ -34,88 +38,107 @@ const BentoInformation = dynamic(() => import('./components/BentoInformation/Ben
  */
 
 export default function Resume() {
-  const { data: accounts, loading: loadingAccounts, setData: setAccounts } = useAccounts()
-  const { expenses, loading: loadingExpenses, setExpenses, deleteExpense } = useExpenses()
-  const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes()
-  const [mesActual, setMesActual] = useState(0)
-  const [anioActual, setAnioActual] = useState(2024)
-  const [tour, setTour] = useState(false)
-  const [isDataAgruped, setIsDataAgruped] = useState(false)
-  const [isSearching, setIsSearching] = useState(false)
-  const [searchTerm, setSearchTerm] = useState('')
+  const {
+    data: accounts,
+    loading: loadingAccounts,
+    setData: setAccounts,
+  } = useAccounts();
+  const {
+    expenses,
+    loading: loadingExpenses,
+    setExpenses,
+    deleteExpense,
+  } = useExpenses();
+  const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
+  const [mesActual, setMesActual] = useState(0);
+  const [anioActual, setAnioActual] = useState(2024);
+  const [tour, setTour] = useState(false);
+  const [isDataAgruped, setIsDataAgruped] = useState(false);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const currentDate = new Date()
-  const monthName = monthNames[mesActual]
+  const currentDate = new Date();
+  const monthName = monthNames[mesActual];
 
   useEffect(() => {
-    setMesActual(currentDate.getMonth())
-  }, [])
+    setMesActual(currentDate.getMonth());
+  }, []);
 
   /**
    * Combines expenses and incomes into a single transactions array
    */
-  const transactions = [...expenses, ...incomes]
+  const transactions = [...expenses, ...incomes];
 
   /**
    * Filters transactions for the current month and year, and sorts them by date
    */
   const transactionsFilterForDate = transactions
     .filter((gasto) => {
-      if (!gasto.date) return false
-      const [year, month] = gasto.date.split('-')
-      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual
+      if (!gasto.date) return false;
+      const [year, month] = gasto.date.split("-");
+      return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual;
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
-  const filteredTransactions = transactionsFilterForDate.filter((transaction) => {
-    if (searchTerm === '') return true
-    if (isDataAgruped) {
-      return transaction?.categoryname?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false
-    } else {
-      return transaction?.description?.toLowerCase()?.includes(searchTerm.toLowerCase()) ?? false
-    }
-  })
+  const filteredTransactions = transactionsFilterForDate.filter(
+    (transaction) => {
+      if (searchTerm === "") return true;
+      if (isDataAgruped) {
+        return (
+          transaction?.categoryname
+            ?.toLowerCase()
+            ?.includes(searchTerm.toLowerCase()) ?? false
+        );
+      } else {
+        return (
+          transaction?.description
+            ?.toLowerCase()
+            ?.includes(searchTerm.toLowerCase()) ?? false
+        );
+      }
+    },
+  );
 
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
-      if (direccion === 'anterior') {
-        return prevMes === 0 ? 11 : prevMes - 1
+      if (direccion === "anterior") {
+        return prevMes === 0 ? 11 : prevMes - 1;
       } else {
-        return prevMes === 11 ? 0 : prevMes + 1
+        return prevMes === 11 ? 0 : prevMes + 1;
       }
-    })
-    if (mesActual === 0 && direccion === 'anterior') {
-      setAnioActual((prevAnio) => prevAnio - 1)
-    } else if (mesActual === 11 && direccion === 'siguiente') {
-      setAnioActual((prevAnio) => prevAnio + 1)
+    });
+    if (mesActual === 0 && direccion === "anterior") {
+      setAnioActual((prevAnio) => prevAnio - 1);
+    } else if (mesActual === 11 && direccion === "siguiente") {
+      setAnioActual((prevAnio) => prevAnio + 1);
     }
-  }
+  };
 
   /**
    * Handles the change of aggregated data view
    * @param {Event} e - The event object from the checkbox
    */
   const handleAgruped = (e: any) => {
-    const value = e.target.checked
-    window.localStorage.setItem('isAgruped', value)
-    setIsDataAgruped(value)
-  }
+    const value = e.target.checked;
+    window.localStorage.setItem("isAgruped", value);
+    setIsDataAgruped(value);
+  };
 
   /**
    * Sets the initial aggregated data view state from localStorage
    */
   useEffect(() => {
-    const local = window.localStorage.getItem('isAgruped') as string
-    if (local === 'true') return setIsDataAgruped(true)
-    return setIsDataAgruped(false)
-  }, [])
+    const local = window.localStorage.getItem("isAgruped") as string;
+    if (local === "true") return setIsDataAgruped(true);
+    return setIsDataAgruped(false);
+  }, []);
 
   const toggleSearch = () => {
-    setIsSearching(!isSearching)
+    setIsSearching(!isSearching);
     if (isSearching) {
-      setSearchTerm('')
+      setSearchTerm("");
     }
-  }
+  };
 
   return (
     <>
@@ -132,14 +155,14 @@ export default function Resume() {
             <button
               className="border-gray-300 border rounded-md mr-3 hover:bg-[var(--color-usage)] transition-colors"
               title="Mes anterior"
-              onClick={() => cambiarMes('anterior')}
+              onClick={() => cambiarMes("anterior")}
             >
               <BackIcon />
             </button>
             <button
               className="border-gray-300 border rounded-md hover:bg-[var(--color-usage)] transition-colors"
               title="Mes siguiente"
-              onClick={() => cambiarMes('siguiente')}
+              onClick={() => cambiarMes("siguiente")}
             >
               <NextIcon />
             </button>
@@ -161,26 +184,39 @@ export default function Resume() {
                 <div className="flex flex-row gap-3 items-center">
                   <h1 className="text-purple-400">Transactions agruped</h1>
                   <label className="switch" title="Agruped">
-                    <input type="checkbox" id="toggle-switch" onChange={handleAgruped} checked={isDataAgruped} />
+                    <input
+                      type="checkbox"
+                      id="toggle-switch"
+                      onChange={handleAgruped}
+                      checked={isDataAgruped}
+                    />
                     <span className="slider"></span>
                   </label>
                 </div>
                 <small className="text-[#C59422]">Your tansactions story</small>
               </div>
               <div className="flex gap-3 items-center">
-                <div className={isSearching ? 'relative w-full' : 'relative w-10 h-10'}>
+                <div
+                  className={
+                    isSearching ? "relative w-full" : "relative w-10 h-10"
+                  }
+                >
                   <input
                     type="text"
-                    placeholder={isDataAgruped ? 'Search by category' : 'Search by description'}
+                    placeholder={
+                      isDataAgruped
+                        ? "Search by category"
+                        : "Search by description"
+                    }
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className={`border-[1px] rounded-xl border-white px-2 h-10  bg-transparent text-white transition-all duration-300 ${
-                      isSearching ? 'w-full opacity-100' : 'w-0 opacity-0'
+                      isSearching ? "w-full opacity-100" : "w-0 opacity-0"
                     }`}
                   />
                   <button
                     className={`border-[1px] rounded-xl border-gray-700 p-2 h-10 w-10 search absolute inset-0 transition-all duration-300 ${
-                      isSearching ? 'opacity-0' : 'opacity-100'
+                      isSearching ? "opacity-0" : "opacity-100"
                     }`}
                     onClick={toggleSearch}
                   >
@@ -207,5 +243,5 @@ export default function Resume() {
       </section>
       <Tour runTour={tour} />
     </>
-  )
+  );
 }
