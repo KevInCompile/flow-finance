@@ -1,3 +1,5 @@
+"use client";
+
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
 import { formatCurrency } from "../resume/utils/formatPrice";
@@ -27,11 +29,12 @@ export default function HelpSalary() {
 
   return (
     <main className="px-5 md:px-10 py-5">
-      <h1 className="text-purple-500 font-medium text-xl mb-5">
-        You want tip for how divide salary with ley 50-30-20?
-      </h1>
       <div className="flex gap-2 items-center">
-        <Input type="number" onChange={handleValue} className="w-1/6" />
+        <Input
+          type="number"
+          onChange={handleValue}
+          placeholder="Write your salary"
+        />
         <button
           onClick={calculate}
           className="bg-purple-500 text-white font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-sm"

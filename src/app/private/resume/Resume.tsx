@@ -99,6 +99,7 @@ export default function Resume() {
     },
   );
 
+  console.log(filteredTransactions);
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
       if (direccion === "anterior") {

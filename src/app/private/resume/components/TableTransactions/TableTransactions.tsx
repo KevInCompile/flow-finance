@@ -1,5 +1,5 @@
-import DeleteConfirmation from '@/app/components/DeleteConfirmation/DeleteConfirmation'
-import { FormatDate } from '@/app/utils/FormatDate'
+import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
+import { FormatDate } from "@/app/utils/FormatDate";
 import {
   Dialog,
   DialogContent,
@@ -7,56 +7,82 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog'
-import { formatCurrency } from '../../utils/formatPrice'
-import { DataAgruped } from '../../models/ExpensesIncomesModel'
-import { SetStateAction } from 'react'
-import { AccountModel } from '../../../accounts/models/account.model'
+} from "@/components/ui/dialog";
+import { formatCurrency } from "../../utils/formatPrice";
+import { DataAgruped } from "../../models/ExpensesIncomesModel";
+import { SetStateAction } from "react";
+import { AccountModel } from "../../../accounts/models/account.model";
 
 interface Props {
-  data: any
-  monthCurrent: number
-  accounts: AccountModel[]
-  isAgruped: boolean
-  deleteIncome: (id: number) => void
-  deleteExpense: (id: number) => void
-  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>
+  data: any;
+  monthCurrent: number;
+  accounts: AccountModel[];
+  isAgruped: boolean;
+  deleteIncome: (id: number) => void;
+  deleteExpense: (id: number) => void;
+  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>;
 }
 
 export default function TableTransactions(props: Props) {
-  const { data, monthCurrent, isAgruped, deleteIncome, setAccounts, accounts, deleteExpense } = props
+  const {
+    data,
+    monthCurrent,
+    isAgruped,
+    deleteIncome,
+    setAccounts,
+    accounts,
+    deleteExpense,
+  } = props;
 
-  const handleDelete = (id: number, value: number, accountid: number, type: string) => {
-    const newValue = accounts.find((item) => item.id === accountid)
+  const handleDelete = (
+    id: number,
+    value: number,
+    accountid: number,
+    type: string,
+  ) => {
+    const newValue = accounts.find((item) => item.id === accountid);
     if (type) {
-      deleteIncome(id)
+      deleteIncome(id);
       const newData = {
         ...newValue,
-        value: parseFloat(newValue?.value?.toString() || '0') - parseFloat(value.toString()),
-      }
-      const newAccounts = accounts.map((account) => (account.id === accountid ? newData : account))
-      setAccounts(newAccounts as any)
+        value:
+          parseFloat(newValue?.value?.toString() || "0") -
+          parseFloat(value.toString()),
+      };
+      const newAccounts = accounts.map((account) =>
+        account.id === accountid ? newData : account,
+      );
+      setAccounts(newAccounts as any);
     } else {
-      deleteExpense(id)
+      deleteExpense(id);
       const newData = {
         ...newValue,
-        value: parseFloat(newValue?.value?.toString() || '0') + parseFloat(value.toString()),
-      }
-      const newAccounts = accounts.map((account) => (account.id === accountid ? newData : account))
-      setAccounts(newAccounts as any)
+        value:
+          parseFloat(newValue?.value?.toString() || "0") +
+          parseFloat(value.toString()),
+      };
+      const newAccounts = accounts.map((account) =>
+        account.id === accountid ? newData : account,
+      );
+      setAccounts(newAccounts as any);
     }
-  }
+  };
 
   const gastosAgrupados = data.reduce((acc: DataAgruped[], gasto: any) => {
-    const gastoExistente = acc.find((g) => g.categoryname === gasto.categoryname)
+    const gastoExistente = acc.find(
+      (g) => g.categoryname === gasto.categoryname,
+    );
     if (gastoExistente) {
-      gastoExistente.value = parseFloat(gastoExistente.value.toString()) + parseFloat(gasto.value)
-      gastoExistente.details?.push(gasto)
+      gastoExistente.value =
+        parseFloat(gastoExistente.value.toString()) + parseFloat(gasto.value);
+      gastoExistente.details?.push(gasto);
     } else {
-      acc.push({ ...gasto, value: parseFloat(gasto.value), details: [gasto] })
+      acc.push({ ...gasto, value: parseFloat(gasto.value), details: [gasto] });
     }
-    return acc
-  }, [])
+    return acc;
+  }, []);
+
+  console.log(gastosAgrupados);
 
   return (
     <>
@@ -77,20 +103,25 @@ export default function TableTransactions(props: Props) {
       <div className="overflow-y-auto movimientos">
         {isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date)
-              const monthExpense = dateExpense.getMonth()
+              const dateExpense = new Date(item.date);
+              const monthExpense = dateExpense.getMonth();
               if (monthCurrent === monthExpense) {
                 return (
-                  <div className="flex flex-col border-b border-zinc-800 listTable" key={item.id}>
+                  <div
+                    className="flex flex-col border-b border-zinc-800 listTable"
+                    key={item.id}
+                  >
                     <Dialog>
                       <DialogTrigger asChild>
                         <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1] cursor-pointer gap-6 ">
                           <div>
                             <span className="font-light">
-                              {item?.type === 'expense' ? item?.categoryname : 'Incomes'}
+                              {item?.type === "expense"
+                                ? item?.categoryname
+                                : "Incomes"}
                             </span>
                           </div>
-                          {item?.type === 'expense' ? (
+                          {item?.type === "expense" ? (
                             <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                               Expense
                             </span>
@@ -99,45 +130,61 @@ export default function TableTransactions(props: Props) {
                               Request
                             </span>
                           )}
-                          <span className="font-medium text-[#C59422]">{formatCurrency(item?.value)}</span>
+                          <span className="font-medium text-[#C59422]">
+                            {formatCurrency(item?.value)}
+                          </span>
                         </div>
                       </DialogTrigger>
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle className="text-purple-500">
-                            Detalles de {item.categoryname ?? 'Incomes'}
+                            Detalles de {item.categoryname ?? "Incomes"}
                           </DialogTitle>
-                          <DialogDescription>Total: {formatCurrency(item?.value)}</DialogDescription>
+                          <DialogDescription>
+                            Total: {formatCurrency(item?.value)}
+                          </DialogDescription>
                         </DialogHeader>
                         <div className="space-y-2">
                           {item?.details?.map((detalle) => (
-                            <div key={detalle.id} className="flex justify-between items-center">
+                            <div
+                              key={detalle.id}
+                              className="flex justify-between items-center"
+                            >
                               <div>
                                 <div className="font-medium text-white flex items-center gap-1">
                                   {detalle.description ?? detalle.typeincome}
                                   <DeleteConfirmation
                                     deleteItem={() =>
-                                      handleDelete(item?.id, detalle.value, detalle.accountid, detalle?.typeincome!)
+                                      handleDelete(
+                                        item?.id,
+                                        detalle.value,
+                                        detalle.accountid,
+                                        detalle?.typeincome!,
+                                      )
                                     }
                                     message={`Deseas eliminar ${detalle.description ?? detalle.typeincome}?`}
                                   />
                                 </div>
-                                <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
+                                <div className="text-sm text-muted-foreground">
+                                  {FormatDate(detalle.date)}
+                                </div>
                               </div>
-                              <div className="font-medium text-palette">{formatCurrency(detalle?.value)}</div>
+                              <div className="font-medium text-palette">
+                                {formatCurrency(detalle?.value)}
+                              </div>
                             </div>
                           ))}
                         </div>
                       </DialogContent>
                     </Dialog>
                   </div>
-                )
+                );
               }
-              return null // Retorno nulo si no coincide el mes
+              return null; // Retorno nulo si no coincide el mes
             })
           : data.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date)
-              const monthExpense = dateExpense.getMonth()
+              const dateExpense = new Date(item.date);
+              const monthExpense = dateExpense.getMonth();
               if (monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
@@ -145,13 +192,17 @@ export default function TableTransactions(props: Props) {
                       <div className="text-white">
                         <div className="flex flex-col gap-2">
                           <span className="font-light">
-                            {item?.type === 'expense' ? item?.categoryname : item?.typeincome}
+                            {item?.type === "expense"
+                              ? item?.categoryname
+                              : item?.typeincome}
                           </span>
-                          <small className="font-light opacity-70 text-[#C59422]">{item?.description}</small>
+                          <small className="font-light opacity-70 text-[#C59422]">
+                            {item?.description}
+                          </small>
                         </div>
                       </div>
                       <span className="hidden md:block">{item?.date}</span>
-                      {item?.type === 'expense' ? (
+                      {item?.type === "expense" ? (
                         <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                           Expense
                         </span>
@@ -160,24 +211,33 @@ export default function TableTransactions(props: Props) {
                           Request
                         </span>
                       )}
-                      <span className="font-medium text-[#C59422]">{formatCurrency(item?.value)}</span>
+                      <span className="font-medium text-[#C59422]">
+                        {formatCurrency(item?.value)}
+                      </span>
                     </div>
                     <div className="space-y-2">
                       {item?.details?.map((detalle) => (
-                        <div key={detalle.id} className="flex justify-between items-center">
+                        <div
+                          key={detalle.id}
+                          className="flex justify-between items-center"
+                        >
                           <div>
-                            <div className="text-sm text-muted-foreground">{FormatDate(detalle.date)}</div>
+                            <div className="text-sm text-muted-foreground">
+                              {FormatDate(detalle.date)}
+                            </div>
                           </div>
-                          <div className="font-medium text-palette">{formatCurrency(detalle?.value)}</div>
+                          <div className="font-medium text-palette">
+                            {formatCurrency(detalle?.value)}
+                          </div>
                         </div>
                       ))}
                     </div>
                   </div>
-                )
+                );
               }
-              return null // Retorno nulo si no coincide el mes
+              return null; // Retorno nulo si no coincide el mes
             })}
       </div>
     </>
-  )
+  );
 }

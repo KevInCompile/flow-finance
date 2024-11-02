@@ -1,19 +1,20 @@
-import ActivityIcon from '@/app/icons/IconsAside/ActivityIcon'
-import CloseMenuIcon from '@/app/icons/IconsAside/CloseMenuIcon'
-import CoinIcon from '@/app/icons/IconsAside/CoinIcon'
-import CreditCardRefundIcon from '@/app/icons/IconsAside/CreditCardRefundIcon'
-import { FormatDate } from '@/app/utils/FormatDate'
+import ActivityIcon from "@/app/icons/IconsAside/ActivityIcon";
+import CloseMenuIcon from "@/app/icons/IconsAside/CloseMenuIcon";
+import CoinIcon from "@/app/icons/IconsAside/CoinIcon";
+import CreditCardRefundIcon from "@/app/icons/IconsAside/CreditCardRefundIcon";
+import { FormatDate } from "@/app/utils/FormatDate";
 
-import Image from 'next/image'
+import Image from "next/image";
 
-import { useSession } from 'next-auth/react'
-import Link from 'next/link'
-import './assets/aside.css'
-import SavingIcon from '@/app/icons/IconsAside/SavingIcon'
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import "./assets/aside.css";
+import SavingIcon from "@/app/icons/IconsAside/SavingIcon";
+import BlogIcon from "@/app/icons/IconsAside/BlogIcon";
 
 export default function Aside() {
-  const { data: session } = useSession()
-  const avatar = session?.user?.image as string
+  const { data: session } = useSession();
+  const avatar = session?.user?.image as string;
 
   return (
     <aside className="h-full w-full absolute top-0 z-10 backdrop-blur-sm -left-full aside">
@@ -68,11 +69,17 @@ export default function Aside() {
               <span>Saving goals</span>
             </li>
           </Link>
+          <Link href={`/private/blog`} className="bg-transparent">
+            <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
+              <BlogIcon />
+              <span>Blog</span>
+            </li>
+          </Link>
           <li className="absolute bottom-0 w-full justify-center opacity-50 text-sm">
-            {FormatDate(session?.expires ?? '')}
+            {FormatDate(session?.expires ?? "")}
           </li>
         </ul>
       </div>
     </aside>
-  )
+  );
 }
