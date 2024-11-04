@@ -1,55 +1,51 @@
-import { useState } from 'react'
-import { toast } from 'sonner'
-import createPayment from './services/createPayment'
-import Button from '@/app/components/Button/Button'
+import { useState } from "react";
+import { toast } from "sonner";
+import createPayment from "./services/createPayment";
+import Button from "@/app/components/Button/Button";
 
 interface Props {
-  debtID: number
-  setIsPay: React.Dispatch<boolean>
+  debtID: number;
+  setIsPay: React.Dispatch<boolean>;
 }
 
 export default function FormAbono(props: Props) {
-  const { debtID, setIsPay } = props
+  const { debtID, setIsPay } = props;
 
   const [data, setData] = useState({
-    paymentType: 'Abono',
-    payValue: '',
-  })
+    paymentType: "Abono",
+    payValue: 0,
+  });
 
-  const [loading, setLoading] = useState<boolean>(false)
+  const [loading, setLoading] = useState<boolean>(false);
 
   const createAbono = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
+    e.preventDefault();
+    setLoading(true);
     const [error] = await createPayment({
       debtID,
       paymentType: data.paymentType,
       payValue: data.payValue,
-    })
+    });
     if (error) {
-      toast.warning('Error al hacer el abono...')
+      toast.warning("Error al hacer el abono...");
     } else {
-      setData({ ...data, payValue: '' })
-      setIsPay(false)
-      toast.success('Abono registrado!')
+      setData({ ...data, payValue: 0 });
+      setIsPay(false);
+      toast.success("Abono registrado!");
     }
-    setLoading(false)
-  }
+    setLoading(false);
+  };
 
   // async function createAbono() {
 
   // }
 
   const formatedValue = (value: string) => {
-    const validateNumber = /^[0-9,]*$/.test(value)
-    if (value === '') return setData({ ...data, payValue: value })
-    if (!validateNumber) return
-    let numberWithoutComma = parseFloat(value.replace(/,/g, ''))
-    return setData({
+    setData({
       ...data,
-      payValue: Number(numberWithoutComma).toLocaleString(),
-    })
-  }
+      payValue: Number(value),
+    });
+  };
 
   return (
     <form id="form" onSubmit={createAbono}>
@@ -72,5 +68,5 @@ export default function FormAbono(props: Props) {
         isLoading={loading}
       />
     </form>
-  )
+  );
 }

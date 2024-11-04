@@ -1,25 +1,25 @@
-import Input from '@/app/components/Input/Input'
-import Modal from '@/app/components/Modal/Modal'
-import createItem from '../actions/createAccount.action'
-import useModal from '@/app/components/Modal/useModal'
-import { toast } from 'sonner'
-import { useState } from 'react'
+import Input from "@/app/components/Input/Input";
+import Modal from "@/app/components/Modal/Modal";
+import createItem from "../actions/createAccount.action";
+import useModal from "@/app/components/Modal/useModal";
+import { toast } from "sonner";
+import { useState } from "react";
 
 export default function ModalNewAccount() {
-  const [loading, setLoading] = useState(false)
-  const { handleCloseModal } = useModal()
+  const [loading, setLoading] = useState(false);
+  const { handleCloseModal } = useModal();
 
-  async function createAccount(formData: FormData) {
-    setLoading(true)
-    const [error] = await createItem(formData)
-    handleCloseModal()
-    if (error) return toast.warning('Error al crear la cuenta...')
+  async function createAccount(formData: any) {
+    setLoading(true);
+    const [error] = await createItem(formData);
+    handleCloseModal();
+    if (error) return toast.warning("Error al crear la cuenta...");
     // reset form and values
-    const $form = document.querySelector('#form') as HTMLFormElement
-    $form.reset()
+    const $form = document.querySelector("#form") as HTMLFormElement;
+    $form.reset();
     // Finally create
-    setLoading(false)
-    return toast.success('Cuenta creada!')
+    setLoading(false);
+    return toast.success("Cuenta creada!");
   }
 
   return (
@@ -30,7 +30,7 @@ export default function ModalNewAccount() {
         </div>
         <form
           id="form"
-          action={createAccount}
+          onSubmit={createAccount}
           className="my-5 flex flex-col gap-5"
         >
           <Input
@@ -61,5 +61,5 @@ export default function ModalNewAccount() {
         </form>
       </div>
     </Modal>
-  )
+  );
 }
