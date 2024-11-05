@@ -50,7 +50,7 @@ export default function Accounts() {
           )}
         </div>
       </section>
-      <ModalNewAccount />
+      <ModalNewAccount setData={setData} />
     </>
   )
 }

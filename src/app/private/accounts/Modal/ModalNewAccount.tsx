@@ -4,14 +4,20 @@ import createItem from "../actions/createAccount.action";
 import useModal from "@/app/components/Modal/useModal";
 import { toast } from "sonner";
 import { useState } from "react";
+import { AccountModel } from "../models/account.model";
 
-export default function ModalNewAccount() {
+interface Props  {
+  setData: React.Dispatch<any>
+}
+
+export default function ModalNewAccount(props: Props) {
+  const {setData} = props
   const [loading, setLoading] = useState(false);
   const { handleCloseModal } = useModal();
 
   async function createAccount(formData: FormData): Promise<void> {
     setLoading(true);
-    const [error] = await createItem(formData);
+    const [error, result] = await createItem(formData);
     handleCloseModal();
     if (error) {
       toast.warning("Error al crear la cuenta...");
@@ -22,6 +28,7 @@ export default function ModalNewAccount() {
     $form.reset();
     // Finally create
     setLoading(false);
+    setData((prevState: AccountModel[]) => [...prevState, result.result])
     toast.success("Cuenta creada!");
   }
 

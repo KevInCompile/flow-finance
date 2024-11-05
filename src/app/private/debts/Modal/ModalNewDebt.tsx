@@ -18,7 +18,7 @@ export default function ModalNewDebt() {
     const [error] = await createDebt(formData)
     handleCloseModal()
     if (error) {
-      toast.warning('Error al registrar la deuda...')
+      toast.warning('Server error...')
       return
     }
     // reset form and values
@@ -30,18 +30,14 @@ export default function ModalNewDebt() {
     })
     // Finally create
     setLoading(false)
-    toast.success('Deuda registrada!')
+    toast.success('New debt add !')
   }
 
   const formatedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    const validateNumber = /^[0-9,]*$/.test(value)
-    if (value === '') return setValuesState({ ...valuesState, [name]: '0' })
-    if (!validateNumber) return
-    let numberWithoutComma = parseFloat(value.replace(/,/g, ''))
     return setValuesState({
       ...valuesState,
-      [name]: Number(numberWithoutComma).toLocaleString(),
+      [name]: Number(value),
     })
   }
 
