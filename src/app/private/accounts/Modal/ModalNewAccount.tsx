@@ -9,17 +9,20 @@ export default function ModalNewAccount() {
   const [loading, setLoading] = useState(false);
   const { handleCloseModal } = useModal();
 
-  async function createAccount(formData: any) {
+  async function createAccount(formData: FormData): Promise<void> {
     setLoading(true);
     const [error] = await createItem(formData);
     handleCloseModal();
-    if (error) return toast.warning("Error al crear la cuenta...");
+    if (error) {
+      toast.warning("Error al crear la cuenta...");
+      return;
+    }
     // reset form and values
     const $form = document.querySelector("#form") as HTMLFormElement;
     $form.reset();
     // Finally create
     setLoading(false);
-    return toast.success("Cuenta creada!");
+    toast.success("Cuenta creada!");
   }
 
   return (
@@ -30,7 +33,7 @@ export default function ModalNewAccount() {
         </div>
         <form
           id="form"
-          onSubmit={createAccount}
+          action={createAccount}
           className="my-5 flex flex-col gap-5"
         >
           <Input

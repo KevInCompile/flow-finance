@@ -9,7 +9,7 @@ export default function CirclePercentage({
   return (
     <div
       className="circle-wrap"
-      style={{ "--rotation": `${rotation}deg`, "--color": `${color}` }}
+      style={{ ['--rotation' as string]: `${rotation}deg`, ['--color' as string]: `${color}` }}
     >
       <div className="circle">
         <div className="mask full">

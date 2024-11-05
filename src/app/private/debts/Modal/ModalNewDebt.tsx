@@ -13,11 +13,14 @@ export default function ModalNewDebt() {
   const [loading, setLoading] = useState(false)
   const { handleCloseModal } = useModal()
 
-  async function createAccount(formData: FormData) {
+  async function createAccount(formData: FormData): Promise<void> {
     setLoading(true)
     const [error] = await createDebt(formData)
     handleCloseModal()
-    if (error) return toast.warning('Error al registrar la deuda...')
+    if (error) {
+      toast.warning('Error al registrar la deuda...')
+      return
+    }
     // reset form and values
     const $form = document.querySelector('#form') as HTMLFormElement
     $form.reset()
@@ -27,7 +30,7 @@ export default function ModalNewDebt() {
     })
     // Finally create
     setLoading(false)
-    return toast.success('Deuda registrada!')
+    toast.success('Deuda registrada!')
   }
 
   const formatedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
