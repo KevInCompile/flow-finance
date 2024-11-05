@@ -65,7 +65,7 @@ export default function HelpSalary() {
               <b className="text-cyan-600">
                 {formatCurrency(salaryDivide.thirty)}
               </b>{" "}
-              se usarias en gastos no escenciales como:{" "}
+              se usaria en gastos no escenciales como:{" "}
               <b>
                 Gustos, deseos, vacaciones, salidas a comer, entretenimiento
               </b>
