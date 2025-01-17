@@ -51,7 +51,7 @@ export default function Resume() {
   } = useExpenses();
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
   const [mesActual, setMesActual] = useState(0);
-  const [anioActual, setAnioActual] = useState(2024);
+  const [anioActual, setAnioActual] = useState(2025);
   const [tour, setTour] = useState(false);
   const [isDataAgruped, setIsDataAgruped] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
