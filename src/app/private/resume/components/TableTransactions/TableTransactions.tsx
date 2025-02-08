@@ -10,20 +10,10 @@ import {
 } from "@/components/ui/dialog";
 import { formatCurrency } from "../../utils/formatPrice";
 import { DataAgruped } from "../../models/ExpensesIncomesModel";
-import { SetStateAction } from "react";
-import { AccountModel } from "../../../accounts/models/account.model";
+import { Transactions } from "./models";
 
-interface Props {
-  data: any;
-  monthCurrent: number;
-  accounts: AccountModel[];
-  isAgruped: boolean;
-  deleteIncome: (id: number) => void;
-  deleteExpense: (id: number) => void;
-  setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>;
-}
 
-export default function TableTransactions(props: Props) {
+export default function TableTransactions(props: Transactions) {
   const {
     data,
     monthCurrent,
@@ -84,8 +74,8 @@ export default function TableTransactions(props: Props) {
 
 
   const totalMoney = (type: string) => {
-    return data.filter((item) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
-    .reduce((acc, item) => acc + parseFloat(item.value), 0);
+    return data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
+    .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
 
