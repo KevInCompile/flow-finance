@@ -1,6 +1,3 @@
-import { sql } from '@vercel/postgres'
-import { NextResponse } from 'next/server'
-import { getSession } from '../session'
 import { authMiddleware } from '../middleware/auth'
 import { DELETE_SAVING_GOAL, SELECT_SAVING_GOALS } from './services/saving-goals.service'
 import { handleSuccess } from '../utils/handleSuccess'

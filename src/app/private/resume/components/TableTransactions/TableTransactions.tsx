@@ -82,7 +82,12 @@ export default function TableTransactions(props: Props) {
     return acc;
   }, []);
 
-  console.log(gastosAgrupados);
+
+  const totalMoney = (type: string) => {
+    return data.filter((item) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
+    .reduce((acc, item) => acc + parseFloat(item.value), 0);
+  }
+
 
   return (
     <>
@@ -237,6 +242,10 @@ export default function TableTransactions(props: Props) {
               }
               return null; // Retorno nulo si no coincide el mes
             })}
+            <div className="grid grid-cols-2 px-5 py-4 text-sm">
+              <h1 className="mb-2">Total expenses:</h1> <span className="text-red-400 mb-2">{formatCurrency(totalMoney('expense'))}</span>
+              <h1>Total incomes:</h1> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
+            </div>
       </div>
     </>
   );

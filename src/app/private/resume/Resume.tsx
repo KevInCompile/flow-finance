@@ -51,7 +51,7 @@ export default function Resume() {
   } = useExpenses();
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
   const [mesActual, setMesActual] = useState(0);
-  const [anioActual, setAnioActual] = useState(2025);
+  const [anioActual, setAnioActual] = useState(new Date().getFullYear());
   const [tour, setTour] = useState(false);
   const [isDataAgruped, setIsDataAgruped] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
@@ -99,7 +99,6 @@ export default function Resume() {
     },
   );
 
-  console.log(filteredTransactions);
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {
       if (direccion === "anterior") {
