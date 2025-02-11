@@ -30,14 +30,14 @@ export default function ModalNewDebt() {
     })
     // Finally create
     setLoading(false)
-    toast.success('New debt add !')
+    toast.success('New debt add!')
   }
 
   const formatedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
     return setValuesState({
       ...valuesState,
-      [name]: Number(value),
+      [name]: value,
     })
   }
 
@@ -59,7 +59,7 @@ export default function ModalNewDebt() {
             autoComplete="off"
           />
           <Input
-            type="text"
+            type="number"
             label="Amount Owed"
             name="totalDue"
             onChange={formatedValue}

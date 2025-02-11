@@ -1,64 +1,43 @@
 import DeleteConfirmation from "@/app/components/DeleteConfirmation/DeleteConfirmation";
 import { FormatDate } from "@/app/utils/FormatDate";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import { formatCurrency } from "../../utils/formatPrice";
 import { DataAgruped } from "../../models/ExpensesIncomesModel";
 import { Transactions } from "./models";
 
 
 export default function TableTransactions(props: Transactions) {
-  const {
-    data,
-    monthCurrent,
-    isAgruped,
-    deleteIncome,
-    setAccounts,
-    accounts,
-    deleteExpense,
-  } = props;
 
-  const handleDelete = (
-    id: number,
-    value: number,
-    accountid: number,
-    type: string,
-  ) => {
-    const newValue = accounts.find((item) => item.id === accountid);
+  const handleDelete = (id: number,value: number,accountid: number,type: string) => {
+    const newValue = props.accounts.find((item) => item.id === accountid);
     if (type) {
-      deleteIncome(id);
+      props.deleteIncome(id);
       const newData = {
         ...newValue,
         value:
           parseFloat(newValue?.value?.toString() || "0") -
           parseFloat(value.toString()),
       };
-      const newAccounts = accounts.map((account) =>
+      const newAccounts = props.accounts.map((account) =>
         account.id === accountid ? newData : account,
       );
-      setAccounts(newAccounts as any);
+      props.setAccounts(newAccounts as any);
     } else {
-      deleteExpense(id);
+      props.deleteExpense(id);
       const newData = {
         ...newValue,
         value:
           parseFloat(newValue?.value?.toString() || "0") +
           parseFloat(value.toString()),
       };
-      const newAccounts = accounts.map((account) =>
+      const newAccounts = props.accounts.map((account) =>
         account.id === accountid ? newData : account,
       );
-      setAccounts(newAccounts as any);
+      props.setAccounts(newAccounts as any);
     }
   };
 
-  const gastosAgrupados = data.reduce((acc: DataAgruped[], gasto: any) => {
+  const gastosAgrupados = props.data.reduce((acc: DataAgruped[], gasto: any) => {
     const gastoExistente = acc.find(
       (g) => g.categoryname === gasto.categoryname,
     );
@@ -74,14 +53,13 @@ export default function TableTransactions(props: Transactions) {
 
 
   const totalMoney = (type: string) => {
-    return data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
+    return props.data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
-
   return (
     <>
-      {isAgruped ? (
+      {props.isAgruped ? (
         <header className="uppercase text-purple-500 font-bold border-b pb-5 mt-5 text-sm grid grid-cols-3 border-zinc-800 px-5 gap-6">
           <span>name</span>
           <span>type</span>
@@ -96,11 +74,11 @@ export default function TableTransactions(props: Transactions) {
         </header>
       )}
       <div className="overflow-y-auto movimientos">
-        {isAgruped
+        {props.isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
               const dateExpense = new Date(item.date);
               const monthExpense = dateExpense.getMonth();
-              if (monthCurrent === monthExpense) {
+              if (props.monthCurrent === monthExpense) {
                 return (
                   <div
                     className="flex flex-col border-b border-zinc-800 listTable"
@@ -177,10 +155,10 @@ export default function TableTransactions(props: Transactions) {
               }
               return null; // Retorno nulo si no coincide el mes
             })
-          : data.map((item: DataAgruped) => {
+          : props.data.map((item: DataAgruped) => {
               const dateExpense = new Date(item.date);
               const monthExpense = dateExpense.getMonth();
-              if (monthCurrent === monthExpense) {
+              if (props.monthCurrent === monthExpense) {
                 return (
                   <div className="flex flex-col" key={item.id}>
                     <div className="py-4 px-5 grid grid-cols-3 md:grid-cols-4 items-center border-b border-gray-500 text-sm md:text-md hover:bg-[#201D1D] cursor-pointer gap-6">
@@ -232,9 +210,11 @@ export default function TableTransactions(props: Transactions) {
               }
               return null; // Retorno nulo si no coincide el mes
             })}
-            <div className="grid grid-cols-2 px-5 py-4 text-sm">
-              <h1 className="mb-2">Total expenses:</h1> <span className="text-red-400 mb-2">{formatCurrency(totalMoney('expense'))}</span>
-              <h1>Total incomes:</h1> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
+            <div className="px-5 py-4 text-sm">
+              <div className="mb-2">
+                <span>Total incomes:</span> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
+              </div>
+              <span>Total expenses:</span> <span className="text-red-400 mb-2">{formatCurrency(totalMoney('expense'))}</span>
             </div>
       </div>
     </>

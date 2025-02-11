@@ -14,7 +14,7 @@ interface Props {
 const INITIAL_STATE = {
   nameGoal: '',
   goal: '',
-  moneySaved: '',
+  moneySaved: '',
 }
 
 export default function ModalNewSavingGoal(props: Props) {
