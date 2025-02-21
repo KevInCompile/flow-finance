@@ -14,28 +14,11 @@ import { Button } from "@/components/ui/button";
 import { CircleHelp, Search } from "lucide-react";
 import dynamic from "next/dynamic";
 import Tour from "./utils/steps-tour";
-import HelpSalary from "../help-salary/HelpSalary";
 
-/**
- * Dynamically import BentoInformation component to improve initial load time
- */
 const BentoInformation = dynamic(
   () => import("./components/BentoInformation/BentoInformation"),
   { ssr: false },
 );
-
-/**
- * Resume Component
- *
- * This component displays a financial summary for the user, including:
- * - Total balance for the current month
- * - List of transactions (expenses and incomes)
- * - Options to view transactions in aggregated or detailed format
- * - Month navigation
- *
- * It uses custom hooks for managing accounts, expenses, and incomes data,
- * and provides functionality to filter and display this data based on the selected month.
- */
 
 export default function Resume() {
   const {
@@ -114,19 +97,12 @@ export default function Resume() {
     }
   };
 
-  /**
-   * Handles the change of aggregated data view
-   * @param {Event} e - The event object from the checkbox
-   */
   const handleAgruped = (e: any) => {
     const value = e.target.checked;
     window.localStorage.setItem("isAgruped", value);
     setIsDataAgruped(value);
   };
 
-  /**
-   * Sets the initial aggregated data view state from localStorage
-   */
   useEffect(() => {
     const local = window.localStorage.getItem("isAgruped") as string;
     if (local === "true") return setIsDataAgruped(true);

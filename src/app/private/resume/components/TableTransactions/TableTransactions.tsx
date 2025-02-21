@@ -4,38 +4,10 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { formatCurrency } from "../../utils/formatPrice";
 import { DataAgruped } from "../../models/ExpensesIncomesModel";
 import { Transactions } from "./models";
+import { handleDeleteTransaction } from "../function/handleDeleteTransaction";
 
 
 export default function TableTransactions(props: Transactions) {
-
-  const handleDelete = (id: number,value: number,accountid: number,type: string) => {
-    const newValue = props.accounts.find((item) => item.id === accountid);
-    if (type) {
-      props.deleteIncome(id);
-      const newData = {
-        ...newValue,
-        value:
-          parseFloat(newValue?.value?.toString() || "0") -
-          parseFloat(value.toString()),
-      };
-      const newAccounts = props.accounts.map((account) =>
-        account.id === accountid ? newData : account,
-      );
-      props.setAccounts(newAccounts as any);
-    } else {
-      props.deleteExpense(id);
-      const newData = {
-        ...newValue,
-        value:
-          parseFloat(newValue?.value?.toString() || "0") +
-          parseFloat(value.toString()),
-      };
-      const newAccounts = props.accounts.map((account) =>
-        account.id === accountid ? newData : account,
-      );
-      props.setAccounts(newAccounts as any);
-    }
-  };
 
   const gastosAgrupados = props.data.reduce((acc: DataAgruped[], gasto: any) => {
     const gastoExistente = acc.find(
@@ -50,7 +22,6 @@ export default function TableTransactions(props: Transactions) {
     }
     return acc;
   }, []);
-
 
   const totalMoney = (type: string) => {
     return props.data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
@@ -128,11 +99,12 @@ export default function TableTransactions(props: Transactions) {
                                   {detalle.description ?? detalle.typeincome}
                                   <DeleteConfirmation
                                     deleteItem={() =>
-                                      handleDelete(
+                                      handleDeleteTransaction(
                                         item?.id,
                                         detalle.value,
                                         detalle.accountid,
                                         detalle?.typeincome!,
+                                        props
                                       )
                                     }
                                     message={`Deseas eliminar ${detalle.description ?? detalle.typeincome}?`}
@@ -210,11 +182,13 @@ export default function TableTransactions(props: Transactions) {
               }
               return null; // Retorno nulo si no coincide el mes
             })}
-            <div className="px-5 py-4 text-sm">
+            <div className="px-5 py-4 text-sm grid grid-cols-2">
               <div className="mb-2">
                 <span>Total incomes:</span> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
               </div>
-              <span>Total expenses:</span> <span className="text-red-400 mb-2">{formatCurrency(totalMoney('expense'))}</span>
+              <div className="mb-2">
+                <span>Total expenses:</span> <span className="text-red-400">{formatCurrency(totalMoney('expense'))}</span>
+              </div>
             </div>
       </div>
     </>
