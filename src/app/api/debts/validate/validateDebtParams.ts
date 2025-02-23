@@ -4,7 +4,10 @@ interface DebtParams {
   description: string
   payday: string
   totaldue: number
-  feevalue: number
+  feevalue: number,
+  datestart: string,
+  dateend: string,
+  interest: number,
 }
 
 export const validateDebtParams = (params: DebtParams) => {

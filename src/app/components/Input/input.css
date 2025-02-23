@@ -23,7 +23,7 @@
   pointer-events: none;
   transition: 0.3s;
   background: #191919;
-  width: 30%;
+  width: 60%;
 }
 
 .inputField input:focus {

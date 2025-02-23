@@ -6,9 +6,12 @@ const INSERT_DEBTS = (
   description: string,
   payday: string,
   totaldue: number,
-  feevalue: number,
+  datestart: string,
+  dateend: string,
+  interest: number,
+
 ) =>
-  sql`INSERT INTO debts (Username, Fee, Description, TotalDue, Payday, FeeValue) VALUES (${username}, ${fee}, ${description}, ${totaldue}, ${payday}, ${feevalue})`
+  sql`INSERT INTO debts (Username, Fee, Description, TotalDue, DateStart, DateEnd, Interest) VALUES (${username}, ${fee}, ${description}, ${totaldue}, ${payday}, ${datestart}, ${dateend}, ${interest})`
 
 const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM debts where Username = ${username}`
 

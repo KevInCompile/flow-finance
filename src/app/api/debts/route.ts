@@ -16,7 +16,9 @@ export const POST = authMiddleware(async (request, session) => {
       params.description,
       params.payday,
       params.totaldue,
-      params.feevalue,
+      params.datestart,
+      params.dateend,
+      params.interest
     )
     return NextResponse.json({ message: 'ok' }, { status: 200 })
   } catch (error) {

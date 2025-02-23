@@ -45,12 +45,12 @@ export default function ModalNewDebt() {
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
-          <h1 className="text-3xl font-medium text-yellow-400">Debt</h1>
+          <h1 className="text-3xl font-medium text-yellow-400">Add debt</h1>
         </div>
         <form
           id="form"
           action={createAccount}
-          className="my-5 flex flex-col gap-5"
+          className="my-5 flex flex-col gap-5 lg:grid lg:grid-cols-2 "
         >
           <Input
             type="text"
@@ -65,15 +65,11 @@ export default function ModalNewDebt() {
             onChange={formatedValue}
             value={valuesState.totalDue}
           />
-          <Input type="number" label="Fee" name="fee" />
-          <Input
-            type="text"
-            label="Fee Value"
-            name="feeValue"
-            onChange={formatedValue}
-            value={valuesState.feeValue}
-          />
+          <Input type="number" label="Installments" name="installments" />
           <Input type="number" max="31" min="1" label="Payday" name="payday" />
+          <Input type='date' label="Start Date" name="dateStart" />
+          <Input type='date' label="End Date" name="dateEnd" />
+          <Input type='number' label="Interest" name="interest" />
           <div>
             <button
               disabled={loading}
