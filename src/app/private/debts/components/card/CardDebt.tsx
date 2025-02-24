@@ -89,10 +89,6 @@ export default function CardDebt(props: PropsCardDebt) {
           ))}
         </article>
       )}
-      {/* <article className="text-white p-4 grid grid-cols-2">
-        <span><b className="text-palette">1.</b> $320.000</span>
-        <span className="text-end">Pago</span>
-      </article>*/}
     </div>
   )
 }
