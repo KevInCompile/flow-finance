@@ -38,7 +38,7 @@ export default function CardDebt(props: PropsCardDebt) {
     }
   }
 
-   const totalAmountPayments = payments.reduce((sum, debt) => sum + debt.payvalue, 0)
+   const totalAmountPayments = payments.reduce((sum, debt: any) => sum + debt.payvalue, 0)
 
   return (
     <div className="bg-[#191919] rounded-md py-2 border border-gray-500 relative">
