@@ -64,7 +64,7 @@ export default function ModalNewDebt() {
           <Input type="number" label="Installments" name="installments" />
           <Input type="date" label="Pay day" name="paydate" />
           <Input type='date' label="Start date" name="startdate" />
-          <Input type='number' label="Interest" name="interest" />
+          <Input type='number' label="Anual intereset rate (%)" name="interest" />
         </form>
           <button
             form='form'
