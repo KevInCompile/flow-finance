@@ -20,7 +20,7 @@ export const POST = authMiddleware(async (req) => {
     // INSERT TO SQL
     await INSERT_PAYMENTS(debtID, paymentType, payValue);
 
-    await UPDATE_FORMATT_PAYMENTS(payFormatted, debtID);
+    // await UPDATE_FORMATT_PAYMENTS(payFormatted, debtID);
   } catch (error) {
     return handleError(error);
   }

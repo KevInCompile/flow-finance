@@ -38,7 +38,7 @@ export default function CardDebt(props: PropsCardDebt) {
     }
   }
 
-   // const totalDebt = payments.reduce((sum, debt) => sum + debt.totalremaining, 0)
+   const totalAmountPayments = payments.reduce((sum, debt) => sum + debt.payvalue, 0)
 
   return (
     <div className="bg-[#191919] rounded-md py-2 border border-gray-500 relative">
@@ -54,7 +54,7 @@ export default function CardDebt(props: PropsCardDebt) {
               Total amount: <span className='text-white'>{formatCurrency(totalamount)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Remaining amount: <span className='text-white'>{formatCurrency(totalamount)}</span>
+              Remaining amount: <span className='text-white'>{formatCurrency(totalamount - totalAmountPayments)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm">
               Installments <span className='text-white'>{installments}</span>
@@ -92,12 +92,14 @@ export default function CardDebt(props: PropsCardDebt) {
             <></>
           )}
           {payments?.map((pay: any, i) => (
-            <article className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500" key={pay.id}>
+            <article className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500 text-sm" key={pay.id}>
               <span>
-                <b className="text-palette">{i + 1}.</b> ${pay.payvalue.toLocaleString()}
+                <b className="text-palette">{i + 1}.</b> {FormatDate(pay.payday)}
+
               </span>
-              <span className="text-end text-green-500 font-medium flex justify-end gap-2 text-sm">
-                {pay?.paymenttype}
+              <span className="text-end font-medium flex justify-end gap-2 text-xs">
+                {formatCurrency(pay.payvalue)} {" "}
+                <span className='text-green-500'>({pay?.paymenttype})</span>
                 <DeleteConfirmation
                   deleteItem={() => handleDelete(pay.id, pay.debtsid, pay.payvalue)}
                   message="Do you want to delete the payment?"

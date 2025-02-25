@@ -17,7 +17,9 @@ const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM deb
 
 const GET_DEBTS_PAYMENTS = (id: number) => sql`SELECT * FROM payments WHERE DebtsId = ${id}`
 
-const DELETE_DEBTS = (username: string | null | undefined, id: number) =>
+const DELETE_DEBTS = (username: string | null | undefined, id: number) => {
+  sql`DELETE FROM payments WHERE debtsid = ${id}`
   sql`DELETE FROM debts WHERE id = ${id} AND username = ${username}`
+}
 
 export { INSERT_DEBTS, GET_DEBTS, GET_DEBTS_PAYMENTS, DELETE_DEBTS }

@@ -45,7 +45,7 @@ export const DELETE = authMiddleware(async (request, session) => {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')!
   try {
-    await DELETE_DEBTS(session?.user?.name, parseInt(id))
+    DELETE_DEBTS(session?.user?.name, parseInt(id))
   } catch (e) {
     return handleError(e)
   }

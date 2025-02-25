@@ -24,7 +24,7 @@ export default function Debts() {
         <h1 className="text-2xl font-semibold text-center text-purple-500">
           Debts
         </h1>
-        {/* <OpenButton /> */}
+        <OpenButton />
       </div>
       {loading ? (
         <></>
