@@ -2,16 +2,16 @@ import { sql } from '@vercel/postgres'
 
 const INSERT_DEBTS = (
   username: string | null | undefined,
-  fee: string,
+  installments: string,
   description: string,
-  payday: string,
-  totaldue: number,
-  datestart: string,
-  dateend: string,
+  paydate: string,
+  startdate: string,
+  totalamount: number,
   interest: number,
 
 ) =>
-  sql`INSERT INTO debts (Username, Fee, Description, TotalDue, DateStart, DateEnd, Interest) VALUES (${username}, ${fee}, ${description}, ${totaldue}, ${payday}, ${datestart}, ${dateend}, ${interest})`
+  sql`INSERT INTO debts (username, installments, description, interest, totalamount, startdate, paydate)
+      VALUES (${username}, ${installments}, ${description}, ${interest}, ${totalamount}, ${startdate}, ${paydate})`
 
 const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM debts where Username = ${username}`
 

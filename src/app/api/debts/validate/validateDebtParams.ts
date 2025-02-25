@@ -1,18 +1,16 @@
 interface DebtParams {
   username?: string | null | undefined
-  fee: string
+  installments: string
   description: string
-  payday: string
-  totaldue: number
-  feevalue: number,
-  datestart: string,
-  dateend: string,
+  paydate: string
+  totalamount: number
+  startdate: string,
   interest: number,
 }
 
 export const validateDebtParams = (params: DebtParams) => {
-  const { fee, description, payday, totaldue, feevalue } = params
-  if (!fee || !description || !payday || !totaldue || !feevalue) {
+  const { installments, description, paydate, totalamount } = params
+  if (!installments || !description || !paydate || !totalamount) {
     throw new Error('All dates are required')
   }
 }

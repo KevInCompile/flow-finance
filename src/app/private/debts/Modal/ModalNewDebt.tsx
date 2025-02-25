@@ -6,39 +6,35 @@ import { useState } from 'react'
 import createDebt from '../actions/createDebts.action'
 
 export default function ModalNewDebt() {
-  const [valuesState, setValuesState] = useState({
-    totalDue: '',
-    feeValue: '',
-  })
+  const [valuesState, setValuesState] = useState('')
   const [loading, setLoading] = useState(false)
   const { handleCloseModal } = useModal()
 
   async function createAccount(formData: FormData): Promise<void> {
-    setLoading(true)
-    const [error] = await createDebt(formData)
-    handleCloseModal()
-    if (error) {
-      toast.warning('Server error...')
-      return
+    try {
+      setLoading(true)
+      const [error] = await createDebt(formData)
+      handleCloseModal()
+      if (error) {
+        toast.warning('Server error...')
+        return
+      }
+      // reset form and values
+      const $form = document.querySelector('#form') as HTMLFormElement
+      $form.reset()
+      setValuesState('')
+      toast.success('New debt add!')
+    }catch(error){
+      toast.error('Error creating debt')
+    }finally{
+      setLoading(false)
     }
-    // reset form and values
-    const $form = document.querySelector('#form') as HTMLFormElement
-    $form.reset()
-    setValuesState({
-      totalDue: '',
-      feeValue: '',
-    })
-    // Finally create
-    setLoading(false)
-    toast.success('New debt add!')
+
   }
 
   const formatedValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target
-    return setValuesState({
-      ...valuesState,
-      [name]: value,
-    })
+    return setValuesState(value)
   }
 
   return (
@@ -61,25 +57,23 @@ export default function ModalNewDebt() {
           <Input
             type="number"
             label="Amount Owed"
-            name="totalDue"
+            name="totalamount"
             onChange={formatedValue}
-            value={valuesState.totalDue}
+            value={valuesState}
           />
           <Input type="number" label="Installments" name="installments" />
-          <Input type="number" max="31" min="1" label="Payday" name="payday" />
-          <Input type='date' label="Start Date" name="dateStart" />
-          <Input type='date' label="End Date" name="dateEnd" />
+          <Input type="date" label="Pay day" name="paydate" />
+          <Input type='date' label="Start date" name="startdate" />
           <Input type='number' label="Interest" name="interest" />
-          <div>
-            <button
-              disabled={loading}
-              type="submit"
-              className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              Add
-            </button>
-          </div>
         </form>
+          <button
+            form='form'
+            disabled={loading}
+            type="submit"
+            className="bg-palette text-black rounded-md p-2 w-3/12 disabled:opacity-30 disabled:cursor-not-allowed"
+          >
+            Add
+          </button>
       </div>
     </Modal>
   )

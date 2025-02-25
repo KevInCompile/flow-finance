@@ -8,10 +8,15 @@ import CardDebt from './components/card/CardDebt'
 import Gift from '@/../public/empty.gif'
 import Image from 'next/image'
 import LoaderPage from '@/app/components/LoaderPage/LoaderPage'
+import { useEffect } from 'react'
 
 export default function Debts() {
   const { data, loading, setData, actionDelete } = useDebts()
 
+  useEffect(() => {
+    if(typeof window === undefined) return
+    window.alert('En el momento estamos trabajando en la funcionalidad de esta sección (Actualización)')
+  }, [])
   return (
     <>
       <Head />
@@ -19,7 +24,7 @@ export default function Debts() {
         <h1 className="text-2xl font-semibold text-center text-purple-500">
           Debts
         </h1>
-        <OpenButton />
+        {/* <OpenButton /> */}
       </div>
       {loading ? (
         <></>

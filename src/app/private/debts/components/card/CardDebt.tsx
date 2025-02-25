@@ -4,10 +4,12 @@ import DeleteConfirmation from '@/app/components/DeleteConfirmation/DeleteConfir
 import axios from 'axios'
 import { toast } from 'sonner'
 import { PropsCardDebt } from './models/card-debt.model'
+import { formatCurrency } from '@/app/private/resume/utils/formatPrice'
+import { FormatDate } from '@/app/utils/FormatDate'
 
 export default function CardDebt(props: PropsCardDebt) {
   const { data, setData, fullData, deleteDebt } = props
-  const { description, payday, totaldue, fee, id, payments } = data
+  const { description, paydate, startdate, totalamount, installments, id, payments } = data
 
   const [isPay, setIsPay] = useState(false)
 
@@ -29,34 +31,50 @@ export default function CardDebt(props: PropsCardDebt) {
     if (isDelete) {
       const filter = {
         ...data,
-        totaldue: data.totaldue + value,
+        totalamount: data.totalamount + value,
         payments: data.payments.filter((item) => item.id !== id),
       }
       setData([...fullData.filter((item) => item.id !== idDebt), filter])
     }
   }
 
+   // const totalDebt = payments.reduce((sum, debt) => sum + debt.totalremaining, 0)
+
   return (
     <div className="bg-[#191919] rounded-md py-2 border border-gray-500 relative">
-      <div className="flex justify-between items-center border-b border-palette px-3 pb-2 flex-wrap">
-        <div className="hidden md:block">
-          <h2 className="text-purple-400 font-medium text-sm">Dia de pago: {payday}</h2>
-        </div>
-        <div className="text-center">
-          <h1 className="text-[var(--palette)] font-bold flex items-center gap-1">
-            ${totaldue?.toLocaleString()}
+      <div className="border-b border-palette px-3 pb-3 flex-wrap">
+        <div>
+          <h1 className="text-[var(--palette)] font-bold flex items-center gap-1 mb-2">
+            {description}
             <DeleteConfirmation deleteItem={deleteDebt} message="¿Quiere eliminar la deuda?" />
           </h1>
-          <span className="text-[var(--color-usage)] text-sm">
-            {description} <small className="bg-opacity-20 text-purple-500 text-sm font-bold">({fee})</small>
-          </span>
-        </div>
-        <button
+          </div>
+          <div className='grid grid-cols-2 gap-2'>
+            <h2 className="text-purple-400 font-medium text-sm">
+              Total amount: <span className='text-white'>{formatCurrency(totalamount)}</span>
+            </h2>
+            <h2 className="text-purple-400 font-medium text-sm text-end">
+              Remaining amount: <span className='text-white'>{formatCurrency(totalamount)}</span>
+            </h2>
+            <h2 className="text-purple-400 font-medium text-sm">
+              Installments <span className='text-white'>{installments}</span>
+            </h2>
+            <h2 className="text-purple-400 font-medium text-sm text-end">
+              Monthly payment <span className='text-white'>{formatCurrency(totalamount / installments)}</span>
+            </h2>
+            <h2 className="text-purple-400 font-medium text-sm">
+              Next payment <span className='text-white'>{FormatDate(paydate)}</span>
+            </h2>
+            <h2 className="text-purple-400 font-medium text-sm text-end">
+              Start date <span className='text-white'>{FormatDate(startdate)}</span>
+            </h2>
+          </div>
+        {/* <button
           className={`rounded-md text-sm hover:scale-105 transition font-bold" ${isPay ? 'text-red-400' : 'text-green-400'}`}
           onClick={() => setIsPay(!isPay)}
         >
           {isPay ? 'Cancelar' : 'Abonar'}
-        </button>
+        </button> */}
       </div>
       {isPay ? (
         <div className="p-4">
@@ -64,7 +82,7 @@ export default function CardDebt(props: PropsCardDebt) {
         </div>
       ) : (
         <article className="text-white p-4 max-h-60 overflow-auto">
-          <h1 className="text-center text-[1em]">{payments?.length > 0 ? 'Pagos' : 'Sin pagos registrados'}</h1>
+          <h1 className="text-center text-[1em]">{payments?.length > 0 ? 'Payment history' : 'No payments registered'}</h1>
           {payments?.length > 0 ? (
             <div className="grid grid-cols-2 opacity-50 text-sm pb-1">
               <span>Valor</span>
@@ -82,7 +100,7 @@ export default function CardDebt(props: PropsCardDebt) {
                 {pay?.paymenttype}
                 <DeleteConfirmation
                   deleteItem={() => handleDelete(pay.id, pay.debtsid, pay.payvalue)}
-                  message="Quiere eliminar el pago?"
+                  message="Do you want to delete the payment?"
                 />
               </span>
             </article>

@@ -6,18 +6,18 @@ import { validateDebtParams } from './validate/validateDebtParams'
 import { DELETE_DEBTS, GET_DEBTS, GET_DEBTS_PAYMENTS, INSERT_DEBTS } from './services/debts.service'
 
 export const POST = authMiddleware(async (request, session) => {
-  try {
     const form = await request.formData()
     const params = getParamsDebt(form)
+    console.log(params)
+  try {
     validateDebtParams(params)
     await INSERT_DEBTS(
       session.user?.name,
-      params.fee,
+      params.installments,
       params.description,
-      params.payday,
-      params.totaldue,
-      params.datestart,
-      params.dateend,
+      params.paydate,
+      params.startdate,
+      params.totalamount,
       params.interest
     )
     return NextResponse.json({ message: 'ok' }, { status: 200 })
