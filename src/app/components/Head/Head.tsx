@@ -37,7 +37,7 @@ export default function Head() {
           </div>
         ) : (
           <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v0.2.0
+            v0.2.1
           </div>
         )}
       </div>

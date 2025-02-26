@@ -21,7 +21,7 @@ export default function TableTransactions(props: Transactions) {
       acc.push({ ...gasto, value: parseFloat(gasto.value), details: [gasto] });
     }
     return acc;
-  }, []).sort((a, b) => b.value - a.value);
+  }, []).sort((a: any, b: any) => b.value - a.value);
 
   const totalMoney = (type: string) => {
     return props.data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
