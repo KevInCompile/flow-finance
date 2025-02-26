@@ -3,7 +3,7 @@
 import { useEffect, useState, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
 
-export default function AIResponse({totalMoney}) {
+export default function AIResponse({totalMoney}: {totalMoney: any}) {
   const [displayedContent, setDisplayedContent] = useState("")
   const [loading, setLoading] = useState(true)
   const [response, setResponse] = useState('')
