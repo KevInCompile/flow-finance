@@ -2,7 +2,7 @@
 
 import Head from '@/app/components/Head/Head'
 import Card from './Card'
-import ModalNewAccount from './modal/ModalNewAccount'
+import ModalNewAccount from './Modal/ModalNewAccount'
 import useAccounts from './hooks/useAccounts'
 import SkeletonAccount from './loading'
 import Image from 'next/image'
