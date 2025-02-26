@@ -21,24 +21,6 @@ const BentoInformation = dynamic(
   { ssr: false },
 );
 
-export const aiResponse = `¡Hola! Con los ingresos y gastos que has proporcionado, aquí tienes algunos consejos para mejorar tu situación financiera:
-
-### 1. **Analiza tu situación actual:**
-- **Ingresos:** $3,122,000
-- **Gastos:** $2,883,400
-- **Ahorro mensual:** $238,600 (esto es lo que te queda después de cubrir tus gastos)
-
-Este ahorro mensual es un buen punto de partida, pero siempre hay margen para mejorar.
-
-### 2. **Crea un presupuesto detallado:**
-- Clasifica tus gastos en categorías (vivienda, transporte, alimentación, ocio, etc.).
-- Identifica áreas donde puedas reducir gastos.
-
-### 3. **Establece metas financieras:**
-- **Corto plazo:** Ahorrar para un fondo de emergencia (3-6 meses de gastos).
-- **Mediano plazo:** Ahorrar para una inversión, como un apartamento o un negocio.
-- **Largo plazo:** Planificar para la jubilación o la educación de tus hijos.`
-
 export default function Resume() {
   const {
     data: accounts,
@@ -96,7 +78,7 @@ export default function Resume() {
   };
 
   const totalMoney = (type: string) => {
-    return transactions.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
+    return transactionsFilterForDate.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
@@ -119,15 +101,15 @@ export default function Resume() {
                 className={`${
                   showAI
                     ? 'group'
-                    : 'bg-gradient-to-r from-purple-600 to-blue-500 rounded-md animate-gradient-xy text-white'
-                } flex items-center gap-2 hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10`}
+                    : 'bg-gradient-to-r from-pink-500 to-blue-500 rounded-md animate-gradient-xy text-gray-900'
+                } flex  font-bold items-center gap-2 hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10 outline-none`}
               >
                 <div className="relative group">
                 {showAI && (
                   // Borde animado con gradiente para cuando showAI es true
                   <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition  animate-pulse animate-gradient-xy"></div>
                 )}
-                <div className={`${showAI && 'bg-background'} border border-transparent text-white rounded-md relative flex items-center gap-2 p-2 text-white text-sm`}>
+                <div className={`${showAI && 'bg-background'} border border-transparent rounded-md relative flex items-center gap-2 p-2 text-sm`}>
                   <AIIcon /> {showAI ? 'Cerrar consejo' : 'Consejo de AI'}
                 </div>
                 </div>
