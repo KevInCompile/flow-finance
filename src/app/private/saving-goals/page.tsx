@@ -18,7 +18,7 @@ export default function SavingGoals() {
       <section>
         <div className="flex items-center justify-center pb-3">
           <h1 className="text-2xl font-medium text-center text-purple-500">
-            Saving goals
+            Metas de ahorro
           </h1>
           <OpenButton />
         </div>
@@ -34,8 +34,8 @@ export default function SavingGoals() {
                 priority
               />
               <small className="opacity-50 italic font-medium text-white">
-                You haven&apos;t registered any saving goals yet! Start creating
-                your financial objectives.
+                ¡No has registrado ninguna meta de ahorro aún! Comienza a crear
+                tus objetivos financieros.
               </small>
             </div>
           ) : (

@@ -17,7 +17,7 @@ export default function Debts() {
       <Head />
       <div className="flex items-center justify-center pb-3">
         <h1 className="text-2xl font-semibold text-center text-purple-500">
-          Debts
+          Deudas
         </h1>
         <OpenButton />
       </div>
@@ -32,7 +32,7 @@ export default function Debts() {
             priority
           />
           <small className="opacity-50 italic font-medium text-white">
-            You haven&apos;t registered anything yet!
+            No tiene deudas registradas aún!
           </small>
         </div>
       ) : (

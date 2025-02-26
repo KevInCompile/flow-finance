@@ -36,7 +36,7 @@ export default function ModalNewAccount(props: Props) {
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
-          <h1 className="text-3xl font-medium text-yellow-400">New account</h1>
+          <h1 className="text-3xl font-medium text-yellow-400">Nueva cuenta</h1>
         </div>
         <form
           id="form"
@@ -45,14 +45,14 @@ export default function ModalNewAccount(props: Props) {
         >
           <Input
             type="text"
-            label="Name of account"
+            label="Nombre de cuenta"
             name="name"
             autoComplete="off"
           />
-          <Input type="number" label="Amount" name="value" />
+          <Input type="number" label="Monto" name="value" />
           <select className="selectField" name="type">
             <option disabled selected>
-              Choose a type
+              Seleccione un tipo
             </option>
             <option value="main">Main</option>
             <option value="savings">Savings</option>
@@ -65,7 +65,7 @@ export default function ModalNewAccount(props: Props) {
               type="submit"
               className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:bg-opacity-70 disabled:cursor-not-allowed"
             >
-              Add
+              Crear cuenta
             </button>
           </div>
         </form>

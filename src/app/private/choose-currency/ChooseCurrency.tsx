@@ -47,10 +47,10 @@ export default function ChooseCurrency({
         className="w-64 h-auto mb-4 rounded-lg"
       />
       <h1 className="text-2xl font-bold mb-4 text-purple-500">
-        Welcome to Your Financial Dashboard
+        Bienvenido a tu Panel Financiero
       </h1>
       <p className="mb-4">
-        To get started, please select your country&apos;s currency:
+        Para comenzar, por favor selecciona la moneda de tu país:
       </p>
       <form onSubmit={handleSubmit} className="flex">
         <select

@@ -41,7 +41,7 @@ export default function ModalNewDebt() {
     <Modal>
       <div className="p-5">
         <div className="border-b pb-2">
-          <h1 className="text-3xl font-medium text-yellow-400">Add debt</h1>
+          <h1 className="text-3xl font-medium text-yellow-400">Crear nueva deuda</h1>
         </div>
         <form
           id="form"
@@ -50,21 +50,21 @@ export default function ModalNewDebt() {
         >
           <Input
             type="text"
-            label="Description"
+            label="Descripción"
             name="description"
             autoComplete="off"
           />
           <Input
             type="number"
-            label="Amount Owed"
+            label="Monto total"
             name="totalamount"
             onChange={formatedValue}
             value={valuesState}
           />
-          <Input type="number" label="Installments" name="installments" />
-          <Input type="date" label="Pay day" name="paydate" />
-          <Input type='date' label="Start date" name="startdate" />
-          <Input type='number' label="Anual intereset rate (%)" name="interest" />
+          <Input type="number" label="Cuotas" name="installments" />
+          <Input type="date" label="Dia de pago" name="paydate" />
+          <Input type='date' label="Fecha de inicio" name="startdate" />
+          <Input type='number' label="Tasa de interés" name="interest" />
         </form>
           <button
             form='form'
@@ -72,7 +72,7 @@ export default function ModalNewDebt() {
             type="submit"
             className="bg-palette text-black rounded-md p-2 w-3/12 disabled:opacity-30 disabled:cursor-not-allowed"
           >
-            Add
+            Crear deuda
           </button>
       </div>
     </Modal>

@@ -2,7 +2,7 @@
 
 import Head from '@/app/components/Head/Head'
 import Card from './Card'
-import ModalNewAccount from './Modal/ModalNewAccount'
+import ModalNewAccount from './modal/ModalNewAccount'
 import useAccounts from './hooks/useAccounts'
 import SkeletonAccount from './loading'
 import Image from 'next/image'
@@ -18,7 +18,7 @@ export default function Accounts() {
       <section>
         <div className="flex items-center justify-center pb-3">
           <h1 className="text-2xl font-medium text-center text-purple-500">
-            Accounts
+            Cuentas
           </h1>
           <OpenButton />
         </div>

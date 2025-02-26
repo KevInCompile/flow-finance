@@ -5,7 +5,7 @@ export default function Devs() {
   return (
     <div className="max-w-[800px] m-auto [line-height:3rem] my-10">
       <h2 className="text-center text-3xl font-medium text-purple-500">
-        Designed by
+        Creado y diseñado por
       </h2>
       <div className="flex flex-wrap gap-5 justify-center py-5">
         <button className="bg-[#333]/50 p-2 rounded-full w-[250px] btn-11 animate-swing-drop-in [animation-delay:500ms]">

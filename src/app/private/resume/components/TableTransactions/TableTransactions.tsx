@@ -21,7 +21,7 @@ export default function TableTransactions(props: Transactions) {
       acc.push({ ...gasto, value: parseFloat(gasto.value), details: [gasto] });
     }
     return acc;
-  }, []);
+  }, []).sort((a, b) => b.value - a.value);
 
   const totalMoney = (type: string) => {
     return props.data.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
@@ -32,16 +32,16 @@ export default function TableTransactions(props: Transactions) {
     <>
       {props.isAgruped ? (
         <header className="uppercase text-purple-500 font-bold border-b pb-5 mt-5 text-sm grid grid-cols-3 border-zinc-800 px-5 gap-6">
-          <span>name</span>
-          <span>type</span>
-          <span>value</span>
+          <span>categoria</span>
+          <span>tipo</span>
+          <span>monto</span>
         </header>
       ) : (
         <header className="uppercase text-purple-500  border-b font-bold pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4 border-gray-500 px-5 gap-6">
-          <span>name</span>
-          <span>type</span>
-          <span className="hidden md:block">date</span>
-          <span>value</span>
+          <span>nombre</span>
+          <span>tipo</span>
+          <span className="hidden md:block">fecha</span>
+          <span>monto</span>
         </header>
       )}
       <div className="overflow-y-auto movimientos">
@@ -62,16 +62,16 @@ export default function TableTransactions(props: Transactions) {
                             <span className="font-light">
                               {item?.type === "expense"
                                 ? item?.categoryname
-                                : "Incomes"}
+                                : "Ingresos"}
                             </span>
                           </div>
                           {item?.type === "expense" ? (
                             <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
-                              Expense
+                              Gasto
                             </span>
                           ) : (
                             <span className="text-green-400 bg-green-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
-                              Request
+                              Ingreso
                             </span>
                           )}
                           <span className="font-medium text-[#C59422]">
@@ -127,7 +127,7 @@ export default function TableTransactions(props: Transactions) {
               }
               return null; // Retorno nulo si no coincide el mes
             })
-          : props.data.map((item: DataAgruped) => {
+          : [...props.data].sort((a, b) => b.value - a.value).map((item: DataAgruped) => {
               const dateExpense = new Date(item.date);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
@@ -184,10 +184,10 @@ export default function TableTransactions(props: Transactions) {
             })}
             <div className="px-5 py-4 text-sm grid grid-cols-2">
               <div className="mb-2">
-                <span>Total incomes:</span> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
+                <span>Ingresos:</span> <span className="text-green-400">{formatCurrency(totalMoney('incomes'))}</span>
               </div>
               <div className="mb-2">
-                <span>Total expenses:</span> <span className="text-red-400">{formatCurrency(totalMoney('expense'))}</span>
+                <span>Gastos:</span> <span className="text-red-400">{formatCurrency(totalMoney('expense'))}</span>
               </div>
             </div>
       </div>

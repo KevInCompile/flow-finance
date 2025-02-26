@@ -53,13 +53,15 @@ export default function Card({
 
   async function deleteItem(id: number) {
     try {
-      await fetch(`/api/account?id=${id}`, {
+      const response = await fetch(`/api/account?id=${id}`, {
         method: "DELETE",
       });
-      setData(data.filter((item) => item.id !== id));
-      return toast("Cuenta eliminada correctamente!");
+      if(response.ok){
+        setData(data.filter((item) => item.id !== id));
+        return toast.success("Account deleted");
+      }
     } catch (error) {
-      toast("Error al eliminar la cuenta...");
+      toast.error("Error deleting account");
     }
   }
 
@@ -87,7 +89,7 @@ export default function Card({
                 )}
                 <DeleteConfirmation
                   deleteItem={() => deleteItem(item.id)}
-                  message="¿Deseas eliminar esta cuenta?"
+                  message={<p>¿Deseas eliminar esta cuenta? <br />Todos los gastos asociados se perderán</p>}
                 />
               </div>
             </div>

@@ -10,7 +10,7 @@ export const GET = authMiddleware(async (req, session) => {
   try {
     const { rows } = await SELECT_SAVING_GOALS(session?.user?.name as string)
     if (rows[0]) {
-      return handleSuccess('', 200, [rows[0]])
+      return handleSuccess('', 200, [...rows])
     } else {
       return handleSuccess('No data', 200, [])
     }

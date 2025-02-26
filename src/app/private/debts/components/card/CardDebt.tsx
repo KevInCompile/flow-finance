@@ -51,22 +51,22 @@ export default function CardDebt(props: PropsCardDebt) {
           </div>
           <div className='grid grid-cols-2 gap-2'>
             <h2 className="text-purple-400 font-medium text-sm">
-              Total amount: <span className='text-white'>{formatCurrency(totalamount)}</span>
+              Monto: <span className='text-white'>{formatCurrency(totalamount)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Remaining amount: <span className='text-white'>{formatCurrency(totalamount - totalAmountPayments)}</span>
+              Monto restante: <span className='text-white'>{formatCurrency(totalamount - totalAmountPayments)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm">
-              Installments <span className='text-white'>{installments}</span>
+              Cuotas <span className='text-white'>{installments}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Monthly payment <span className='text-white'>{formatCurrency(totalamount / installments)}</span>
+              Pago mensual <span className='text-white'>{formatCurrency(totalamount / installments)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm">
-              Next payment <span className='text-white'>{FormatDate(paydate)}</span>
+              Proximo pago <span className='text-white'>{FormatDate(paydate)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Start date <span className='text-white'>{FormatDate(startdate)}</span>
+              Fecha de inicio <span className='text-white'>{FormatDate(startdate)}</span>
             </h2>
           </div>
         {/* <button
@@ -82,7 +82,7 @@ export default function CardDebt(props: PropsCardDebt) {
         </div>
       ) : (
         <article className="text-white p-4 max-h-60 overflow-auto">
-          <h1 className="text-center text-[1em]">{payments?.length > 0 ? 'Payment history' : 'No payments registered'}</h1>
+          <h1 className="text-center text-palette text-[1em]">{payments?.length > 0 ? 'Historial de pagos' : 'No hay pagos registrados'}</h1>
           {payments?.length > 0 ? (
             <div className="grid grid-cols-2 opacity-50 text-sm pb-1">
               <span>Valor</span>
@@ -95,14 +95,13 @@ export default function CardDebt(props: PropsCardDebt) {
             <article className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500 text-sm" key={pay.id}>
               <span>
                 <b className="text-palette">{i + 1}.</b> {FormatDate(pay.payday)}
-
               </span>
               <span className="text-end font-medium flex justify-end gap-2 text-xs">
                 {formatCurrency(pay.payvalue)} {" "}
                 <span className='text-green-500'>({pay?.paymenttype})</span>
                 <DeleteConfirmation
                   deleteItem={() => handleDelete(pay.id, pay.debtsid, pay.payvalue)}
-                  message="Do you want to delete the payment?"
+                  message="¿Desea eliminar el pago?"
                 />
               </span>
             </article>

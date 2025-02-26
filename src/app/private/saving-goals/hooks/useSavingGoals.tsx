@@ -14,7 +14,7 @@ export default function useSavingGoals() {
       try {
         const [error, result] = await serviceGetSavingGoals()
         if (error) return toast.error(error)
-        setData(result.result)
+        return setData(result.result)
       } catch (e) {
       } finally {
         setLoading(false)

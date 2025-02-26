@@ -59,7 +59,7 @@ export default function ModalNewSavingGoal(props: Props) {
       <div className="p-5">
         <div className="border-b pb-2">
           <h1 className="text-3xl font-medium text-yellow-400">
-            New savings goal
+            Nueva meta de ahorro
           </h1>
         </div>
         <form
@@ -70,7 +70,7 @@ export default function ModalNewSavingGoal(props: Props) {
           <Input
             type="text"
             value={data.nameGoal}
-            label="Name of goal"
+            label="Nombre"
             name="nameGoal"
             onChange={handleChange}
             autoComplete="off"
@@ -78,7 +78,7 @@ export default function ModalNewSavingGoal(props: Props) {
           <Input
             type="number"
             step="2"
-            label="Goal"
+            label="Meta"
             name="goal"
             value={data.goal}
             onChange={handleChange}
@@ -87,7 +87,7 @@ export default function ModalNewSavingGoal(props: Props) {
             type="number"
             value={data.moneySaved}
             step="2"
-            label="Ammount current"
+            label="Monto actual"
             onChange={handleChange}
             name="moneySaved"
           />
@@ -97,7 +97,7 @@ export default function ModalNewSavingGoal(props: Props) {
               type="submit"
               className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:bg-opacity-70 disabled:cursor-not-allowed"
             >
-              Agregar
+              Crear
             </button>
           </div>
         </form>

@@ -55,7 +55,7 @@ export const DELETE = authMiddleware(async (request, session) => {
 
   if (!id) return handleError('Id is missing')
   try {
-    await DELETE_ACCOUNT({ id, username: session.user?.name })
+    DELETE_ACCOUNT({ id, username: session.user?.name })
     return handleSuccess('Account deleted')
   } catch (error) {
     return handleError(error)

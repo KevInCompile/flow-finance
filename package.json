@@ -1,6 +1,6 @@
 {
-  "name": "flow-finance",
-  "version": "0.1.0",
+  "name": "ghost-finance",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -24,10 +24,12 @@
     "lucide-react": "0.436.0",
     "next": "14.2.3",
     "next-auth": "4.24.7",
+    "openai": "^4.85.4",
     "react": "18",
     "react-content-loader": "7.0.0",
     "react-dom": "18",
     "react-joyride": "2.8.2",
+    "react-markdown": "^10.0.0",
     "recharts": "2.12.7",
     "sonner": "1.4.41",
     "tailwind-merge": "2.5.2",
@@ -35,6 +37,7 @@
   },
   "devDependencies": {
     "@midudev/tailwind-animations": "0.0.7",
+    "@tailwindcss/typography": "^0.5.16",
     "@types/node": "20",
     "@types/react": "18",
     "@types/react-dom": "18",

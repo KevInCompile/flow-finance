@@ -3,9 +3,7 @@ import CloseMenuIcon from "@/app/icons/IconsAside/CloseMenuIcon";
 import CoinIcon from "@/app/icons/IconsAside/CoinIcon";
 import CreditCardRefundIcon from "@/app/icons/IconsAside/CreditCardRefundIcon";
 import { FormatDate } from "@/app/utils/FormatDate";
-
 import Image from "next/image";
-
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import "./assets/aside.css";
@@ -48,25 +46,25 @@ export default function Aside() {
           <Link href={`/private/profile`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <ActivityIcon />
-              <span>Resume</span>
+              <span>Resumen</span>
             </li>
           </Link>
           <Link href={`/private/accounts`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CoinIcon />
-              <span>Accounts</span>
+              <span>Cuentas</span>
             </li>
           </Link>
           <Link href={`/private/debts`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <CreditCardRefundIcon />
-              <span>Debts</span>
+              <span>Deudas</span>
             </li>
           </Link>
           <Link href={`/private/saving-goals`} className="bg-transparent">
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <SavingIcon />
-              <span>Saving goals</span>
+              <span>Metas de ahorro</span>
             </li>
           </Link>
           <Link href={`/private/blog`} className="bg-transparent">

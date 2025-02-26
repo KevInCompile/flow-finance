@@ -32,9 +32,9 @@ export default function Home() {
               <span className="bg-gradient">Ghost Finance</span>
             </h1>
             <p className="text-start text-secondary font-medium text-2xl md:p-0 opacity-70">
-              Track your assets, income, savings, investments, and deduct your
-              liabilities to understand your spending, identify areas to cut
-              costs, and allocate your income effectively.
+              Controla tus activos, ingresos, ahorros, inversiones y deduce tus
+              pasivos para entender tus gastos, identificar áreas para reducir
+              costos, y asignar tus ingresos de manera efectiva.
             </p>
           </div>
           <Image
@@ -46,13 +46,13 @@ export default function Home() {
             unoptimized
           />
         </div>
-        <div className="text-center mt-10 md:mt-32 md:px-20 px-6">
+        <div className="text-center md:px-20 px-6">
           <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
-            How it works?
+            ¿Cómo funciona?
           </div>
           <div>
             <h2 className="text-3xl [letter-spacing:-.0625rem] text-purple-500 font-semibold [line-height:3rem]">
-              One manager, many functions
+              Un gestor, múltiples funciones
             </h2>
           </div>
           <GridBento />

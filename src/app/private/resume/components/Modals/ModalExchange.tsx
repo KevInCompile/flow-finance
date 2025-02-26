@@ -20,7 +20,7 @@ export default function ModalExchange(props: any) {
         onClick={() => setOpen(true)}
       >
         <SendToBack className="text-purple-400" />
-        <span className="text-sm">Exchange</span>
+        <span className="text-sm">Intercambio</span>
       </button>
       <DialogContent>
         <DialogHeader>

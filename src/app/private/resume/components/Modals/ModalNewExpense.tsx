@@ -65,7 +65,7 @@ export default function DialogNewExpense(props: Props) {
           disabled={accounts.length < 1}
         >
           <ArrowDownLeft className="text-purple-400" />
-          <span className="text-sm">Request</span>
+          <span className="text-sm">Ingreso</span>
         </button>
       )}
       {typeAction === 'expense' && (
@@ -75,7 +75,7 @@ export default function DialogNewExpense(props: Props) {
           onClick={() => setOpen(true)}
         >
           <ArrowUpRight className="text-purple-400" />
-          <span className="text-sm">Expense</span>
+          <span className="text-sm">Gasto</span>
         </button>
       )}
 

@@ -5,18 +5,17 @@ import Link from 'next/link'
 import { AccountModel } from '../../../accounts/models/account.model'
 import { formatCurrency } from '../../utils/formatPrice'
 import { DataAgruped } from '../../models/ExpensesIncomesModel'
-import { IncomeModel } from '../../models/IncomeModel'
 import { ExpenseModel } from '../../hooks/useExpenses'
 // ICONS
 import ModalExchange from '../Modals/ModalExchange'
 import VisualizerSavingGoals from '../../../saving-goals/components/visualizer-resume'
 import DialogNewExpense from '../Modals/ModalNewExpense'
 
+
 interface Props {
   expenses: any
   accounts: AccountModel[]
   loadingAccounts: boolean
-  incomes: IncomeModel[]
   setIncomes: any
   setAccounts: React.Dispatch<SetStateAction<AccountModel[]>>
   setExpenses: React.Dispatch<SetStateAction<ExpenseModel[]>>
@@ -24,7 +23,7 @@ interface Props {
 
 export default function BentoInformation(props: Props) {
   // Destructured props
-  const { expenses, accounts, loadingAccounts, incomes, setIncomes, setAccounts, setExpenses } = props
+  const { expenses, accounts, loadingAccounts, setIncomes, setAccounts, setExpenses } = props
 
   // State
   const [accountSelected, setAccountSelected] = useState('')
@@ -39,7 +38,6 @@ export default function BentoInformation(props: Props) {
     }
 
     acc[day][key] = (acc[day][key] || 0) + Number(expense.value)
-
     return acc
   }, {})
 
@@ -55,13 +53,13 @@ export default function BentoInformation(props: Props) {
           <SkeletonResume />
         ) : (
           <>
-            <small className="px-6 pt-6 text-[#C59422]">You can view your account details</small>
+            <small className="px-6 pt-6">Puedes ver todas tus cuentas</small>
             <select
               className="text-purple-400 bg-transparent outline-none px-6"
               value={accountSelected}
               onChange={(e) => setAccountSelected(e.target.value)}
             >
-              {!accounts.length ? <option>You don&apos;t have any accounts</option> : <></>}
+              {!accounts.length ? <option>No tienes cuentas</option> : <></>}
               {accounts?.map((account) => {
                 return (
                   <option key={account.id} value={account.name} className="text-black">
@@ -76,10 +74,10 @@ export default function BentoInformation(props: Props) {
                   formatCurrency(parseFloat(accounts[0].value))
                 ) : !accounts.length ? (
                   <Link href={newUrl('accounts')} className="text-white text-sm underline animate-pulse">
-                    Add account
+                    Crear cuenta
                   </Link>
                 ) : (
-                  formatCurrency(parseFloat(accounts?.filter((item) => item.name === accountSelected)[0]?.value))
+                    formatCurrency(parseFloat(accounts?.filter((item) => item.name === accountSelected)[0]?.value))
                 )}
               </h2>
             </div>
@@ -105,7 +103,7 @@ export default function BentoInformation(props: Props) {
       </div>
       {datosLineaArray.length >= 1 && (
         <>
-          <h3 className="py-6 text-purple-500 font-semibold text-md md:text-2xl">Statistics of expenses</h3>
+          <h3 className="py-6 text-purple-500 font-semibold text-md md:text-2xl">Grafico de gastos</h3>
           <div className="pt-4 px-5 flex flex-col gap-3 items-center text-white rounded-xl bg-[#191919] shadow-lg grafico">
             <ResponsiveContainer width="100%" height={200}>
               <LineChart data={datosLineaArray} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
@@ -121,6 +119,7 @@ export default function BentoInformation(props: Props) {
           <VisualizerSavingGoals />
         </>
       )}
+
     </div>
   )
 }

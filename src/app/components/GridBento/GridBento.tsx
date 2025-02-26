@@ -7,10 +7,10 @@ export default function GridBento() {
       <div className="lg:[grid-column:1/5] lg:[grid-row:1/6] bg-gray-700 rounded-md zoom-in [animation-delay:600ms] relative card-bento">
         <div>
           <img src="/graphic.png" className="h-20 m-auto" alt="graphic" />
-          <h1 className="text-palette text-lg">Simple analytics</h1>
+          <h1 className="text-palette text-lg">Análisis simple</h1>
           <p className="py-2 md:py-0 opacity-70">
-            You will be able to view your expenses in a graph, which will allow
-            you to easily identify the moments in which you incurred losses ⚡
+            Podrás ver tus gastos en una gráfica, lo que te permitirá
+            identificar fácilmente los momentos en los que incurriste en pérdidas ⚡
           </p>
         </div>
       </div>
@@ -24,7 +24,7 @@ export default function GridBento() {
             alt="divisas representation"
           />
           <h1 className="text-lg text-center font-semibold text-palette">
-            Variety of currencies
+            Variedad de divisas
           </h1>
         </div>
       </div>
@@ -37,7 +37,7 @@ export default function GridBento() {
             height={40}
             alt="saving of goals representation"
           />
-          <h1 className="text-lg text-palette">Goals of savings</h1>
+          <h1 className="text-lg text-palette">Metas de ahorro</h1>
         </div>
       </div>
       <div className="block lg:[grid-column:3/7] lg:[grid-row:6/11] bg-gray-700 rounded-md zoom-in [animation-delay:900ms] card-bento">
@@ -49,10 +49,10 @@ export default function GridBento() {
             height={40}
             alt="divisas representation"
           />
-          <h1 className="text-lg text-palette">Debt register</h1>
+          <h1 className="text-lg text-palette">Registro de deudas</h1>
           <p className="py-2 md:py-0 opacity-70">
-            Enter your debts and keep track of the payments or deposits you
-            make.
+            Ingresa tus deudas y mantén un registro de los pagos o depósitos que
+            realices.
           </p>
         </div>
       </div>
@@ -66,12 +66,12 @@ export default function GridBento() {
             alt="notifications and automatic payments representation"
           />
           <h1 className="text-lg text-purple-500">
-            Notifications and Automatic Payments
+            Notificaciones y Pagos Automáticos
           </h1>
           <p className="py-2 opacity-70">
-            Receive notifications when a registered debt payment is approaching
-            to remind you and make automatic records of each debt payment.
-            Additionally, get advice on your expense record using artificial
+            Recibe notificaciones cuando se acerque un pago de deuda registrado
+            para recordártelo y realiza registros automáticos de cada pago de la deuda.
+            Además, obtén consejos sobre tu registro de gastos usando inteligencia artificial
           </p>
           <p className="text-sm text-palette-secondary inline-flex gap-2 items-center mt-4 rounded-md bg-transparent border px-3 py-2 shadow-sm border-gray-500 opacity-50 ">
             <svg
@@ -90,7 +90,7 @@ export default function GridBento() {
               <path d="M4 17v2"></path>
               <path d="M5 18H3"></path>
             </svg>
-            Coming Soon
+            Próximamente
           </p>
         </div>
       </div>

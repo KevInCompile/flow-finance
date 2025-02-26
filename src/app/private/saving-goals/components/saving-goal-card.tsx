@@ -42,7 +42,7 @@ export default function SavingGoalCard({
                 />
                 <DeleteConfirmation
                   deleteItem={() => handleDelete(item?.id)}
-                  message="Do you want to delete this savings goal?"
+                  message="¿Deseas eliminar esta meta de ahorro?"
                 />
               </div>
             </div>

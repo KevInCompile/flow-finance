@@ -29,7 +29,7 @@ export default function Head() {
               </div>
             </label>
             <span className="hidden md:block font-bold text-secondary">
-              Hello,{" "}
+              Hola,{" "}
               <span className="text-purple-500">
                 {session?.user?.name?.split(" ")[0]}
               </span>
@@ -37,7 +37,7 @@ export default function Head() {
           </div>
         ) : (
           <div className="bg-[#DDDDDD] font-bold bg-blur rounded-xl p-2 px-5 text-black">
-            v 1.3.1
+            v0.2.0
           </div>
         )}
       </div>
@@ -57,7 +57,7 @@ export default function Head() {
           <>
             <div className="flex items-center gap-2 mr-4 bg-gray-100 rounded-lg p-2">
               <span className="text-sm font-semibold text-gray-700 hidden md:block">
-                Currency:
+                Divisa:
               </span>
               <span className="text-xs md:text-sm font-bold text-purple-600">
                 {localStorage.getItem("userCurrency") || "COP"}
@@ -67,7 +67,7 @@ export default function Head() {
               className="bg-purple-500 text-white font-medium w-auto rounded-xl p-2 px-5 hover:opacity-50 ease-out transition flex items-center gap-2 text-sm"
               onClick={handleSignOut}
             >
-              <span className="hidden md:block">Log out</span>
+              <span className="hidden md:block">Salir</span>
               <div>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
