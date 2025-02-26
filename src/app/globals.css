@@ -94,6 +94,8 @@ input:checked + .slider:before {
     --dark: #191919;
     --radius: 8px;
     --accent-gradient: linear-gradient(45deg, rgb(220 172 10), rgb(168, 85, 247) 80%);
+    --accent-gradient-ai: linear-gradient(45deg, rgb(168, 85, 247), rgb(236, 72, 153), rgb(59, 130, 246));
+
   }
   .dark {
     --background: 0 0% 100%;
@@ -128,6 +130,14 @@ input:checked + .slider:before {
 
 .bg-gradient {
   background-image: url(../../public/noise-extra.webp), var(--accent-gradient);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-position: 0;
+  background-size: 200px, 100%;
+}
+
+.bg-gradient-ai {
+  background-image: url(../../public/noise-extra.webp), var(--accent-gradient-ai);
   -webkit-text-fill-color: transparent;
   -webkit-background-clip: text;
   background-position: 0;

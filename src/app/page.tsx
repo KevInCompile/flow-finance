@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import LoaderPage from './components/LoaderPage/LoaderPage'
 import GridBento from './components/GridBento/GridBento'
 import Image from 'next/image'
+import AIIcon from './icons/AI-Icon'
 
 export default function Home() {
   const { status } = useSession()
@@ -30,7 +31,11 @@ export default function Home() {
           <div className="max-w-[42rem]">
             <h1 className="mb-10 [font-size:5.2rem] [line-height:1] font-bold">
               <span className="bg-gradient">Ghost Finance</span>
+              <br />
             </h1>
+            <p className='text-xl mb-10 bg-gradient-ai text-purple-500 flex gap-1 items-center'>
+              Beta AI <span><AIIcon /></span> - Te dará consejos financieros segun tus registros.
+            </p>
             <p className="text-start text-secondary font-medium text-2xl md:p-0 opacity-70">
               Controla tus activos, ingresos, ahorros, inversiones y deduce tus
               pasivos para entender tus gastos, identificar áreas para reducir

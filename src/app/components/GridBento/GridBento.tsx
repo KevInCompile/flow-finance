@@ -90,7 +90,7 @@ export default function GridBento() {
               <path d="M4 17v2"></path>
               <path d="M5 18H3"></path>
             </svg>
-            Próximamente
+            Beta
           </p>
         </div>
       </div>

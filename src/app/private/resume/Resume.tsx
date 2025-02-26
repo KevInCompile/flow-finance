@@ -119,7 +119,7 @@ export default function Resume() {
                 className={`${
                   showAI
                     ? 'group'
-                    : 'bg-gradient-to-r from-purple-600 rounded-md to-blue-500 animate-gradient-xy text-white'
+                    : 'bg-gradient-to-r from-purple-600 to-blue-500 rounded-md animate-gradient-xy text-white'
                 } flex items-center gap-2 hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10`}
               >
                 <div className="relative group">
