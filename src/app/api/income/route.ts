@@ -26,7 +26,7 @@ export const POST = authMiddleware(async (request, session) => {
 export const GET = authMiddleware(async (_, session) => {
   try {
     const result =
-      await sql`SELECT I.id, I.value, I.type_income, I.date, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.username = ${session.user?.name}`
+      await sql`SELECT I.id, I.value, I.type_income, I.date as date_register, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.username = ${session.user?.name}`
 
     return NextResponse.json({ result: result.rows }, { status: 200 })
   } catch (e) {
