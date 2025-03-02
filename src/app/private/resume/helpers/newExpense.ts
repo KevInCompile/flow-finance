@@ -13,8 +13,8 @@ export const handleExpenseHelper = async (
 ) => {
   setLoading(true)
   const [error, response] = await createExpense({
-    accountId: data.accountid,
-    categoryId: data.categoryid,
+    accountid: data.accountid,
+    categoryid: data.categoryid,
     description: data.description,
     date: fecha,
     value,

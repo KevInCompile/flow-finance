@@ -4,7 +4,7 @@ export interface IncomeModel {
   typeincome: string
   accountid: number
   value: number
-  date: string
+  date_register: string
   account: string
   categoryname?: string
   description?: string

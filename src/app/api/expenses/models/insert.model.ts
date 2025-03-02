@@ -1,8 +1,8 @@
 export type expenseModel = {
   username?: string
   value: number
-  accountId?: string
-  categoryId?: string
+  accountid?: string
+  categoryid?: string
   description?: string
   date?: string
 }

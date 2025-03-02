@@ -8,7 +8,7 @@ export interface ExpenseModel {
   value: number
   accountname: string
   categoryname: string
-  date: string
+  date_register: string
   description: string
   type: string
   typeincome?: string

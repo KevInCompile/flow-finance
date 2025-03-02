@@ -9,11 +9,11 @@ import {
 import { expenseModel } from './models/insert.model'
 
 export async function insertExpense(form: expenseModel) {
-  const { username, value: valueString, accountId, categoryId, description, date } = form
+  const { username, value: valueString, accountid, categoryid, description, date } = form
   const value = parseFloat(valueString.toLocaleString())
 
-  await INSERT_EXPENSE({ accountId, categoryId, username, description, date, value })
-  await UPDATE_ACCOUNT_EXPENSE({ accountId, value, username })
+  await INSERT_EXPENSE({ accountid, categoryid, username, description, value })
+  await UPDATE_ACCOUNT_EXPENSE({ accountid, value, username })
 
   const { rows } = await SELECT_EXPENSES_ACCOUNTS(username!)
 

@@ -56,11 +56,11 @@ export default function Resume() {
    */
   const transactionsFilterForDate = transactions
     .filter((gasto) => {
-      if (!gasto.date) return false;
-      const [year, month] = gasto.date.split("-");
+      if (!gasto.date_register) return false;
+      const [year, month] = gasto.date_register.split("-");
       return parseInt(year) === anioActual && parseInt(month) - 1 === mesActual;
     })
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    .sort((a, b) => new Date(b.date_register).getTime() - new Date(a.date_register).getTime());
 
   const cambiarMes = (direccion: string) => {
     setMesActual((prevMes) => {

@@ -28,6 +28,8 @@ export default function TableTransactions(props: Transactions) {
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
+  console.log(gastosAgrupados)
+
   return (
     <>
       {props.isAgruped ? (
@@ -47,7 +49,7 @@ export default function TableTransactions(props: Transactions) {
       <div className="overflow-y-auto movimientos">
         {props.isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date);
+              const dateExpense = new Date(item.date_register);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
                 return (
@@ -111,7 +113,7 @@ export default function TableTransactions(props: Transactions) {
                                   />
                                 </div>
                                 <div className="text-sm text-muted-foreground">
-                                  {FormatDate(detalle.date)}
+                                  {FormatDate(detalle.date_register)}
                                 </div>
                               </div>
                               <div className="font-medium text-palette">
@@ -128,7 +130,7 @@ export default function TableTransactions(props: Transactions) {
               return null; // Retorno nulo si no coincide el mes
             })
           : [...props.data].sort((a, b) => b.value - a.value).map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date);
+              const dateExpense = new Date(item.date_register);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
                 return (
@@ -146,7 +148,7 @@ export default function TableTransactions(props: Transactions) {
                           </small>
                         </div>
                       </div>
-                      <span className="hidden md:block">{item?.date}</span>
+                      <span className="hidden md:block">{item?.date_register}</span>
                       {item?.type === "expense" ? (
                         <span className="text-red-400 bg-red-400/10 rounded-full p-1 md:p-2 text-center text-xs md:text-md">
                           Expense
@@ -168,7 +170,7 @@ export default function TableTransactions(props: Transactions) {
                         >
                           <div>
                             <div className="text-sm text-muted-foreground">
-                              {FormatDate(detalle.date)}
+                              {FormatDate(detalle.date_register)}
                             </div>
                           </div>
                           <div className="font-medium text-palette">

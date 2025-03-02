@@ -5,7 +5,7 @@ export interface DataAgruped {
   type?: string;
   accountid: number;
   categoryname?: string;
-  date: string;
+  date_register: string;
   description?: string;
   typeincome?: string;
   value: number;

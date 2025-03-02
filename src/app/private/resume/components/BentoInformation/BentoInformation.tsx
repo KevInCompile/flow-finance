@@ -29,7 +29,7 @@ export default function BentoInformation(props: Props) {
   const [accountSelected, setAccountSelected] = useState('')
 
   const combinedLineData = expenses.reduce((acc: any, expense: DataAgruped) => {
-    const day = parseInt(expense.date.split('-')[2])
+    const day = parseInt(expense.date_register.split('-')[2])
     const isIncome = expense.typeincome
     const key = isIncome ? 'valueincome' : 'value'
 
