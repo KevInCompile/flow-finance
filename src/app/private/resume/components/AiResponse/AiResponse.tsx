@@ -52,6 +52,7 @@ export default function AIResponse({totalMoney}: {totalMoney: any}) {
       role: 'user',
       content: `Hola, segun mis ingresos: ${totalMoney('income')} y gastos: ${totalMoney('expense')} que consejos me darias, no te extiendas mucho, en español por favor`
     }
+
     const response = await fetch('/api/chatbot', {
       method: 'POST',
       headers: {
@@ -71,10 +72,10 @@ export default function AIResponse({totalMoney}: {totalMoney: any}) {
     setResponse(data.message)
   }
 
-
   useEffect(() => {
-    if(totalMoney('income') === 0 && totalMoney('expense') === 0) {
-      setResponse('No hay suficientes datos')
+    if(totalMoney('income') === 0 || totalMoney('expense') === 0) {
+      setLoading(false)
+      setResponse('No hay suficientes datos.')
     }else{
       handleSubmit()
     }

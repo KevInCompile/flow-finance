@@ -13,26 +13,26 @@ export async function performExchange(form: ExchangeForm) {
   try {
     // Deduct from the source account
     await sql`UPDATE accounts
-      SET Value = Value - ${+value}
-      WHERE Id = ${+fromAccountId} AND Username = ${username}`
+      SET value = value - ${+value}
+      WHERE id = ${+fromAccountId} AND username = ${username}`
 
     // Add to the destination account
     await sql`UPDATE accounts
       SET Value = Value + ${+value}
-      WHERE Id = ${+toAccountId} AND Username = ${username}`
+      WHERE id = ${+toAccountId} AND username = ${username}`
 
     // Record the exchange transaction
-    await sql`INSERT INTO exchanges (FromAccountId, ToAccountId, Username, Value)
+    await sql`INSERT INTO exchanges (from_account_id, to_account_id, username, value)
       VALUES (${+fromAccountId}, ${+toAccountId}, ${username}, ${+value})`
 
     // Fetch the newly created exchange record
     const { rows } = await sql`
-      SELECT e.Id, a1.Name AS FromAccountName, a2.Name AS ToAccountName,
+      SELECT e.id, a1.name AS FromAccountName, a2.name AS ToAccountName,
         e.Username, e.Date, e.Value
       FROM exchanges AS e
-      INNER JOIN accounts AS a1 ON e.FromAccountId = a1.Id
-      INNER JOIN accounts AS a2 ON e.ToAccountId = a2.Id
-      WHERE e.Username=${username}
+      INNER JOIN accounts AS a1 ON e.from_account_id = a1.Id
+      INNER JOIN accounts AS a2 ON e.to_account_id = a2.Id
+      WHERE e.username=${username}
       ORDER BY Id DESC
       LIMIT 1`
 

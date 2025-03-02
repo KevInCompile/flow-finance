@@ -81,7 +81,6 @@ export default function Resume() {
     return transactionsFilterForDate.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
-
   return (
     <>
       <Head />

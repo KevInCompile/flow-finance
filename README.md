@@ -16,3 +16,10 @@
 </div>
 
 [stars-url]: https://github.com/KevBT/flow-finance/stargazers
+
+### Para ejecutar el proyecto localmente con Docker
+
+1. Clona el repositorio: `git clone https://github.com/KevBT/flow-finance.git`
+2. Navega al directorio del proyecto: `cd flow-finance`
+3. Instala las dependencias: `docker compose build`
+4. Ejecuta el proyecto: `docker compose up -d`

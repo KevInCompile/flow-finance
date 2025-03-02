@@ -10,7 +10,7 @@ const INSERT_DEBTS = (
   interest: number,
 
 ) =>
-  sql`INSERT INTO debts (username, installments, description, interest, totalamount, startdate, paydate)
+  sql`INSERT INTO debts (username, installments, description, interest, total_amount, start_date, pay_date)
       VALUES (${username}, ${installments}, ${description}, ${interest}, ${totalamount}, ${startdate}, ${paydate})`
 
 const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM debts where Username = ${username}`

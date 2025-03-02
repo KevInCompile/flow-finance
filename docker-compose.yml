@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:17
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - gf-network
+
+  frontend:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    tty: true
+    ports:
+      - "3000:3000"
+    entrypoint: npm run dev
+    volumes:
+      - ./src:/var/www/ghost-finance/src
+      - ./public:/var/www/ghost-finance/public
+    networks:
+      - gf-network
+
+networks:
+  gf-network:
+    driver: bridge

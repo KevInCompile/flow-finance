@@ -23,7 +23,7 @@ export default function Debts() {
       </div>
       {loading ? (
         <></>
-      ) : data.length === 0 ? (
+      ) : data?.length === 0 || data?.length === undefined ? (
         <div className="flex flex-col gap-3 items-center m-auto w-full">
           <Image
             src={Gift}
@@ -44,7 +44,8 @@ export default function Debts() {
             <LoaderPage />
           </div>
         ) : (
-          data.map((item) => {
+          data?.length &&
+          data?.map((item) => {
             return (
               <div key={item.id}>
                 <CardDebt

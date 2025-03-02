@@ -99,7 +99,7 @@ export default function DialogNewExpense(props: Props) {
           </div>
           <div className="flex flex-col gap-1 pb-2">
             <span>
-              Account <span className="text-red-500">*</span>
+              Cuenta <span className="text-red-500">*</span>
             </span>
             <select
               className="selectField"
@@ -110,7 +110,7 @@ export default function DialogNewExpense(props: Props) {
               required
             >
               <option value="0" disabled>
-                Select account
+                Seleccionar cuenta
               </option>
               {accounts?.map((item) => (
                 <option key={item?.id} value={item?.id}>
@@ -122,7 +122,7 @@ export default function DialogNewExpense(props: Props) {
           {typeAction === 'expense' && (
             <div className="flex flex-col gap-1 pb-2">
               <span>
-                What did you use it for? <span className="text-red-500">*</span>
+                ¿En que lo usó? <span className="text-red-500">*</span>
               </span>
               <select
                 className="selectField"
@@ -133,7 +133,7 @@ export default function DialogNewExpense(props: Props) {
                 required
               >
                 <option value="0" disabled>
-                  Select a category
+                  Seleccione categoria
                 </option>
                 {categories?.map((item) => (
                   <option key={item?.id} value={item?.id}>
@@ -144,7 +144,7 @@ export default function DialogNewExpense(props: Props) {
             </div>
           )}
           <div className="flex flex-col gap-1 pb-2">
-            <span>Description</span>
+            <span>Descripción</span>
             <textarea
               className="rounded-md p-2 border-2 bg-transparent"
               name="description"

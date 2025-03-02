@@ -1,35 +1,39 @@
 // TABLA DE CUENTAS
-CREATE TABLE accounts (Id serial PRIMARY KEY, Username varchar(100), Name varchar(50), Value NUMERIC(15, 2), Type varchar(20));
-
-ALTER TABLE accounts
-ALTER COLUMN Value TYPE NUMERIC(15, 2);
+CREATE TABLE accounts (Id serial PRIMARY KEY, username varchar(100), name varchar(50), value NUMERIC(15, 2), type varchar(20));
 
 // TABLA DE CATEGORIAS
-CREATE TABLE categories (Id serial PRIMARY KEY, Name varchar(50));
+CREATE TABLE categories (id serial PRIMARY KEY, name varchar(50));
 
 // TABLA DE GASTOS
-CREATE TABLE expenses (Id SERIAL PRIMARY KEY, AccountId INT REFERENCES accounts(Id), CategoryId INT REFERENCES categories(Id), Username VARCHAR(100), DateRegister DATE DEFAULT CURRENT_DATE, Description VARCHAR(100), Value NUMERIC(15, 2));
+CREATE TABLE expenses (id SERIAL PRIMARY KEY, account_id INT REFERENCES accounts(Id), category_id INT REFERENCES categories(id), username VARCHAR(100), date_register DATE DEFAULT CURRENT_DATE, description VARCHAR(100), value NUMERIC(15, 2));
 
 // TABLA DE DEUDAS
-CREATE TABLE debts (Id SERIAL PRIMARY KEY, Username varchar(100), Fee INT, Description VARCHAR(50), Paid INT DEFAULT 0, TotalDue INT, Payday INT, FeeValue INT);
+CREATE TABLE debts (id SERIAL PRIMARY KEY, username varchar(100), installments INT, description VARCHAR(50), interest INT DEFAULT 0, total_amount INT, pay_date INT, start_date DATE);
 
 // TABLA DE PAGOS
-CREATE TABLE payments (Id SERIAL PRIMARY KEY, DebtsId INT REFERENCES debts(Id), PaymentType VARCHAR(50), PayValue INT,  Payday DATE DEFAULT CURRENT_DATE)
+CREATE TABLE payments (id SERIAL PRIMARY KEY, debts_id INT REFERENCES debts(Id), payment_type VARCHAR(50), pay_value INT,  pay_day DATE DEFAULT CURRENT_DATE)
 
 // TABLA DE INGRESOS
-CREATE TABLE incomes (Id SERIAL PRIMARY KEY, Username varchar(100), TypeIncome varchar(50), AccountId INT REFERENCES accounts(Id),  Value NUMERIC(15, 2), date varchar(20));
+CREATE TABLE incomes (id SERIAL PRIMARY KEY, username varchar(100), type_income varchar(50), account_id INT REFERENCES accounts(Id),  value NUMERIC(15, 2), date varchar(20));
 
 // TABLA DE EXCHANGE
-CREATE TABLE exchanges (Id SERIAL PRIMARY KEY, FromAccountId INTEGER REFERENCES accounts(Id),ToAccountId INTEGER REFERENCES accounts(Id),Username VARCHAR(100), Value INT,Date DATE DEFAULT CURRENT_DATE);
+CREATE TABLE exchanges (id SERIAL PRIMARY KEY, from_account_id INTEGER REFERENCES accounts(id),to_account_id INTEGER REFERENCES accounts(id), username VARCHAR(100), value INT, date DATE DEFAULT CURRENT_DATE);
 
 // TABLE OF SAVING GOALS
-CREATE TABLE saving_goals (Id serial primary key, moneySaved NUMERIC(15,2), goal NUMERIC(15,2), nameGoal VARCHAR(50), username varchar(50));
+CREATE TABLE saving_goals (id serial primary key, money_saved NUMERIC(15,2), goal NUMERIC(15,2), name_goal VARCHAR(50), username varchar(50));
 
 // TABLE REGISTER OF SAVING GOALS
 CREATE TABLE saving_goals_register (
-    Id SERIAL PRIMARY KEY,
-    SavingGoalId INT REFERENCES saving_goals(Id),
-    AccountId INT REFERENCES accounts(Id),
-    Amount NUMERIC(15,2),
-    DateRegister DATE DEFAULT CURRENT_DATE
+    id SERIAL PRIMARY KEY,
+    saving_goal_id INT REFERENCES saving_goals(Id),
+    account_id INT REFERENCES accounts(Id),
+    amount NUMERIC(15,2),
+    date_register DATE DEFAULT CURRENT_DATE
+);
+
+
+CREATE TABLE user_currency_preferences (
+    username VARCHAR(255) PRIMARY KEY,
+    currency VARCHAR(3) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
