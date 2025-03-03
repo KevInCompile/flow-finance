@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
-import { getChatAdvice } from "../../actions/ai-message"
 
 export default function AIResponse({totalMoney}: {totalMoney: any}) {
   const [displayedContent, setDisplayedContent] = useState("")
