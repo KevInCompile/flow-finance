@@ -8,7 +8,7 @@ import { DELETE_DEBTS, GET_DEBTS, GET_DEBTS_PAYMENTS, INSERT_DEBTS } from './ser
 export const POST = authMiddleware(async (request, session) => {
     const form = await request.formData()
     const params = getParamsDebt(form)
-    console.log(params)
+
   try {
     validateDebtParams(params)
     await INSERT_DEBTS(

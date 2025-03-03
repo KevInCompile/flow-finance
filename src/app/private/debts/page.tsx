@@ -44,7 +44,7 @@ export default function Debts() {
             <LoaderPage />
           </div>
         ) : (
-          data?.length &&
+          data?.length ?
           data?.map((item) => {
             return (
               <div key={item.id}>
@@ -57,6 +57,7 @@ export default function Debts() {
               </div>
             )
           })
+          : <></>
         )}
       </section>
       <ModalNewDebt />

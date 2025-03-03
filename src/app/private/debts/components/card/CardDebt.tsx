@@ -6,10 +6,11 @@ import { toast } from 'sonner'
 import { PropsCardDebt } from './models/card-debt.model'
 import { formatCurrency } from '@/app/private/resume/utils/formatPrice'
 import { FormatDate } from '@/app/utils/FormatDate'
+import { PiggyBank, CircleX } from 'lucide-react'
 
 export default function CardDebt(props: PropsCardDebt) {
   const { data, setData, fullData, deleteDebt } = props
-  const { description, paydate, startdate, totalamount, installments, id, payments } = data
+  const { description, total_amount, pay_date, start_date, installments, id, payments } = data
 
   const [isPay, setIsPay] = useState(false)
 
@@ -31,14 +32,14 @@ export default function CardDebt(props: PropsCardDebt) {
     if (isDelete) {
       const filter = {
         ...data,
-        totalamount: data.totalamount + value,
+        totalamount: data.total_amount + value,
         payments: data.payments.filter((item) => item.id !== id),
       }
       setData([...fullData.filter((item) => item.id !== idDebt), filter])
     }
   }
 
-   const totalAmountPayments = payments.reduce((sum, debt: any) => sum + debt.payvalue, 0)
+   const totalAmountPayments = payments.reduce((sum, debt: any) => sum + debt.pay_value, 0)
 
   return (
     <div className="bg-[#191919] rounded-md py-2 border border-gray-500 relative">
@@ -46,35 +47,36 @@ export default function CardDebt(props: PropsCardDebt) {
         <div>
           <h1 className="text-[var(--palette)] font-bold flex items-center gap-1 mb-2">
             {description}
+            <button
+              className={`rounded-md text-sm hover:scale-105 transition font-bold" ${isPay ? 'text-red-400' : 'text-green-400'}`}
+              onClick={() => setIsPay(!isPay)}
+            >
+              {isPay ? <CircleX className='h-5' /> : <PiggyBank className="h-5" />}
+            </button>
             <DeleteConfirmation deleteItem={deleteDebt} message="¿Quiere eliminar la deuda?" />
           </h1>
           </div>
           <div className='grid grid-cols-2 gap-2'>
             <h2 className="text-purple-400 font-medium text-sm">
-              Monto: <span className='text-white'>{formatCurrency(totalamount)}</span>
+              Monto: <span className='text-white'>{formatCurrency(total_amount)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Monto restante: <span className='text-white'>{formatCurrency(totalamount - totalAmountPayments)}</span>
+              Monto restante: <span className='text-white'>{formatCurrency(total_amount - totalAmountPayments)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm">
               Cuotas <span className='text-white'>{installments}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Pago mensual <span className='text-white'>{formatCurrency(totalamount / installments)}</span>
+              Pago mensual <span className='text-white'>{formatCurrency(total_amount / installments)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm">
-              Proximo pago <span className='text-white'>{FormatDate(paydate)}</span>
+              Proximo pago <span className='text-white'>{FormatDate(pay_date)}</span>
             </h2>
             <h2 className="text-purple-400 font-medium text-sm text-end">
-              Fecha de inicio <span className='text-white'>{FormatDate(startdate)}</span>
+              Fecha de inicio <span className='text-white'>{FormatDate(start_date)}</span>
             </h2>
           </div>
-        {/* <button
-          className={`rounded-md text-sm hover:scale-105 transition font-bold" ${isPay ? 'text-red-400' : 'text-green-400'}`}
-          onClick={() => setIsPay(!isPay)}
-        >
-          {isPay ? 'Cancelar' : 'Abonar'}
-        </button> */}
+
       </div>
       {isPay ? (
         <div className="p-4">
@@ -94,13 +96,13 @@ export default function CardDebt(props: PropsCardDebt) {
           {payments?.map((pay: any, i) => (
             <article className="text-white grid grid-cols-2 py-1.5 border-b border-gray-500 text-sm" key={pay.id}>
               <span>
-                <b className="text-palette">{i + 1}.</b> {FormatDate(pay.payday)}
+                <b className="text-palette">{i + 1}.</b> {FormatDate(pay.pay_day)}
               </span>
               <span className="text-end font-medium flex justify-end gap-2 text-xs">
-                {formatCurrency(pay.payvalue)} {" "}
-                <span className='text-green-500'>({pay?.paymenttype})</span>
+                {formatCurrency(pay.pay_value)} {" "}
+                <span className='text-green-500'>({pay?.payment_type})</span>
                 <DeleteConfirmation
-                  deleteItem={() => handleDelete(pay.id, pay.debtsid, pay.payvalue)}
+                  deleteItem={() => handleDelete(pay.id, pay.debts_id, pay.pay_value)}
                   message="¿Desea eliminar el pago?"
                 />
               </span>

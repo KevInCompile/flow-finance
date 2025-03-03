@@ -1,11 +1,11 @@
 interface DebtParams {
   username?: string | null | undefined
-  installments: string
+  installments: number
   description: string
-  paydate: string
+  paydate: number
   totalamount: number
-  startdate: string,
-  interest: number,
+  startdate: string
+  interest: number
 }
 
 export const validateDebtParams = (params: DebtParams) => {

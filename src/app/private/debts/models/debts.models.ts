@@ -2,10 +2,10 @@ export interface Debt {
   id: number,
   installments: number,
   description: string,
-  startdate: string,
-  paydate: string
-  totalamount: number,
-  totalremaining: number,
+  start_date: string,
+  pay_date: string
+  total_amount: number,
+  total_remaining: number,
   payments: Payments[]
 }
 

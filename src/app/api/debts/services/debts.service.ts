@@ -2,20 +2,20 @@ import { sql } from '@vercel/postgres'
 
 const INSERT_DEBTS = (
   username: string | null | undefined,
-  installments: string,
+  installments: number,
   description: string,
-  paydate: string,
+  paydate: number,
   startdate: string,
   totalamount: number,
-  interest: number,
+  interest: number
 
 ) =>
   sql`INSERT INTO debts (username, installments, description, interest, total_amount, start_date, pay_date)
-      VALUES (${username}, ${installments}, ${description}, ${interest}, ${totalamount}, ${startdate}, ${paydate})`
+      VALUES (${username}, ${installments}, ${description}, ${+interest}, ${totalamount}, ${startdate}, ${paydate})`
 
 const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM debts where Username = ${username}`
 
-const GET_DEBTS_PAYMENTS = (id: number) => sql`SELECT * FROM payments WHERE DebtsId = ${id}`
+const GET_DEBTS_PAYMENTS = (id: number) => sql`SELECT * FROM payments WHERE debts_id = ${id}`
 
 const DELETE_DEBTS = (username: string | null | undefined, id: number) => {
   sql`DELETE FROM payments WHERE debtsid = ${id}`

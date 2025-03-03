@@ -12,7 +12,6 @@ import { handleSuccess } from "../utils/handleSuccess";
 export const POST = authMiddleware(async (req) => {
   const form = await req.json();
   const { debtID, paymentType, payValue } = form;
-  const payFormatted = parseFloat(payValue);
 
   if (!debtID) return handleError("Id is required");
 

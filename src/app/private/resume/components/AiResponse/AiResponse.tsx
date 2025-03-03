@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react"
 import ReactMarkdown from "react-markdown"
+import { getChatAdvice } from "../../actions/ai-message"
 
 export default function AIResponse({totalMoney}: {totalMoney: any}) {
   const [displayedContent, setDisplayedContent] = useState("")
@@ -34,53 +35,20 @@ export default function AIResponse({totalMoney}: {totalMoney: any}) {
   }, [typeWriter])
 
   const handleSubmit = async () => {
-    // Check if we have cached data and it's still valid
-    const cachedData = localStorage.getItem('aiAdviceCache')
-    const cacheTimestamp = localStorage.getItem('aiAdviceCacheTimestamp')
-    const CACHE_DURATION = 1000 * 60 * 60 // 1 hour
+    const fetching = await fetch('/api/chat', {method: 'POST', body: JSON.stringify({ income: totalMoney('income'), expense: totalMoney('expense'), currency: 'COP' })})
+     const data = await fetching.json()
+     setResponse(data.message)
+     setLoading(false)
+    }
 
-    if (cachedData && cacheTimestamp) {
-      const now = new Date().getTime()
-      if (now - parseInt(cacheTimestamp) < CACHE_DURATION) {
+    useEffect(() => {
+      if(totalMoney('income') === 0 || totalMoney('expense') === 0) {
         setLoading(false)
-        setResponse(JSON.parse(cachedData))
-        return
+        setResponse('No hay suficientes datos.')
+      } else {
+        handleSubmit()
       }
-    }
-
-    const userMessage = {
-      role: 'user',
-      content: `Hola, segun mis ingresos: ${totalMoney('income')} y gastos: ${totalMoney('expense')} que consejos me darias, no te extiendas mucho, en español por favor`
-    }
-
-    const response = await fetch('/api/chatbot', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        messages: [userMessage],
-      }),
-    })
-    const data = await response.json()
-
-    // Cache the response
-    localStorage.setItem('aiAdviceCache', JSON.stringify(data.message))
-    localStorage.setItem('aiAdviceCacheTimestamp', new Date().getTime().toString())
-
-    setLoading(false)
-    setResponse(data.message)
-  }
-
-  useEffect(() => {
-    if(totalMoney('income') === 0 || totalMoney('expense') === 0) {
-      setLoading(false)
-      setResponse('No hay suficientes datos.')
-    }else{
-      handleSubmit()
-    }
-  }, [totalMoney('income'), totalMoney('expense')])
-
+    }, [totalMoney('income'), totalMoney('expense')])
 
 
   return (

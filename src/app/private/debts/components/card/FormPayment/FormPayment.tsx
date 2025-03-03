@@ -50,7 +50,7 @@ export default function FormAbono(props: Props) {
   return (
     <form id="form" onSubmit={createAbono}>
       <label className="block text-[var(--color-usage)] text-md font-medium pb-2 text-center">
-        How much do you want to pay towards the debt?
+        ¿Cuánto quiere abonar a la deuda?
       </label>
       <input
         type="text"
