@@ -50,7 +50,7 @@ export default function ModalAddMoneySavingGoal(props: Props) {
       console.log(findItem)
       const newData = {
         ...findItem,
-        moneysaved: parseFloat(findItem?.moneysaved) + parseFloat(data.amount),
+        moneysaved: parseFloat(findItem?.money_saved) + parseFloat(data.amount),
       }
       const newSavingGoals = savingGoals.map((item) =>
         item.id === +id ? newData : item
