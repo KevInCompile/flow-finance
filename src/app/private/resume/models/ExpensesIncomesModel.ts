@@ -5,6 +5,7 @@ export interface DataAgruped {
   type?: string;
   accountid: number;
   categoryname?: string;
+  color: string
   date_register: string;
   description?: string;
   typeincome?: string;

@@ -9,6 +9,7 @@ import Link from "next/link";
 import "./assets/aside.css";
 import SavingIcon from "@/app/icons/IconsAside/SavingIcon";
 import BlogIcon from "@/app/icons/IconsAside/BlogIcon";
+import { ChartBar, ChartBarStacked } from "lucide-react";
 
 export default function Aside() {
   const { data: session } = useSession();
@@ -65,6 +66,12 @@ export default function Aside() {
             <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
               <SavingIcon />
               <span>Metas de ahorro</span>
+            </li>
+          </Link>
+          <Link href={`/private/categories`} className="bg-transparent">
+            <li className="p-2 hover:pl-4 hover:bg-primary hover:text-yellow-500 transition-all border-gray-500">
+              <ChartBarStacked />
+              <span>Categorías</span>
             </li>
           </Link>
           <Link href={`/private/blog`} className="bg-transparent">

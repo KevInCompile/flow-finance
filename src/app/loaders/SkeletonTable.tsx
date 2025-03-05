@@ -1,30 +1,45 @@
-import ContentLoader from 'react-content-loader'
 
 const SkeletonTable = () => (
-  <ContentLoader
-  width='100%'
-  height={430}
-  viewBox="0 0 1300 400"
-  backgroundColor="#333"
-  foregroundColor="#dbdbdb"
-  speed={3}
+  <div className="w-full overflow-x-auto">
+    {/* Table header */}
+    <div className="p-4 border-b border-gray-800 animate-pulse">
+      <div className="flex justify-between items-center">
+        <div className="flex items-center space-x-3">
+          <div className="h-5 bg-gray-700 rounded w-36"></div>
+          <div className="h-5 bg-gray-700 rounded w-36"></div>
+          <div className="h-5 bg-gray-700 rounded w-36"></div>
+        </div>
+      </div>
+    </div>
 
->
-  <rect x="4" y="8" rx="3" ry="3" width="8" height="317" />
-  <rect x="7" y="317" rx="3" ry="3" width="1200" height="8" />
-  <rect x="1200" y="9" rx="3" ry="3" width="7" height="313" />
-  <rect x="5" y="8" rx="3" ry="3" width="1200" height="7" />
-  <rect x="114" y="52" rx="6" ry="6" width="1050" height="15" />
-  <circle cx="77" cy="60" r="15" />
-  <rect x="116" y="105" rx="6" ry="6" width="1050" height="15" />
-  <circle cx="78" cy="113" r="15" />
-  <rect x="115" y="158" rx="6" ry="6" width="1050" height="15" />
-  <circle cx="78" cy="166" r="15" />
-  <rect x="117" y="211" rx="6" ry="6" width="1050" height="15" />
-  <circle cx="79" cy="219" r="15" />
-  <rect x="117" y="263" rx="6" ry="6" width="1050" height="15" />
-  <circle cx="80" cy="271" r="15" />
-</ContentLoader>
+    {/* Table body */}
+    <div className="divide-y divide-gray-800">
+      {Array.from({ length: 6 }).map((_, index) => (
+        <div key={`skeleton-row-${index}`} className="p-4 animate-pulse">
+          <div className="flex justify-between items-center">
+            <div className="flex items-center space-x-4">
+              <div className="bg-gray-700 h-4 w-4 rounded"></div>
+              <div className="h-4 bg-gray-700 rounded w-32"></div>
+            </div>
+            <div>
+              <div className="bg-gray-700 h-8 w-36 rounded-full"></div>
+            </div>
+            <div className="flex space-x-3">
+              <div className="h-4 bg-gray-700 rounded w-24"></div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    {/* Table footer/pagination */}
+    <div className="p-4 border-t border-gray-800 animate-pulse">
+      <div className="flex justify-between space-x-2">
+        <div className="h-4 bg-gray-700 rounded w-52"></div>
+        <div className="h-4 bg-gray-700 rounded w-52"></div>
+      </div>
+    </div>
+  </div>
 )
 
 

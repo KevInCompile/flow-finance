@@ -3,7 +3,7 @@ import { expenseModel } from '../models/insert.model'
 
 const GET_EXPENSES = (username: string | null | undefined) => sql`
     SELECT e.id, a.name AS AccountName, a.id as AccountId, c.name AS CategoryName,
-    e.username, e.date_register, e.description, e.value
+    e.username, e.date_register, e.description, e.value, c.color
     FROM expenses AS e
     INNER JOIN accounts AS a ON e.account_id = a.id
     INNER JOIN categories AS c ON e.category_id = c.id

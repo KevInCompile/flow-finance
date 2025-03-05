@@ -28,8 +28,6 @@ export default function TableTransactions(props: Transactions) {
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
-  console.log(gastosAgrupados)
-
   return (
     <>
       {props.isAgruped ? (
@@ -42,7 +40,7 @@ export default function TableTransactions(props: Transactions) {
         <header className="uppercase text-purple-500  border-b font-bold pb-5 mt-5 text-sm grid grid-cols-3 md:grid-cols-4 border-gray-500 px-5 gap-6">
           <span>nombre</span>
           <span>tipo</span>
-          <span className="hidden md:block">fecha</span>
+          <span className="hidden md:block">fecha</span>
           <span>monto</span>
         </header>
       )}
@@ -60,7 +58,8 @@ export default function TableTransactions(props: Transactions) {
                     <Dialog>
                       <DialogTrigger asChild>
                         <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1] cursor-pointer gap-6 ">
-                          <div>
+                          <div className="flex items-center gap-2">
+                            <div className="h-4 w-4 rounded" style={{background: item?.color ?? '#fff '}} />
                             <span className="font-light">
                               {item?.type === "expense"
                                 ? item?.categoryname
