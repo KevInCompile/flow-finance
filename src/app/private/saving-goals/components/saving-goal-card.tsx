@@ -32,7 +32,7 @@ export default function SavingGoalCard({
           >
             <div className="flex justify-between items-center mb-4">
               <h3 className="text-lg font-medium text-palette">
-                {item?.namegoal}
+                {item?.name_goal}
               </h3>
               <div className="flex items-center">
                 <ModalAddMoneySavingGoal
@@ -47,11 +47,11 @@ export default function SavingGoalCard({
               </div>
             </div>
             <Progress
-              value={(parseInt(item?.moneysaved) / parseInt(item?.goal)) * 100}
+              value={(parseInt(item?.money_saved) / parseInt(item?.goal)) * 100}
               className="h-2 bg-white mb-2"
             />
             <div className="flex justify-between text-sm">
-              <span>{formatCurrency(+item?.moneysaved)}</span>
+              <span>{formatCurrency(+item?.money_saved)}</span>
               <span>{formatCurrency(+item?.goal)}</span>
             </div>
           </div>
