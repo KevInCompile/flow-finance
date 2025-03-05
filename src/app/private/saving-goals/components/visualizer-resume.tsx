@@ -20,14 +20,14 @@ export default function VisualizerSavingGoals() {
                 <div key={goal.id} className="flex items-center space-x-6">
                   <div className="flex-grow">
                     <h3 className="font-semibold text-[#C59422] pb-1">
-                      {goal.namegoal}
+                      {goal.name_goal}
                     </h3>
                     <Progress
-                      value={(+goal.moneysaved / +goal.goal) * 100}
+                      value={(+goal.money_saved / +goal.goal) * 100}
                       className="h-2 bg-white"
                     />
                     <p className="text-sm text-gray-500 pt-1">
-                      {formatCurrency(+goal.moneysaved)} de{' '}
+                      {formatCurrency(+goal.money_saved)} de{' '}
                       {formatCurrency(+goal.goal)}
                     </p>
                   </div>

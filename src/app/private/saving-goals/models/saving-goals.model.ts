@@ -1,6 +1,6 @@
 export type SavingGoalModel = {
   id: number
-  namegoal: string
-  moneysaved: string
+  name_goal: string
+  money_saved: string
   goal: string
 }
