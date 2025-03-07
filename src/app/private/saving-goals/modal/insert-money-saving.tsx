@@ -47,7 +47,6 @@ export default function ModalAddMoneySavingGoal(props: Props) {
     })
     if (message) {
       const findItem = savingGoals.find((item) => item.id === id)!
-      console.log(findItem)
       const newData = {
         ...findItem,
         moneysaved: parseFloat(findItem?.money_saved) + parseFloat(data.amount),

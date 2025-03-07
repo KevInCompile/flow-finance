@@ -59,7 +59,7 @@ export default function TableTransactions(props: Transactions) {
                       <DialogTrigger asChild>
                         <div className="py-4 px-5 grid grid-cols-3 items-center text-sm md:text-md hover:bg-[#201D1] cursor-pointer gap-6 ">
                           <div className="flex items-center gap-2">
-                            <div className="h-4 w-4 rounded" style={{background: item?.color ?? '#fff '}} />
+                            <div className="h-4 min-h-4 min-w-4 w-4 rounded" style={{background: item?.color ?? '#fff '}} />
                             <span className="font-light">
                               {item?.type === "expense"
                                 ? item?.categoryname
