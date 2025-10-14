@@ -22,17 +22,8 @@ const BentoInformation = dynamic(
 );
 
 export default function Resume() {
-  const {
-    data: accounts,
-    loading: loadingAccounts,
-    setData: setAccounts,
-  } = useAccounts();
-  const {
-    expenses,
-    loading: loadingExpenses,
-    setExpenses,
-    deleteExpense,
-  } = useExpenses();
+  const { data: accounts, loading: loadingAccounts, setData: setAccounts } = useAccounts();
+  const { expenses, loading: loadingExpenses, setExpenses, deleteExpense } = useExpenses();
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
   const [mesActual, setMesActual] = useState(0);
   const [anioActual, setAnioActual] = useState(new Date().getFullYear());
@@ -46,14 +37,10 @@ export default function Resume() {
     setMesActual(currentDate.getMonth());
   }, []);
 
-  /**
-   * Combines expenses and incomes into a single transactions array
-   */
+  // Combines expenses and incomes into a single transactions array
   const transactions = [...expenses, ...incomes];
 
-  /**
-   * Filters transactions for the current month and year, and sorts them by date
-   */
+  // Filters transactions for the current month and year, and sorts them by date
   const transactionsFilterForDate = transactions
     .filter((gasto) => {
       if (!gasto.date_register) return false;

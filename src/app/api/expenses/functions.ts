@@ -25,7 +25,7 @@ export async function deleteExpense(id: string, username: string | null | undefi
   const expense = rows[0]
 
   if (expense.value) {
-    await RETURN_EXPENSE({ value: expense.value, accountid: expense.accountid, username })
+    await RETURN_EXPENSE({ value: expense.value, account_id: expense.account_id, username })
   }
 
   await DELETE_EXPENSE({ id: expense.id, username })

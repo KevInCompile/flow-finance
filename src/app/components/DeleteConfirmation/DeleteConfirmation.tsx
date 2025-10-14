@@ -43,8 +43,7 @@ export default function DeleteConfirmation({
         </svg>
       </button>
       {confirmDelete && (
-        <Portal>
-          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-50">
+          <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm z-[999]">
             <div className="bg-[#242424] text-white p-5 rounded-md max-w-md w-full md:w-auto border">
               <h3 className="font-medium text-xl text-center text-purple-500 mb-2">
                 ¿Estás seguro?
@@ -66,7 +65,6 @@ export default function DeleteConfirmation({
               </div>
             </div>
           </div>
-        </Portal>
       )}
     </>
   )
