@@ -12,4 +12,3 @@ export default async function createItem(formData: FormData) {
   }
   return [new Error("Unknown error")];
 }
-

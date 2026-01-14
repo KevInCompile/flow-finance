@@ -2,7 +2,7 @@ import { sql } from '@vercel/postgres'
 import { DELETE_SAVING_GOAL } from '../services/saving-goals.service'
 
 export async function deleteSavingGoal(id: string, username: string) {
-  const registries = await sql`SELECT * FROM saving_goals_register where savinggoalid = ${id}`
+  const registries = await sql`SELECT * FROM saving_goals_register where saving_goal_id = ${id}`
 
   registries.rows.map(async (registry) => {
     const { amount } = registry
@@ -13,6 +13,6 @@ export async function deleteSavingGoal(id: string, username: string) {
     }
   })
 
-  await sql`DELETE FROM saving_goals_register where savinggoalid = ${id}`
+  await sql`DELETE FROM saving_goals_register where saving_goal_id = ${id}`
   await DELETE_SAVING_GOAL({ id, username })
 }

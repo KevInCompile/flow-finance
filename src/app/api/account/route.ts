@@ -14,7 +14,7 @@ import { handleSuccess } from '../utils/handleSuccess'
 export const POST = authMiddleware(async (request, session) => {
   const form = await request.formData()
   const { name, value, type } = getParams(form)
-  if (!value || !name) return handleError('name, value is required')
+  if (!name || value === null) return handleError('name, value is required')
 
   try {
     await INSERT_ACCOUNTS({ username: session.user?.name, name, value, type })

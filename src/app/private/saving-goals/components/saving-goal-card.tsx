@@ -37,6 +37,7 @@ export default function SavingGoalCard({
               <div className="flex items-center">
                 <ModalAddMoneySavingGoal
                   data={data}
+                  item={item}
                   id={item?.id}
                   setSaving={setData}
                 />

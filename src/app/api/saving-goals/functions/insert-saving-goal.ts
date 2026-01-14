@@ -2,8 +2,8 @@ import { sql } from '@vercel/postgres'
 
 export async function insertNewSavingGoal(data: any) {
   const { moneySaved: ms, goal: g, nameGoal, username } = data
-  const moneySaved = parseFloat(ms)
-  const goal = parseFloat(g)
+  const moneySaved = parseInt(ms)
+  const goal = parseInt(g)
 
   await sql`INSERT INTO saving_goals (username, money_saved, goal, name_goal) VALUES (${username}, ${moneySaved}, ${goal}, ${nameGoal});`
 

@@ -20,10 +20,11 @@ interface Props {
   id: number
   setSaving: any
   data: SavingGoalModel[]
+  item: SavingGoalModel
 }
 
 export default function ModalAddMoneySavingGoal(props: Props) {
-  const { id, setSaving, data: savingGoals } = props
+  const { id, setSaving, data: savingGoals, item } = props
   const [data, setData] = useState({
     amount: '',
     accountId: '',

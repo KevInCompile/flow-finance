@@ -22,8 +22,8 @@ const UPDATE_ACCOUNT = (account: accountType) =>
   sql`UPDATE accounts SET Name = ${account.name}, Value = ${account.value} WHERE id = ${account.id} and username = ${account.username}`;
 
 const DELETE_ACCOUNT = async (account: accountType) => {
-  await sql`DELETE from incomes where accountid = ${account.id}`
-  await sql`DELETE from expenses where accountid = ${account.id}`
+  await sql`DELETE from incomes where account_id = ${account.id}`
+  await sql`DELETE from expenses where account_id = ${account.id}`
   await sql`DELETE FROM accounts WHERE Id = ${account.id} and username = ${account.username}`;
 }
 
