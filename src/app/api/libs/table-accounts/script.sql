@@ -8,10 +8,10 @@ CREATE TABLE categories (id serial PRIMARY KEY, name varchar(50));
 CREATE TABLE expenses (id SERIAL PRIMARY KEY, account_id INT REFERENCES accounts(Id), category_id INT REFERENCES categories(id), username VARCHAR(100), date_register DATE DEFAULT CURRENT_DATE, description VARCHAR(100), value NUMERIC(15, 2));
 
 // TABLA DE DEUDAS
-CREATE TABLE debts (id SERIAL PRIMARY KEY, username varchar(100), installments INT, description VARCHAR(50), interest INT DEFAULT 0, total_amount INT, pay_date INT, start_date DATE);
+CREATE TABLE debts (id SERIAL PRIMARY KEY, username varchar(100), installments INT, description VARCHAR(50), interest NUMERIC(5, 2) DEFAULT 0, total_amount INT, pay_date INT, start_date DATE, accumulated_interest NUMERIC(15, 2) DEFAULT 0, last_interest_calculation DATE DEFAULT CURRENT_DATE);
 
 // TABLA DE PAGOS
-CREATE TABLE payments (id SERIAL PRIMARY KEY, debts_id INT REFERENCES debts(Id), payment_type VARCHAR(50), pay_value INT,  pay_day DATE DEFAULT CURRENT_DATE)
+CREATE TABLE payments (id SERIAL PRIMARY KEY, debts_id INT REFERENCES debts(Id), payment_type VARCHAR(50), pay_value NUMERIC(15, 2), pay_day DATE DEFAULT CURRENT_DATE, capital_paid NUMERIC(15, 2) DEFAULT 0, interest_paid NUMERIC(15, 2) DEFAULT 0)
 
 // TABLA DE INGRESOS
 CREATE TABLE incomes (id SERIAL PRIMARY KEY, username varchar(100), type_income varchar(50), account_id INT REFERENCES accounts(Id),  value NUMERIC(15, 2), date varchar(20));

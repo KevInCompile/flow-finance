@@ -62,9 +62,8 @@ export default function ModalNewDebt() {
             value={valuesState}
           />
           <Input type="number" label="Cuotas" name="installments" />
-          <Input type="number" min='1' max='31' label="Dia de pago" name="paydate" />
           <Input type='date' label="Fecha de inicio" name="startdate" />
-          <Input type='number' label="Tasa de interés" name="interest" />
+          <Input type='number' label="IEA" name="interest" step="0.01" />
         </form>
           <button
             form='form'

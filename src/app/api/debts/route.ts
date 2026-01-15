@@ -3,11 +3,11 @@ import { getParamsDebt } from './params/params'
 import { authMiddleware } from '../middleware/auth'
 import { handleError } from '../utils/handleError'
 import { validateDebtParams } from './validate/validateDebtParams'
-import { DELETE_DEBTS, GET_DEBTS, GET_DEBTS_PAYMENTS, INSERT_DEBTS } from './services/debts.service'
+import { DELETE_DEBTS, GET_DEBTS_WITH_UPDATED_INTEREST, GET_DEBTS_PAYMENTS, INSERT_DEBTS } from './services/debts.service'
 
 export const POST = authMiddleware(async (request, session) => {
-    const form = await request.formData()
-    const params = getParamsDebt(form)
+  const form = await request.formData()
+  const params = getParamsDebt(form)
 
   try {
     validateDebtParams(params)
@@ -15,7 +15,6 @@ export const POST = authMiddleware(async (request, session) => {
       session.user?.name,
       params.installments,
       params.description,
-      params.paydate,
       params.startdate,
       params.totalamount,
       params.interest
@@ -28,7 +27,7 @@ export const POST = authMiddleware(async (request, session) => {
 
 export const GET = authMiddleware(async (_, session) => {
   try {
-    const result = await GET_DEBTS(session.user?.name)
+    const result = await GET_DEBTS_WITH_UPDATED_INTEREST(session.user?.name)
     const updatedRows = await Promise.all(
       result.rows.map(async (item) => {
         const payments = await GET_DEBTS_PAYMENTS(item?.id)

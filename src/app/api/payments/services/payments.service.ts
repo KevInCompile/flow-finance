@@ -9,8 +9,16 @@ const DELETE_PAYMENTS = (id: string) => {
   return sql`DELETE FROM payments where id = ${id}`
 }
 
-const INSERT_PAYMENTS = (debtID: number, paymentType: string, payFormatted: number) => {
-  return sql`INSERT INTO payments (debts_id, payment_type, pay_value) VALUES (${debtID}, ${paymentType}, ${payFormatted})`
+const INSERT_PAYMENTS = (debtID: number, paymentType: string, payFormatted: number, capitalPaid?: number, interestPaid?: number) => {
+  // Si no se proporcionan capitalPaid e interestPaid, calcularlos basados en el estado actual de la deuda
+  if (capitalPaid === undefined || interestPaid === undefined) {
+    // Por defecto, asumir que todo es capital (para pagos sin interés o donde no se especifica)
+    capitalPaid = payFormatted
+    interestPaid = 0
+  }
+  
+  return sql`INSERT INTO payments (debts_id, payment_type, pay_value, capital_paid, interest_paid) 
+             VALUES (${debtID}, ${paymentType}, ${payFormatted}, ${capitalPaid}, ${interestPaid})`
 }
 
 const UPDATE_FORMATT_PAYMENTS = (payFormatted: number, debtID: number) => {
