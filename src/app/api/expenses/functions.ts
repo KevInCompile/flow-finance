@@ -9,24 +9,24 @@ import {
 import { expenseModel } from './models/insert.model'
 
 export async function insertExpense(form: expenseModel) {
-  const { username, value: valueString, accountid, categoryid, description, date } = form
+  const { user_id, value: valueString, accountid, categoryid, description, date } = form
   const value = parseFloat(valueString.toLocaleString())
 
-  await INSERT_EXPENSE({ accountid, categoryid, username, description, value })
-  await UPDATE_ACCOUNT_EXPENSE({ accountid, value, username })
+  await INSERT_EXPENSE({ accountid, categoryid, user_id, description, value })
+  await UPDATE_ACCOUNT_EXPENSE({ accountid, value, user_id })
 
-  const { rows } = await SELECT_EXPENSES_ACCOUNTS(username!)
+  const { rows } = await SELECT_EXPENSES_ACCOUNTS(user_id!)
 
   return rows[0]
 }
 
-export async function deleteExpense(id: string, username: string | null | undefined) {
+export async function deleteExpense(id: string, user_id: string | null | undefined) {
   const { rows } = await SELECT_EXPENSES(id)
   const expense = rows[0]
 
   if (expense.value) {
-    await RETURN_EXPENSE({ value: expense.value, account_id: expense.account_id, username })
+    await RETURN_EXPENSE({ value: expense.value, account_id: expense.account_id, user_id })
   }
 
-  await DELETE_EXPENSE({ id: expense.id, username })
+  await DELETE_EXPENSE({ id: expense.id, user_id })
 }

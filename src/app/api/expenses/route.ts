@@ -8,7 +8,7 @@ export const POST = authMiddleware(async (request, session) => {
   try {
     const form = await request.json()
     const result = await insertExpense({
-      username: session.user?.name,
+      user_id: session.user?.id,
       ...form,
     })
     return NextResponse.json({ message: 'Expense added', result: { ...result, type: 'expense' } }, { status: 200 })
@@ -19,7 +19,7 @@ export const POST = authMiddleware(async (request, session) => {
 
 export const GET = authMiddleware(async (_, session) => {
   try {
-    const result = await GET_EXPENSES(session.user?.name)
+    const result = await GET_EXPENSES(session.user?.id)
     const response = result.rows.map((row: any) => ({ ...row, type: 'expense' }))
     return NextResponse.json({ result: response }, { status: 200 })
   } catch (error) {
@@ -33,7 +33,7 @@ export const DELETE = authMiddleware(async (request, session) => {
 
   if (!id) return handleError('Id is missing')
   try {
-    await deleteExpense(id, session.user?.name)
+    await deleteExpense(id, session.user?.id)
     return NextResponse.json({ message: 'Expense deleted' }, { status: 200 })
   } catch (error) {
     return handleError(error)

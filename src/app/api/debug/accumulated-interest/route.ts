@@ -11,7 +11,7 @@ export const GET = authMiddleware(async (_, session) => {
       SELECT id, description, interest, total_amount, accumulated_interest, 
              start_date, pay_date, installments, last_interest_calculation
       FROM debts 
-      WHERE username = ${session.user?.name}
+      WHERE user_id = ${session.user?.id}
       ORDER BY id
     `
     
@@ -138,14 +138,14 @@ export const POST = authMiddleware(async (request, session) => {
     let query = sql`
       SELECT id, description, interest, total_amount, accumulated_interest, start_date
       FROM debts 
-      WHERE username = ${session.user?.name}
+      WHERE user_id = ${session.user?.id}
     `
     
     if (!fix_all && debt_ids.length > 0) {
       query = sql`
         SELECT id, description, interest, total_amount, accumulated_interest, start_date
         FROM debts 
-        WHERE username = ${session.user?.name}
+        WHERE user_id = ${session.user?.id}
           AND id IN (${debt_ids})
       `
     }
@@ -202,7 +202,7 @@ export const POST = authMiddleware(async (request, session) => {
           SET accumulated_interest = ${newValue},
               last_interest_calculation = ${new Date().toISOString().split('T')[0]}
           WHERE id = ${debtId}
-            AND username = ${session.user?.name}
+            AND user_id = ${session.user?.id}
         `
         
         fixes.push({

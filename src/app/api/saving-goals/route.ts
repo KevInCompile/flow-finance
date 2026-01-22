@@ -8,7 +8,7 @@ import { deleteSavingGoal } from './functions/delete-saving-goal'
 
 export const GET = authMiddleware(async (req, session) => {
   try {
-    const { rows } = await SELECT_SAVING_GOALS(session?.user?.name as string)
+    const { rows } = await SELECT_SAVING_GOALS(session?.user?.id as string)
     if (rows[0]) {
       return handleSuccess('', 200, [...rows])
     } else {
@@ -22,7 +22,7 @@ export const GET = authMiddleware(async (req, session) => {
 export const POST = authMiddleware(async (req, session) => {
   const body = await req.json()
   try {
-    const result = await insertNewSavingGoal({ ...body, username: session.user?.name })
+    const result = await insertNewSavingGoal({ ...body, user_id: session.user?.id })
     return handleSuccess('Saving goal inserted', 201, result)
   } catch (e) {
     return handleError(e)
@@ -36,7 +36,7 @@ export const DELETE = authMiddleware(async (req, session) => {
   if (!id) return handleError('Id is missing')
 
   try {
-    await deleteSavingGoal(id, session.user?.name as string)
+    await deleteSavingGoal(id, session.user?.id as string)
     return handleSuccess('Item deleted', 200)
   } catch (e) {
     return handleError(e)

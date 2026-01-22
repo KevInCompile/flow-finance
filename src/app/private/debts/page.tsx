@@ -7,8 +7,6 @@ import useDebts from './hooks/useDebts'
 import CardDebt from './components/card/CardDebt'
 import Gift from '@/../public/empty.gif'
 import Image from 'next/image'
-import LoaderPage from '@/app/components/LoaderPage/LoaderPage'
-import { PiggyBank, TrendingUp, Calendar, DollarSign, Percent, Clock } from 'lucide-react'
 
 export default function Debts() {
   const { data, loading, setData, actionDelete } = useDebts()
@@ -38,7 +36,6 @@ export default function Debts() {
       <div className="px-5">
         {loading ? (
           <div className="flex flex-col items-center justify-center py-20">
-            <LoaderPage />
             <p className="text-gray-400 mt-4">Cargando deudas...</p>
           </div>
         ) : data?.length === 0 || data?.length === undefined ? (

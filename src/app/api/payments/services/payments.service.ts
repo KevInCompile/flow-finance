@@ -16,8 +16,8 @@ const INSERT_PAYMENTS = (debtID: number, paymentType: string, payFormatted: numb
     capitalPaid = payFormatted
     interestPaid = 0
   }
-  
-  return sql`INSERT INTO payments (debts_id, payment_type, pay_value, capital_paid, interest_paid) 
+
+  return sql`INSERT INTO payments (debts_id, payment_type, pay_value, capital_paid, interest_paid)
              VALUES (${debtID}, ${paymentType}, ${payFormatted}, ${capitalPaid}, ${interestPaid})`
 }
 

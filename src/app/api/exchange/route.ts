@@ -10,7 +10,7 @@ export async function POST(request: Request) {
   try {
     const form = await request.json()
     const result = await performExchange({
-      username: session?.user?.name!,
+      user_id: session?.user?.id!,
       fromAccountId: form.fromAccountId,
       toAccountId: form.toAccountId,
       value: form.value,

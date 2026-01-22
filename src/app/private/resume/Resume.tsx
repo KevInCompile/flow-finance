@@ -73,13 +73,19 @@ export default function Resume() {
       <Head />
       <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
         <div className="flex justify-between w-full">
+          <div>
           <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
             Balance de {monthName}
             <Button className="text-white" onClick={() => setTour(true)}>
               <CircleHelp />
             </Button>
-          </h1>
-          <div className="relative">
+            </h1>
+            <button className="bg-[#242424] shadow-lg rounded-lg py-2 px-4 hover:-translate-y-1 transition-transform">Ingresa tu salario</button>
+          </div>
+          <div>
+            {/*<h1 className="text-md md:text-2xl font-semibold text-start text-purple-500">Tu salario este mes: <span className="text-white">0</span></h1>*/}
+          </div>
+          {/*<div className="relative">
             <button
                 onClick={() => {
                   setShowAI(!showAI);
@@ -106,7 +112,7 @@ export default function Resume() {
                     style={{top: '80%'}}
                   ></div>
                 )}
-          </div>
+          </div>*/}
 
           <div className="text-end">
             <button

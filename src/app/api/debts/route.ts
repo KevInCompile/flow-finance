@@ -12,7 +12,7 @@ export const POST = authMiddleware(async (request, session) => {
   try {
     validateDebtParams(params)
     await INSERT_DEBTS(
-      session.user?.name,
+      session.user?.id,
       params.installments,
       params.description,
       params.startdate,
@@ -27,7 +27,7 @@ export const POST = authMiddleware(async (request, session) => {
 
 export const GET = authMiddleware(async (_, session) => {
   try {
-    const result = await GET_DEBTS_WITH_UPDATED_INTEREST(session.user?.name)
+    const result = await GET_DEBTS_WITH_UPDATED_INTEREST(session.user?.id)
     const updatedRows = await Promise.all(
       result.rows.map(async (item) => {
         const payments = await GET_DEBTS_PAYMENTS(item?.id)
@@ -44,7 +44,7 @@ export const DELETE = authMiddleware(async (request, session) => {
   const { searchParams } = new URL(request.url)
   const id = searchParams.get('id')!
   try {
-    DELETE_DEBTS(session?.user?.name, parseInt(id))
+    DELETE_DEBTS(session?.user?.id, parseInt(id))
   } catch (e) {
     return handleError(e)
   }

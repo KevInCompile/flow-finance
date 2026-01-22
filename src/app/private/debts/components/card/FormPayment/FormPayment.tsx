@@ -17,9 +17,9 @@ export default function FormAbono(props: Props) {
     paymentType: "Pago de cuota",
     payValue: monthlyPayment > 0 ? monthlyPayment : 0,
   });
-  
+
   const paymentTypes = [
-    { value: "Pago de cuota", label: "Pago de cuota completa", icon: <CreditCard className="h-4 w-4" />, description: "Pago completo de la cuota mensual" },
+    { value: "Pago de cuota", label: "Pago de cuota", icon: <CreditCard className="h-4 w-4" />, description: "Pago completo de la cuota mensual" },
     { value: "Abono a capital", label: "Abono a capital", icon: <PiggyBank className="h-4 w-4" />, description: "Pago parcial que reduce el capital" },
     { value: "Pago anticipado", label: "Pago anticipado", icon: <DollarSign className="h-4 w-4" />, description: "Pago de varias cuotas por adelantado" },
     { value: "Abono extra", label: "Abono extra", icon: <DollarSign className="h-4 w-4" />, description: "Pago adicional a la cuota regular" },
@@ -55,7 +55,7 @@ export default function FormAbono(props: Props) {
       payValue: Number(value),
     });
   };
-  
+
   const handlePaymentTypeChange = (type: string) => {
     setData({
       ...data,
@@ -64,7 +64,7 @@ export default function FormAbono(props: Props) {
       payValue: type === "Pago de cuota" && monthlyPayment > 0 ? monthlyPayment : data.payValue
     });
   };
-  
+
   const handleQuickAmount = (amount: number) => {
     setData({
       ...data,
@@ -105,12 +105,12 @@ export default function FormAbono(props: Props) {
           ))}
         </div>
       </div>
-      
+
       <div>
         <label className="block text-gray-300 text-sm font-medium pb-2">
           Monto del pago
         </label>
-        
+
         {monthlyPayment > 0 && data.paymentType === "Pago de cuota" && (
           <div className="mb-3 p-3 bg-green-500/10 border border-green-500/30 rounded-lg">
             <div className="flex items-center justify-between">
@@ -122,7 +122,7 @@ export default function FormAbono(props: Props) {
             </p>
           </div>
         )}
-        
+
         <div className="flex gap-2 mb-3">
           {monthlyPayment > 0 && (
             <button
@@ -148,7 +148,7 @@ export default function FormAbono(props: Props) {
             Mitad
           </button>
         </div>
-        
+
         <input
           type="number"
           className="bg-gray-800 border border-gray-700 w-full p-3 rounded-lg text-white text-lg font-medium"
@@ -161,7 +161,7 @@ export default function FormAbono(props: Props) {
           step="0.01"
           placeholder="Ingrese el monto"
         />
-        
+
         {data.paymentType === "Pago de cuota" && monthlyPayment > 0 && (
           <div className="mt-2">
             {data.payValue < monthlyPayment && data.payValue > 0 ? (
@@ -176,7 +176,7 @@ export default function FormAbono(props: Props) {
           </div>
         )}
       </div>
-      
+
       <div className="pt-2">
         <Button
           className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white p-3 rounded-lg font-medium text-base"
@@ -185,7 +185,7 @@ export default function FormAbono(props: Props) {
           isLoading={loading}
         />
         <p className="text-center text-xs text-gray-500 mt-2">
-          {data.paymentType === "Pago de cuota" 
+          {data.paymentType === "Pago de cuota"
             ? "Este pago reducirá tanto capital como intereses según la tabla de amortización"
             : data.paymentType === "Abono a capital"
             ? "Este pago se aplicará directamente al capital, reduciendo el saldo pendiente"

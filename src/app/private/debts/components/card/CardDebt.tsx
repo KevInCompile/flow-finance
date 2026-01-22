@@ -20,8 +20,8 @@ export default function CardDebt(props: PropsCardDebt) {
     raw: accumulated_interest,
     type: typeof accumulated_interest,
     isNaN: isNaN(accumulated_interest),
-    parsed: parseFloat(accumulated_interest),
-    isNaNParsed: isNaN(parseFloat(accumulated_interest))
+    parsed: typeof accumulated_interest === 'string' ? parseFloat(accumulated_interest) : accumulated_interest,
+    isNaNParsed: isNaN(typeof accumulated_interest === 'string' ? parseFloat(accumulated_interest) : accumulated_interest)
   })
 
   // Helper function to safely convert to number
@@ -125,25 +125,20 @@ export default function CardDebt(props: PropsCardDebt) {
      }
 
      const today = new Date()
-     const payDay = parseInt(pay_date) || 1
+     const payDay = new Date(start_date)
+
 
      // Si ya pasó el día de pago de este mes, mostrar próximo mes
-     if (today.getDate() >= payDay) {
+     if (today.getDate() >= payDay.getDate()) {
        // Próximo pago es el próximo mes
        const nextDate = new Date(today)
        nextDate.setMonth(nextDate.getMonth() + 1)
-       nextDate.setDate(payDay)
-
-       // Ajustar si el mes no tiene ese día
-       const daysInMonth = new Date(nextDate.getFullYear(), nextDate.getMonth() + 1, 0).getDate()
-       const adjustedPayDay = Math.min(payDay, daysInMonth)
-       nextDate.setDate(adjustedPayDay)
-
+       nextDate.setDate(payDay.getDate())
        return FormatDate(nextDate.toISOString().split('T')[0])
      } else {
        // Aún no pasa el día de pago este mes
        const nextDate = new Date(today)
-       nextDate.setDate(payDay)
+       nextDate.setDate(payDay.getDate() + 1)
        return FormatDate(nextDate.toISOString().split('T')[0])
      }
    }
@@ -167,7 +162,6 @@ export default function CardDebt(props: PropsCardDebt) {
                 {FormatDate(start_date)}
               </span>
               <span className="flex items-center gap-1">
-                <Percent className="h-3 w-3" />
                 {interest}% anual
               </span>
             </div>

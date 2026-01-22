@@ -1,16 +1,16 @@
 import { sql } from '@vercel/postgres'
 const INSERT_DEBTS = async (
-  username: string | null | undefined,
+  user_id: string | null | undefined,
   installments: number,
   description: string,
-  startdate: string,
-  totalamount: number,
+  startDate: string,
+  totalAmount: number,
   interest: number
 ) => {
   try {
     const result = await sql`
-      INSERT INTO debts (username, installments, description, interest, total_amount, start_date)
-      VALUES (${username}, ${installments}, ${description}, ${interest}, ${totalamount}, ${startdate})
+      INSERT INTO debts (user_id, installments, description, interest, total_amount, start_date)
+      VALUES (${user_id}, ${installments}, ${description}, ${interest}, ${totalAmount}, ${startDate})
       RETURNING id
     `
 
@@ -19,29 +19,22 @@ const INSERT_DEBTS = async (
     }
 
     const debtId = result.rows[0].id
-    console.log('✅ Deuda creada con ID:', debtId)
 
     // Calcular cuántas cuotas están vencidas
-    const startDate = new Date(startdate + 'T12:00:00')
+    const startDateObj = new Date(startDate + 'T12:00:00')
     const currentDate = new Date()
 
-    // Validar fecha
-    if (isNaN(startDate.getTime())) {
-      console.error('❌ Fecha de inicio inválida:', startdate)
-      throw new Error('Fecha de inicio inválida')
-    }
-
     // El día de pago mensual es el día de la fecha de inicio
-    const payDay = startDate.getDate()
+    const payDay = startDateObj.getDate()
 
     let dueInstallments = 0
 
     // Si la fecha de inicio es hoy o en el futuro, no hay cuotas vencidas
-    if (startDate >= currentDate) {
+    if (startDateObj >= currentDate) {
       dueInstallments = 0
     } else {
       // Contar cuántas fechas de pago YA HAN PASADO (no las que están por venir)
-      let paymentDate = new Date(startDate)
+      let paymentDate = new Date(startDateObj)
 
       // Avanzar al primer día de pago (1 mes después del inicio)
       paymentDate.setMonth(paymentDate.getMonth() + 1)
@@ -86,10 +79,10 @@ const INSERT_DEBTS = async (
       try {
         await GENERATE_AUTOMATIC_PAYMENTS(
           debtId,
-          totalamount,
+          totalAmount,
           interest,
           installments,
-          startDate,
+          new Date(startDate + 'T12:00:00'),
           payDay,
           dueInstallments
         )
@@ -119,7 +112,6 @@ const GENERATE_AUTOMATIC_PAYMENTS = async (
   dueInstallments: number
 ) => {
   if (dueInstallments <= 0) {
-    console.log('⏭️ No hay cuotas vencidas, no se generan pagos automáticos')
     return 0
   }
 
@@ -188,13 +180,13 @@ const GENERATE_AUTOMATIC_PAYMENTS = async (
   return paymentsGenerated
 }
 
-const GET_DEBTS = (username: string | null | undefined) => sql`SELECT * FROM debts where Username = ${username}`
+const GET_DEBTS = (user_id: string | null | undefined) => sql`SELECT * FROM debts where user_id = ${user_id}`
 
 const GET_DEBTS_PAYMENTS = (id: number) => sql`SELECT * FROM payments WHERE debts_id = ${id} ORDER BY pay_day ASC`
 
-const DELETE_DEBTS = async (username: string | null | undefined, id: number) => {
+const DELETE_DEBTS = async (user_id: string | null | undefined, id: number) => {
   await sql`DELETE FROM payments WHERE debts_id = ${id}`
-  await sql`DELETE FROM debts WHERE id = ${id} AND username = ${username}`
+  await sql`DELETE FROM debts WHERE id = ${id} AND user_id = ${user_id}`
 }
 
 // Función para calcular interés acumulado diario considerando pagos y cuotas vencidas
@@ -234,6 +226,7 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
       SELECT *,
         COALESCE(capital_paid, 0) as capital_paid,
         COALESCE(interest_paid, 0) as interest_paid,
+        payment_type,
         pay_day
       FROM payments
       WHERE debts_id = ${debtId}
@@ -241,12 +234,16 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
     `
     const payments = paymentsResult.rows
 
+    // Separar pagos de cuota vs abonos
+    const installmentPayments = payments.filter(p =>
+      p.payment_type === 'automatic' || p.payment_type.toLocaleLowerCase() === 'pago de cuota'
+    )
+    const abonos = payments.filter(p =>
+      p.payment_type.toLocaleLowerCase() === 'abono a capital'
+    )
+
     const totalCapitalPaid = payments.reduce((sum, payment) => {
       return sum + (parseFloat(payment.capital_paid) || 0)
-    }, 0)
-
-    const totalInterestPaid = payments.reduce((sum, payment) => {
-      return sum + (parseFloat(payment.interest_paid) || 0)
     }, 0)
 
     const currentBalance = Math.max(0, principal - totalCapitalPaid)
@@ -285,27 +282,27 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
         paymentDate.setDate(payDay > daysInMonth ? daysInMonth : payDay)
       }
     }
-
     // Calcular cuota mensual
     const monthlyPayment = CALCULATE_MONTHLY_PAYMENT(principal, interestRate, installments)
     const dailyInterestRate = interestRate / 100 / 365
     const monthlyInterestRate = interestRate / 100 / 12
 
-    // Calcular interés SOLO del período actual (desde último pago hasta hoy)
+    // Calcular interés según el escenario
     let accumulatedInterest = 0
 
-    if (payments.length > 0) {
-      // HAY PAGOS: calcular interés solo desde el último pago
-      const lastPayment = payments[payments.length - 1]
-      const lastPaymentDate = lastPayment.pay_day instanceof Date
-        ? new Date(lastPayment.pay_day)
-        : new Date(lastPayment.pay_day)
+    // CLAVE: Usar el último PAGO DE CUOTA, NO abonos
+    if (installmentPayments.length > 0) {
+      // HAY PAGOS DE CUOTA: calcular interés desde el último pago de cuota
+      const lastInstallmentPayment = installmentPayments[installmentPayments.length - 1]
+      const lastPaymentDate = lastInstallmentPayment.pay_day instanceof Date
+        ? new Date(lastInstallmentPayment.pay_day)
+        : new Date(lastInstallmentPayment.pay_day)
 
       const daysSinceLastPayment = Math.max(0, Math.floor(
         (currentDate.getTime() - lastPaymentDate.getTime()) / (1000 * 3600 * 24)
       ))
 
-      // Calcular el saldo después de todos los pagos realizados
+      // Calcular el saldo después de todos los pagos (cuotas + abonos)
       let balanceAfterPayments = principal
       for (let i = 0; i < payments.length; i++) {
         const capitalPaid = parseFloat(payments[i].capital_paid) || 0
@@ -313,17 +310,25 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
       }
       balanceAfterPayments = Math.max(0, balanceAfterPayments)
 
-      // Interés diario sobre el saldo real después de pagos
+      // Interés diario sobre el saldo real después de TODOS los pagos (incluidos abonos)
       accumulatedInterest = balanceAfterPayments * dailyInterestRate * daysSinceLastPayment
 
     } else if (dueInstallments > 0) {
-      // NO HAY PAGOS pero SÍ HAY CUOTAS VENCIDAS
+      // NO HAY PAGOS DE CUOTA pero SÍ HAY CUOTAS VENCIDAS
       // Calcular interés de todas las cuotas vencidas + período actual
 
       let balance = principal
+
+      // Restar abonos del saldo inicial si existen
+      for (let i = 0; i < abonos.length; i++) {
+        const capitalPaid = parseFloat(abonos[i].capital_paid) || 0
+        balance -= capitalPaid
+      }
+      balance = Math.max(0, balance)
+
       let totalInterestFromDue = 0
 
-      // Interés de cuotas vencidas completas
+      // Interés de cuotas vencidas completas sobre el saldo con abonos
       for (let month = 1; month <= dueInstallments; month++) {
         const interestForMonth = balance * monthlyInterestRate
         const capitalForMonth = monthlyPayment - interestForMonth
@@ -362,7 +367,15 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
         (currentDate.getTime() - startDate.getTime()) / (1000 * 3600 * 24)
       ))
 
-      accumulatedInterest = principal * dailyInterestRate * daysSinceStart
+      // Saldo después de abonos (si existen)
+      let balanceWithAbonos = principal
+      for (let i = 0; i < abonos.length; i++) {
+        const capitalPaid = parseFloat(abonos[i].capital_paid) || 0
+        balanceWithAbonos -= capitalPaid
+      }
+      balanceWithAbonos = Math.max(0, balanceWithAbonos)
+
+      accumulatedInterest = balanceWithAbonos * dailyInterestRate * daysSinceStart
     }
 
     // Tomar el mayor entre el acumulado anterior y el nuevo cálculo
@@ -372,12 +385,12 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
     // Actualizar en base de datos
     await sql`
       UPDATE debts
-      SET accumulated_interest = ${accumulatedInterest},
+      SET accumulated_interest = ${newAccumulatedInterest},
           last_interest_calculation = ${currentDate.toISOString().split('T')[0]}
       WHERE id = ${debtId}
     `
 
-    return accumulatedInterest
+    return newAccumulatedInterest
 
   } catch (error) {
     console.error('💥 ERROR EN CALCULATE_ACCUMULATED_INTEREST:', error)
@@ -385,7 +398,6 @@ const CALCULATE_ACCUMULATED_INTEREST = async (debtId: number) => {
   }
 }
 
-// Función para calcular cuota mensual con amortización francesa (cuota fija)
 const CALCULATE_MONTHLY_PAYMENT = (principal: number, annualInterestRate: number, months: number): number => {
   if (annualInterestRate <= 0) {
     // Sin interés, cuota simple
@@ -444,8 +456,8 @@ const GENERATE_AMORTIZATION_TABLE = (principal: number, annualInterestRate: numb
 }
 
 // Función para obtener deudas con interés actualizado y cálculo de cuotas
-const GET_DEBTS_WITH_UPDATED_INTEREST = async (username: string | null | undefined) => {
-  const debtsResult = await GET_DEBTS(username)
+const GET_DEBTS_WITH_UPDATED_INTEREST = async (user_id: string | null | undefined) => {
+  const debtsResult = await GET_DEBTS(user_id)
 
   // Actualizar interés para cada deuda
   const updatedDebts = await Promise.all(
@@ -474,7 +486,7 @@ const GET_DEBTS_WITH_UPDATED_INTEREST = async (username: string | null | undefin
       return {
         ...debt,
         accumulated_interest: accumulatedInterest,
-        total_with_interest: parseFloat(totalAmount) + parseFloat(accumulatedInterest),
+        total_with_interest: totalAmount + accumulatedInterest,
         monthly_payment: monthlyPayment,
         total_payment: amortizationInfo.totalPayment,
         total_interest: amortizationInfo.totalInterest,

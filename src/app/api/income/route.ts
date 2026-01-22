@@ -10,10 +10,10 @@ export const POST = authMiddleware(async (request, session) => {
 
   try {
     // Insert income
-    await sql`INSERT INTO incomes (username, type_income, account_id, value, date) VALUES (${session.user?.name}, ${typeIncome}, ${accountId}, ${value}, ${date})`
+    await sql`INSERT INTO incomes (user_id, type_income, account_id, value, date) VALUES (${session.user?.id}, ${typeIncome}, ${accountId}, ${value}, ${date})`
     // Recuperar el ultimo registro de ese usuario
     const { rows } =
-      await sql`SELECT I.id, I.value, I.type_income, I.date, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.username = ${session.user?.name} ORDER BY Id DESC LIMIT 1`
+      await sql`SELECT I.id, I.value, I.type_income, I.date, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.user_id = ${session.user?.id} ORDER BY Id DESC LIMIT 1`
     // Eliminar el valor sumado de la cuenta
     await sql`UPDATE accounts SET value = value + ${value} where id = ${accountId}`
 
@@ -26,7 +26,7 @@ export const POST = authMiddleware(async (request, session) => {
 export const GET = authMiddleware(async (_, session) => {
   try {
     const result =
-      await sql`SELECT I.id, I.value, I.type_income, I.date as date_register, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.username = ${session.user?.name}`
+      await sql`SELECT I.id, I.value, I.type_income, I.date as date_register, C.name as account, I.account_id FROM incomes as I INNER JOIN accounts as C ON I.account_id = C.id where I.user_id = ${session.user?.id}`
 
     return NextResponse.json({ result: result.rows }, { status: 200 })
   } catch (e) {
