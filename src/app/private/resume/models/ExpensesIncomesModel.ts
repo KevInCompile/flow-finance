@@ -1,14 +1,14 @@
 export interface DataAgruped {
   id: number;
   account: string;
-  accountname?: string;
+  account_name?: string;
   type?: string;
-  accountid: number;
-  categoryname?: string;
+  account_id: number;
+  category_name?: string;
   color: string
   date_register: string;
   description?: string;
-  typeincome?: string;
+  type_income?: string;
   value: number;
   details?: DataAgruped[];
 }

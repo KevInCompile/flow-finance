@@ -28,6 +28,7 @@ export default function TableTransactions(props: Transactions) {
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
+  console.log(gastosAgrupados)
   return (
     <>
       {props.isAgruped ? (
@@ -62,7 +63,7 @@ export default function TableTransactions(props: Transactions) {
                             <div className="h-4 min-h-4 min-w-4 w-4 rounded" style={{background: item?.color ?? '#fff '}} />
                             <span className="font-light">
                               {item?.type === "expense"
-                                ? item?.categoryname
+                                ? item?.category_name
                                 : "Ingresos"}
                             </span>
                           </div>
@@ -83,7 +84,7 @@ export default function TableTransactions(props: Transactions) {
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle className="text-purple-500">
-                            Detalles de {item.categoryname ?? "Incomes"}
+                            Detalles de {item.category_name ?? "Incomes"}
                           </DialogTitle>
                           <DialogDescription>
                             Total: {formatCurrency(item?.value)}
@@ -97,18 +98,18 @@ export default function TableTransactions(props: Transactions) {
                             >
                               <div>
                                 <div className="font-medium text-white flex items-center gap-1">
-                                  {detalle.description ?? detalle.typeincome}
+                                  {detalle.description ?? detalle.type_income}
                                   <DeleteConfirmation
                                     deleteItem={() =>
                                       handleDeleteTransaction(
                                         detalle?.id,
                                         detalle.value,
-                                        detalle.accountid,
-                                        detalle?.typeincome!,
+                                        detalle.account_id,
+                                        detalle?.type_income!,
                                         props
                                       )
                                     }
-                                    message={`Deseas eliminar ${detalle.description ?? detalle.typeincome}?`}
+                                    message={`Deseas eliminar ${detalle.description ?? detalle.type_income}?`}
                                   />
                                 </div>
                                 <div className="text-sm text-muted-foreground">
@@ -139,8 +140,8 @@ export default function TableTransactions(props: Transactions) {
                         <div className="flex flex-col gap-2">
                           <span className="font-light">
                             {item?.type === "expense"
-                              ? item?.categoryname
-                              : item?.typeincome}
+                              ? item?.category_name
+                              : item?.type_income}
                           </span>
                           <small className="font-light opacity-70 text-[#C59422]">
                             {item?.description}
