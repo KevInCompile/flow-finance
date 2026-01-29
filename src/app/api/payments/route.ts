@@ -3,8 +3,8 @@ import {
   DELETE_PAYMENTS,
   INSERT_PAYMENTS,
   SELECT_PAYMENTS,
-  UPDATE_FORMATT_PAYMENTS,
-  UPDATE_PAYMENTS,
+  // UPDATE_FORMATT_PAYMENTS,
+  // UPDATE_PAYMENTS,
 } from "./services/payments.service";
 import { handleError } from "../utils/handleError";
 import { handleSuccess } from "../utils/handleSuccess";
@@ -113,7 +113,7 @@ export const DELETE = authMiddleware(async (req) => {
     if (!id) return handleError("Id is required");
 
     const result = await SELECT_PAYMENTS(id);
-    const { debtsid, payvalue } = result.rows[0];
+    const { payvalue } = result.rows[0];
     if (payvalue) {
       // await UPDATE_PAYMENTS(payvalue, debtsid);
       await DELETE_PAYMENTS(id);

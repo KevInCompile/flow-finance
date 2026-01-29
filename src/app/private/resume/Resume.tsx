@@ -12,9 +12,11 @@ import { Button } from "@/components/ui/button";
 import { CircleHelp } from "lucide-react";
 import dynamic from "next/dynamic";
 import Tour from "./utils/steps-tour";
-import AIIcon from "@/app/icons/AI-Icon";
 import AIResponse from "./components/AiResponse/AiResponse";
 import WrapperTable from "./components/TableTransactions/WrapperTable";
+import RegisterSalaryModal from "./components/Modals/RegisterSalary";
+import useSalary from "./hooks/useSalary";
+import { formatCurrency } from "./utils/formatPrice";
 
 const BentoInformation = dynamic(
   () => import("./components/BentoInformation/BentoInformation"),
@@ -24,6 +26,7 @@ const BentoInformation = dynamic(
 export default function Resume() {
   const { data: accounts, loading: loadingAccounts, setData: setAccounts } = useAccounts();
   const { expenses, loading: loadingExpenses, setExpenses, deleteExpense } = useExpenses();
+  const { salary, loading: loadingSalary } = useSalary()
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
   const [mesActual, setMesActual] = useState(0);
   const [anioActual, setAnioActual] = useState(new Date().getFullYear());
@@ -32,6 +35,7 @@ export default function Resume() {
 
   const currentDate = new Date();
   const monthName = monthNames[mesActual];
+
 
   useEffect(() => {
     setMesActual(currentDate.getMonth());
@@ -74,16 +78,23 @@ export default function Resume() {
       <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
         <div className="flex justify-between w-full">
           <div>
-          <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
-            Balance de {monthName}
-            <Button className="text-white" onClick={() => setTour(true)}>
-              <CircleHelp />
-            </Button>
+            <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
+              Balance de {monthName}
+              <Button className="text-white" onClick={() => setTour(true)}>
+                <CircleHelp />
+              </Button>
             </h1>
-            <button className="bg-[#242424] shadow-lg rounded-lg py-2 px-4 hover:-translate-y-1 transition-transform">Ingresa tu salario</button>
-          </div>
-          <div>
-            {/*<h1 className="text-md md:text-2xl font-semibold text-start text-purple-500">Tu salario este mes: <span className="text-white">0</span></h1>*/}
+            {
+              !salary.salary_net_monthly ?
+                <RegisterSalaryModal />
+                :
+                  salary.salary_net_monthly && (
+                    <div>
+                      <h1 className="text-start text-purple-500">Tu salario este mes:</h1>
+                      <p>{ formatCurrency(salary.salary_accumulated) }</p>
+                    </div>
+                  )
+            }
           </div>
           {/*<div className="relative">
             <button
@@ -113,7 +124,6 @@ export default function Resume() {
                   ></div>
                 )}
           </div>*/}
-
           <div className="text-end">
             <button
               className="border-gray-300 border rounded-md mr-3 hover:bg-[var(--color-usage)] transition-colors"
