@@ -11,7 +11,7 @@ export default function TableTransactions(props: Transactions) {
 
   const gastosAgrupados = props.data.reduce((acc: DataAgruped[], gasto: any) => {
     const gastoExistente = acc.find(
-      (g) => g.category_name === gasto.category_name,
+      (g) => g.categoryname === gasto.categoryname,
     );
     if (gastoExistente) {
       gastoExistente.value =
@@ -48,6 +48,7 @@ export default function TableTransactions(props: Transactions) {
       <div className="overflow-y-auto movimientos">
         {props.isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
+            console.log(item)
               const dateExpense = new Date(item.date_register);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
@@ -63,7 +64,7 @@ export default function TableTransactions(props: Transactions) {
                             <div className="h-4 min-h-4 min-w-4 w-4 rounded" style={{background: item?.color ?? '#fff '}} />
                             <span className="font-light">
                               {item?.type === "expense"
-                                ? item?.category_name
+                                ? item?.categoryname
                                 : "Ingresos"}
                             </span>
                           </div>
@@ -84,7 +85,7 @@ export default function TableTransactions(props: Transactions) {
                       <DialogContent>
                         <DialogHeader>
                           <DialogTitle className="text-purple-500">
-                            Detalles de {item.category_name ?? "Incomes"}
+                            Detalles de {item.categoryname ?? "Incomes"}
                           </DialogTitle>
                           <DialogDescription>
                             Total: {formatCurrency(item?.value)}
@@ -140,7 +141,7 @@ export default function TableTransactions(props: Transactions) {
                         <div className="flex flex-col gap-2">
                           <span className="font-light">
                             {item?.type === "expense"
-                              ? item?.category_name
+                              ? item?.categoryname
                               : item?.type_income}
                           </span>
                           <small className="font-light opacity-70 text-[#C59422]">
