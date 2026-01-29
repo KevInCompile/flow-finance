@@ -90,7 +90,7 @@ export default function Resume() {
                 :
                   salary.salary_net_monthly && (
                     <div>
-                      <h1 className="text-start text-purple-500">Tu salario este mes:</h1>
+                      <h1 className="text-start text-gray-500">Tu salario este mes:</h1>
                       <p>{ formatCurrency(salary.salary_accumulated) }</p>
                     </div>
                   )

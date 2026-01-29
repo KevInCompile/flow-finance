@@ -11,7 +11,7 @@ export default function TableTransactions(props: Transactions) {
 
   const gastosAgrupados = props.data.reduce((acc: DataAgruped[], gasto: any) => {
     const gastoExistente = acc.find(
-      (g) => g.categoryname === gasto.categoryname,
+      (g) => g.category_name === gasto.category_name,
     );
     if (gastoExistente) {
       gastoExistente.value =
