@@ -97,8 +97,8 @@ importers:
         specifier: ^0.5.16
         version: 0.5.19(tailwindcss@3.4.1)
       '@types/node':
-        specifier: '20'
-        version: 20.19.20
+        specifier: ^20.19.30
+        version: 20.19.30
       '@types/react':
         specifier: '18'
         version: 18.3.26
@@ -862,8 +862,8 @@ packages:
   '@types/ms@2.1.0':
     resolution: {integrity: sha512-GsCCIZDE/p3i96vtEqx+7dBUGXrc7zeSK3wwPHIaRThS+9OhWIXRqzs4d6k1SVU8g91DrNRWxWUGhp5KXQb2VA==}
 
-  '@types/node@20.19.20':
-    resolution: {integrity: sha512-2Q7WS25j4pS1cS8yw3d6buNCVJukOTeQ39bAnwR6sOJbaxvyCGebzTMypDFN82CxBLnl+lSWVdCCWbRY6y9yZQ==}
+  '@types/node@20.19.30':
+    resolution: {integrity: sha512-WJtwWJu7UdlvzEAUm484QNg5eAoq5QR08KDNx7g45Usrs2NtOPiX8ugDqmKdXkyL03rBqU5dYNYVQetEpBHq2g==}
 
   '@types/pg@8.11.6':
     resolution: {integrity: sha512-/2WmmBXHLsfRqzfHW7BNZ8SbYzE8OSk7i3WjFYvfgRHj7S1xj+16Je5fUKv3lVdVzk/zn9TXOqf+avFCFIE0yQ==}
@@ -2826,13 +2826,13 @@ snapshots:
 
   '@types/ms@2.1.0': {}
 
-  '@types/node@20.19.20':
+  '@types/node@20.19.30':
     dependencies:
       undici-types: 6.21.0
 
   '@types/pg@8.11.6':
     dependencies:
-      '@types/node': 20.19.20
+      '@types/node': 20.19.30
       pg-protocol: 1.10.3
       pg-types: 4.1.0
 
