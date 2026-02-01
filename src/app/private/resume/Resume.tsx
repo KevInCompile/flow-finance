@@ -26,12 +26,12 @@ const BentoInformation = dynamic(
 export default function Resume() {
   const { data: accounts, loading: loadingAccounts, setData: setAccounts } = useAccounts();
   const { expenses, loading: loadingExpenses, setExpenses, deleteExpense } = useExpenses();
-  const { salary, loading: loadingSalary } = useSalary()
+  const { salary, loading: loadingSalary, setRefetching } = useSalary()
   const { data: incomes, deleteIncome, setData: setIncomes } = useIncomes();
   const [mesActual, setMesActual] = useState(0);
   const [anioActual, setAnioActual] = useState(new Date().getFullYear());
   const [tour, setTour] = useState(false);
-  const [showAI, setShowAI] = useState(false);
+  // const [showAI, setShowAI] = useState(false);
 
   const currentDate = new Date();
   const monthName = monthNames[mesActual];
@@ -86,7 +86,7 @@ export default function Resume() {
             </h1>
             {
               !salary.salary_net_monthly ?
-                <RegisterSalaryModal />
+                <RegisterSalaryModal setRefetching={setRefetching} />
                 :
                   salary.salary_net_monthly && (
                     <div>
@@ -150,9 +150,9 @@ export default function Resume() {
             loadingAccounts={loadingAccounts}
             setExpenses={setExpenses}
           />
-          {showAI ? (
+          {/*{showAI ? (
             <AIResponse totalMoney={totalMoney}  />
-          ) : (
+          ) : (*/}
             <WrapperTable
               transactionsFilterForDate={transactionsFilterForDate}
               loadingExpenses={loadingExpenses}
@@ -162,7 +162,7 @@ export default function Resume() {
               accounts={accounts}
               deleteExpense={deleteExpense}
             />
-          )}
+          {/*)}*/}
         </div>
       </section>
       <Tour runTour={tour} />

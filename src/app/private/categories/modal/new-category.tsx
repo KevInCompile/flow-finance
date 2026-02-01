@@ -14,6 +14,7 @@ export default function ModalNewCategory({setCategories}: {setCategories: React.
 
   const handleSubmit = async (formData: FormData) => {
     try {
+      setLoading(true)
       const action = await createCategory(formData);
       handleCloseModal();
       toast.success('Categoria creada exitosamente');
@@ -48,7 +49,7 @@ export default function ModalNewCategory({setCategories}: {setCategories: React.
               type="submit"
               className="bg-palette text-black rounded-md p-2 w-3/12 float-right disabled:bg-opacity-70 disabled:cursor-not-allowed"
             >
-              Crear categoria
+              {loading ? 'Creando...' : 'Crear categoria'}
             </button>
           </div>
         </form>

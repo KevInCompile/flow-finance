@@ -1,3 +1,4 @@
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
@@ -5,11 +6,12 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import axios from 'axios';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { toast } from 'sonner';
 
-export default function RegisterSalaryModal() {
+export default function RegisterSalaryModal({ setRefetching }: { setRefetching: Dispatch<SetStateAction<boolean>> }) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false)
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -17,14 +19,19 @@ export default function RegisterSalaryModal() {
     const salary_net_monthly = Number(formData.get('salary_net_monthly'));
     const hire_date = new Date(formData.get('hire_date') as string);
     const pay_frequency = formData.get('pay_frequency') as string;
-
     try {
+      setLoading(true)
       const response = await axios.post('/api/salary', { salary_net_monthly, hire_date, pay_frequency });
       const result = response.data;
+      if (result) {
+        setRefetching(true)
+      }
       setOpen(false);
       toast.success("Salary registered successfully!")
     } catch (error) {
-      console.error(error)
+      throw new Error(error as string)
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -54,10 +61,13 @@ export default function RegisterSalaryModal() {
           </div>
           <div className="flex justify-end">
             <button
+              disabled={loading}
               type="submit"
               className="bg-purple-600 px-4 py-2 rounded mr-2"
             >
-              Registrar
+              {
+                loading ? 'Creando...' : 'Registrar'
+              }
             </button>
           </div>
         </form>

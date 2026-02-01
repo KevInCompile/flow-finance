@@ -14,8 +14,8 @@ export async function createCategory(formData: FormData) {
 
   try {
     const insertedCategory = await sql`
-      INSERT INTO categories (name, color, username)
-      VALUES (${name}, ${color}, ${session?.user?.name})
+      INSERT INTO categories (name, color, user_id)
+      VALUES (${name}, ${color}, ${session?.user?.id})
       RETURNING *`
     return insertedCategory.rows[0];
   } catch (error) {

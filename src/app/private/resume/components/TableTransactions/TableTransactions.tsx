@@ -28,7 +28,6 @@ export default function TableTransactions(props: Transactions) {
     .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
   }
 
-  console.log(gastosAgrupados)
   return (
     <>
       {props.isAgruped ? (

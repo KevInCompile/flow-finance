@@ -164,6 +164,13 @@ input:checked + .slider:before {
     @apply text-foreground;
     background-image: url('/noise.png');
     background-color: #131313;
+    -webkit-background-blend-mode: overlay;
+    background-blend-mode: overlay;
+  }
+}
+
+@supports (background-blend-mode: overlay) {
+  body {
     background-blend-mode: overlay;
   }
 }
