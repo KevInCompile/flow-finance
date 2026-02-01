@@ -5,6 +5,7 @@ import TableTransactions from "./TableTransactions";
 import SkeletonTable from "@/app/loaders/SkeletonTable";
 import { Search } from "lucide-react";
 
+
 interface WrapperTableProps {
   loadingExpenses: boolean;
   transactionsFilterForDate: any[];

@@ -12,7 +12,6 @@ import { Button } from "@/components/ui/button";
 import { CircleHelp } from "lucide-react";
 import dynamic from "next/dynamic";
 import Tour from "./utils/steps-tour";
-import AIResponse from "./components/AiResponse/AiResponse";
 import WrapperTable from "./components/TableTransactions/WrapperTable";
 import RegisterSalaryModal from "./components/Modals/RegisterSalary";
 import useSalary from "./hooks/useSalary";
@@ -35,7 +34,6 @@ export default function Resume() {
 
   const currentDate = new Date();
   const monthName = monthNames[mesActual];
-
 
   useEffect(() => {
     setMesActual(currentDate.getMonth());
@@ -68,79 +66,65 @@ export default function Resume() {
     }
   };
 
-  const totalMoney = (type: string) => {
-    return transactionsFilterForDate.filter((item: any) => type === 'expense' ? item.type === 'expense' : item.type !== 'expense')
-    .reduce((acc: any, item: any) => acc + parseFloat(item.value), 0);
-  }
+  console.log({transactionsFilterForDate})
+
   return (
     <>
       <Head />
       <section className="w-full md:w-[100%] px-5 mt-5 md:px-10">
-        <div className="flex justify-between w-full">
-          <div>
-            <h1 className="text-md md:text-2xl font-semibold text-start text-purple-500 pb-2 animate-fade-in flex items-center">
-              Balance de {monthName}
-              <Button className="text-white" onClick={() => setTour(true)}>
-                <CircleHelp />
-              </Button>
-            </h1>
-            {
-              !salary.salary_net_monthly ?
+        <div className="p-4 md:p-6 mb-2">
+          <div className="flex justify-between items-start md:items-center">
+            <div>
+              <div className="flex items-center gap-3 mb-2">
+                <h1 className="text-lg md:text-2xl font-semibold text-purple-500 animate-fade-in">
+                  Balance de {monthName}
+                </h1>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-8 w-8 text-gray-400 hover:text-purple-400 hover:bg-purple-400/10"
+                  onClick={() => setTour(true)}
+                >
+                  <CircleHelp className="h-4 w-4" />
+                </Button>
+              </div>
+
+              {loadingSalary ? (
+                <div className="flex flex-col space-y-2">
+                  <div className="bg-gray-700 rounded-md animate-pulse h-4 w-40" />
+                  <div className="bg-gray-700 rounded-md animate-pulse h-3 w-32" />
+                </div>
+              ) : !salary.salary_net_monthly ? (
                 <RegisterSalaryModal setRefetching={setRefetching} />
-                :
-                  salary.salary_net_monthly && (
-                    <div>
-                      <h1 className="text-start text-gray-500">Tu salario este mes:</h1>
-                      <p>{ formatCurrency(salary.salary_accumulated) }</p>
-                    </div>
-                  )
-            }
-          </div>
-          {/*<div className="relative">
-            <button
-                onClick={() => {
-                  setShowAI(!showAI);
-                }}
-                className={`${
-                  showAI
-                    ? 'group'
-                    : 'bg-gradient-to-r from-pink-500 to-blue-500 rounded-md animate-gradient-xy text-gray-900'
-                } flex  font-bold items-center gap-2 hover:shadow-[0_0_10px_rgba(255,255,255,0.5)] z-10 outline-none`}
+              ) : (
+                <div className="flex items-center gap-3">
+                  <span className="text-gray-400 text-sm">Salario acumulado:</span>
+                  <span className="text-green-400 font-medium">
+                    {formatCurrency(salary.salary_accumulated)}
+                  </span>
+                </div>
+              )}
+            </div>
+
+            <div className="flex items-center gap-2">
+              <button
+                className="border border-gray-600 rounded-lg p-2 hover:bg-purple-500/20 hover:border-purple-500 transition-colors"
+                title="Mes anterior"
+                onClick={() => cambiarMes("anterior")}
               >
-                <div className="relative group">
-                {showAI && (
-                  // Borde animado con gradiente para cuando showAI es true
-                  <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-lg blur opacity-75 group-hover:opacity-100 transition  animate-pulse animate-gradient-xy"></div>
-                )}
-                <div className={`${showAI && 'bg-background'} border border-transparent rounded-md relative flex items-center gap-2 p-2 text-sm`}>
-                  <AIIcon /> {showAI ? 'Cerrar consejo' : 'Consejo de AI'}
-                </div>
-                </div>
+                <BackIcon />
               </button>
-              {showAI && (
-                  <div
-                    className="absolute left-1/4 h-[45%] w-1 bg-gradient-to-b from-purple-600 via-pink-500 to-blue-500 blur-xs opacity-75 animate-pulse animate-gradient-xy"
-                    style={{top: '80%'}}
-                  ></div>
-                )}
-          </div>*/}
-          <div className="text-end">
-            <button
-              className="border-gray-300 border rounded-md mr-3 hover:bg-[var(--color-usage)] transition-colors"
-              title="Mes anterior"
-              onClick={() => cambiarMes("anterior")}
-            >
-              <BackIcon />
-            </button>
-            <button
-              className="border-gray-300 border rounded-md hover:bg-[var(--color-usage)] transition-colors"
-              title="Mes siguiente"
-              onClick={() => cambiarMes("siguiente")}
-            >
-              <NextIcon />
-            </button>
+              <button
+                className="border border-gray-600 rounded-lg p-2 hover:bg-purple-500/20 hover:border-purple-500 transition-colors"
+                title="Mes siguiente"
+                onClick={() => cambiarMes("siguiente")}
+              >
+                <NextIcon />
+              </button>
+            </div>
           </div>
-          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 mt-3 gap-14 items-start">
           <BentoInformation
             expenses={transactionsFilterForDate}

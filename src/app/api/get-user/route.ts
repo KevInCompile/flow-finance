@@ -30,5 +30,5 @@ async function getUserCurrency(user_id: string) {
 }
 
 async function updateUserCurrency(user_id: string, currency: string) {
-  await sql`INSERT INTO user_currency_preferences (user_id, currency) VALUES (${user_id}, ${currency}) ON CONFLICT (user_id) DO UPDATE SET currency = ${currency}`
+  await sql`INSERT INTO user_currency_preferences (user_id, currency) VALUES (${user_id}, ${currency})`
 }

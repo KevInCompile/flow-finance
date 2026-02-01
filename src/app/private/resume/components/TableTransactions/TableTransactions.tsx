@@ -47,8 +47,8 @@ export default function TableTransactions(props: Transactions) {
       <div className="overflow-y-auto movimientos">
         {props.isAgruped
           ? gastosAgrupados.map((item: DataAgruped) => {
-            console.log(item)
-              const dateExpense = new Date(item.date_register);
+              const [year, month, day] = item.date_register.split('-').map(Number);
+              const dateExpense = new Date(year, month - 1, day);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
                 return (
@@ -130,7 +130,8 @@ export default function TableTransactions(props: Transactions) {
               return null; // Retorno nulo si no coincide el mes
             })
           : [...props.data].sort((a, b) => b.value - a.value).map((item: DataAgruped) => {
-              const dateExpense = new Date(item.date_register);
+              const [year, month, day] = item.date_register.split('-').map(Number);
+              const dateExpense = new Date(year, month - 1, day);
               const monthExpense = dateExpense.getMonth();
               if (props.monthCurrent === monthExpense) {
                 return (
