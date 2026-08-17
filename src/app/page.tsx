@@ -51,7 +51,7 @@ export default function Home() {
             unoptimized
           />
         </div>
-        <div className="text-center md:px-20 px-6">
+        <div className="text-center md:px-20 px-6 mt-8">
           <div className="[line-height:1.5rem] [letter-spacing:.125rem] text-palette text-sm">
             ¿Cómo funciona?
           </div>
